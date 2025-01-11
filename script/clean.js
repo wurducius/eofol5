@@ -1,10 +1,3 @@
-const rimraf = require("rimraf")
-const { getConfig } = require("../src/config")
+import clean from "./impl/clean"
 
-const config = getConfig()
-
-const clean = () => {
-  rimraf.rimrafSync(config.PATH.PATH_BUILD)
-}
-
-module.exports = clean
+clean()

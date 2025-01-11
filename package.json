@@ -7,6 +7,7 @@
     "serve": "node ./script/serve.js",
     "clean": "node ./script/clean.js",
     "reinstall": "node ./script/reinstall.js",
+    "reinstall-f": "node ./script/reinstall.js -f",
     "deploy": "node ./script/deploy.js",
     "check": "npx eslint -c eslint.config.mjs .",
     "check-fix": "npx eslint -c eslint.config.mjs --fix .",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@types/node": "^22.10.5",
+    "cross-spawn": "^7.0.6",
     "eslint": "^9.17.0",
     "globals": "^15.14.0",
     "prettier": "3.4.2",
