@@ -1,7 +1,6 @@
-const { spawnSync } = require("node:child_process")
 const { exists, mkdir, cp, join } = require("../../src/util/fs")
-const { spawnOptions } = require("../../src/util/spawn")
 const { getConfig } = require("../../src/config")
+const buildWebpack = require("./build-webpack")
 
 const config = getConfig()
 
@@ -20,9 +19,10 @@ const build = () => {
 
   cp(join(config.PATH.CWD, "project", "public"), join(config.PATH.PATH_BUILD), { recursive: true })
 
-  spawnSync("tsc", ["-outDir", "./build/assets/js"], spawnOptions)
-
+  // spawnSync("tsc", ["-outDir", "./build/assets/js"], spawnOptions)
   // compile()
+
+  buildWebpack()
 }
 
 module.exports = build
