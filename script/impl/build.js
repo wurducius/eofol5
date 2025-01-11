@@ -20,7 +20,9 @@ const build = () => {
 
   cp(join(config.PATH.CWD, "project", "public"), join(config.PATH.PATH_BUILD), { recursive: true })
 
-  spawnSync("tsc", ["-rootDir", "./project/src", "-outDir", "./build/assets/js"], spawnOptions)
+  spawnSync("tsc", ["-outDir", "./build/assets/js"], spawnOptions)
+
+  // compile()
 }
 
 module.exports = build
