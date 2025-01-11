@@ -1,4 +1,4 @@
-const eofolRender = (element) => {
+const eofolRender = (element: Element) => {
   element.innerHTML = "HELLO WORLD FROM EOFOL!!!"
 }
 

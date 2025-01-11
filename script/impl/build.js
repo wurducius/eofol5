@@ -1,15 +1,26 @@
+const { spawnSync } = require("node:child_process")
+const { exists, mkdir, cp, join } = require("../../src/util/fs")
+const { spawnOptions } = require("../../src/util/spawn")
 const { getConfig } = require("../../src/config")
-const { exists, mkdir, write, join } = require("../../src/util")
-const config = getConfig()
 
-const indexHtml = "<html><head><title>EOFOL5</title></head><body><div>TADA</div></body></html>"
+const config = getConfig()
 
 const build = () => {
   const BUILD_PATH = config.PATH.PATH_BUILD
   if (!exists(BUILD_PATH)) {
     mkdir(BUILD_PATH)
+    mkdir(join(BUILD_PATH, "assets"))
+    mkdir(join(BUILD_PATH, "assets", "js"))
+    mkdir(join(BUILD_PATH, "assets", "css"))
+    mkdir(join(BUILD_PATH, "assets", "media"))
+    mkdir(join(BUILD_PATH, "assets", "media", "fonts"))
+    mkdir(join(BUILD_PATH, "assets", "media", "images"))
+    mkdir(join(BUILD_PATH, "assets", "media", "icons"))
   }
-  write(join(BUILD_PATH, "index.html"), indexHtml)
+
+  cp(join(config.PATH.CWD, "project", "public"), join(config.PATH.PATH_BUILD), { recursive: true })
+
+  spawnSync("tsc", ["-rootDir", "./project/src", "-outDir", "./build/assets/js"], spawnOptions)
 }
 
 module.exports = build
