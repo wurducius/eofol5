@@ -1,3 +1,3 @@
-import clean from "./impl/clean"
+const clean = require("./impl/clean")
 
 clean()

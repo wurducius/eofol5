@@ -2,14 +2,7 @@ const { argv } = require("node:process")
 const { execSync, spawn } = require("child_process")
 const { rmSync, existsSync } = require("node:fs")
 const { join } = require("node:path")
-
-const spawnOptions = {
-  encoding: "utf8",
-  cwd: process.cwd(),
-  env: process.env,
-  shell: process.platform === "win32",
-  stdio: "inherit",
-}
+const { spawnOptions } = require("../src/util/spawn")
 
 let argForce = false
 if (argv.length >= 2) {

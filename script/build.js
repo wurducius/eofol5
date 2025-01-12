@@ -1,3 +1,3 @@
-import build from "./impl/build"
+const build = require("./impl/build")
 
 build()
