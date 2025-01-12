@@ -1,3 +1,5 @@
+const { join, read } = require("../src/util/fs")
+
 const pluginName = "Eofol5 webpack plugin"
 
 // eslint-disable-next-line no-unused-vars
@@ -51,6 +53,7 @@ const addAsset = (compilation) => (name, content, info) => {
 const optimizeAssets = (compiler, compilation) => {
   const addAssetImpl = addAsset(compilation)
   addAssetImpl("assets/js/eofol.js", "console.log('EOFOL RUNTIME CODE!!!')", {})
+  addAssetImpl("assets/css/base.css", read(join(process.cwd(), "src", "resources", "base.css")).toString(), {})
 }
 
 // eslint-disable-next-line no-unused-vars
