@@ -9,4 +9,6 @@ const uglifyOptions = {
   },
 }
 
-export const minifyJs = (content) => minify(content, uglifyOptions).code
+const minifyJs = (content) => minify(content, uglifyOptions).code
+
+module.exports = minifyJs
