@@ -1,5 +1,5 @@
 const container = document.createElement("div")
-container.style = "display:flex; justify-content:center; align-items: center; height: 100%; font-size: 24px"
+container.style = "display:flex; justify-content:center; align-items: center; height: 100%; font-size: 36px"
 container.innerHTML = "HELLO WORLD FROM EOFOL!!!"
 
 const domClearChildren = (domElement) => {

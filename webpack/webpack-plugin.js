@@ -54,6 +54,7 @@ const optimizeAssets = (compiler, compilation) => {
   const addAssetImpl = addAsset(compilation)
   addAssetImpl("assets/js/eofol.js", "console.log('EOFOL RUNTIME CODE!!!')", {})
   addAssetImpl("assets/css/base.css", read(join(process.cwd(), "src", "resources", "base.css")).toString(), {})
+  addAssetImpl("assets/css/theme.css", read(join(process.cwd(), "src", "resources", "theme.css")).toString(), {})
 }
 
 // eslint-disable-next-line no-unused-vars

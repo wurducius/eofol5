@@ -7,10 +7,20 @@ const config = getConfig()
 const PROTOCOL = "https"
 const HOST = "localhost"
 const PORT = "3000"
+const WAIT = 150
 
 const serveUrl = `${PROTOCOL}://${HOST}:${PORT}`
 
-const serveOptions = { root: config.PATH.PATH_BUILD, port: PORT, host: HOST, https: PROTOCOL === "https" }
+// @TODO remove ./src
+const serveOptions = {
+  root: config.PATH.PATH_BUILD,
+  watch: ["./project", "./src"],
+  wait: WAIT,
+  mount: ["./node_modules"],
+  port: PORT,
+  host: HOST,
+  https: PROTOCOL === "https",
+}
 
 const serve = () => {
   open(serveUrl).then(() => {

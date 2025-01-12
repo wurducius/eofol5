@@ -16,9 +16,10 @@ body {
   background-size: cover;
   background-blend-mode: multiply;
   background-attachment: fixed;
+}
 
-  background-color: #09090b;
-  color: #fafafa;
+#root {
+  height: 100%;
 }
 
 p {
