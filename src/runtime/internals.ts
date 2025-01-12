@@ -19,4 +19,4 @@ const EOFOL_INTERNALS: Internals = {
 EOFOL_INTERNALS.views["index"] = { name: "index" }
 EOFOL_INTERNALS.instances["123456781"] = {}
 
-module.exports = { EOFOL_INTERNALS }
+export const getInternals = () => EOFOL_INTERNALS

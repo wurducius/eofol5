@@ -1,12 +1,15 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
 const EofolPlugin = require("./webpack-plugin")
 const { getConfig } = require("../src/config")
+const { join } = require("../src/util/fs")
+
+// @TODO: read params
 
 const config = getConfig()
 
 const MODE = "development"
 
-const entry = { index: "./assets/js/index.js" }
+const entry = { index: join(config.PATH.CWD, "project", "src", "index.ts") }
 
 const DIRNAME_ASSETS = "assets"
 const DIRNAME_JS = "js"

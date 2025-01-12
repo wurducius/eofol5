@@ -14,13 +14,13 @@ const onInitCompilation = (compiler) => (compilation) => {
     },
   )
    */
-  logInfo("onInitCompilation()")
+  //logInfo("onInitCompilation()")
 }
 
 // eslint-disable-next-line no-unused-vars
 const onBuildStarted = (compilation) => {
   // lifecycle.onCompilationStart()
-  logInfo("onBuildStarted()")
+  //logInfo("onBuildStarted()")
 }
 
 const onCompilationFinished = (compiler) => (compilation) => {
@@ -34,13 +34,13 @@ const onCompilationFinished = (compiler) => (compilation) => {
   optimizeAssets(compiler, compilation, instances),
   )
    */
-  logInfo("onCompilationFinished()")
+  //logInfo("onCompilationFinished()")
 }
 
 // eslint-disable-next-line no-unused-vars
 const onAfterCompile = (compiler) => (compilation) => {
   //  lifecycle.onCompilationFinished()
-  logInfo("onAfterCompile()")
+  //logInfo("onAfterCompile()")
 }
 
 class EofolCompilerWebpackPlugin {

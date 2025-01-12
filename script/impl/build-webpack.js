@@ -9,8 +9,9 @@ const buildWebpack = () => {
   webpack(getWebpackConfig(), (err, stats) => {
     if (err || stats.hasErrors()) {
       console.log(error(`Webpack error: ${err}`))
+    } else {
+      console.log(success(`Eofol5 project built at ${config.PATH.PATH_BUILD}`))
     }
-    console.log(success(`Eofol5 project built at ${config.PATH.PATH_BUILD}`))
   })
 }
 
