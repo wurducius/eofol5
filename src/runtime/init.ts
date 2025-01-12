@@ -1,5 +1,8 @@
-const init = () => {
-  console.log("EOFOL INIT")
-}
+import { getInternals } from "./internals"
 
-init()
+export const init = () => {
+  console.log("EOFOL INIT")
+  const internals = getInternals()
+
+  console.log(internals)
+}
