@@ -1,7 +1,9 @@
 const pluginName = "Eofol5 webpack plugin"
 
+// eslint-disable-next-line no-unused-vars
 const logInfo = (msg) => console.log(`${pluginName}: ${msg}`)
 
+// eslint-disable-next-line no-unused-vars
 const onInitCompilation = (compiler) => (compilation) => {
   /*
   compilation.hooks.processAssets.tapPromise(
@@ -51,6 +53,7 @@ const optimizeAssets = (compiler, compilation) => {
   addAssetImpl("assets/js/eofol.js", "console.log('EOFOL RUNTIME CODE!!!')", {})
 }
 
+// eslint-disable-next-line no-unused-vars
 const onCompilationFinished = (compiler) => (compilation) => {
   // logInfo("onCompilationFinished()")
 
