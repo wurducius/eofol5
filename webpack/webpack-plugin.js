@@ -16,7 +16,7 @@ const onInitCompilation = (compiler) => (compilation) => {
     },
   )
    */
-  //  logInfo("onInitCompilation()")
+  // logInfo("onInitCompilation()")
 }
 
 // eslint-disable-next-line no-unused-vars
