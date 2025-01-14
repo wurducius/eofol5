@@ -31,6 +31,7 @@ const precompileTemplate = (buildPath, projectPath) => async (viewName) => {
   // @TODO avoid minifying twice
   const htmlResultMinified = await minifyHtml(htmlResult)
   await writeAsync(join(buildPath, `${viewName}.html`), htmlResultMinified)
+  return viewName
 }
 
 const compileTemplates = (buildPath, projectPath, publicDir) =>

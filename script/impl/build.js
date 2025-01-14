@@ -19,6 +19,9 @@ const build = () =>
         copyPublicFiles(BUILD_PATH, PROJECT_PATH, publicDir),
       ])
     })
-    .then(buildWebpack)
+    .then((result) => {
+      const views = result[0]
+      return buildWebpack(views)
+    })
 
 module.exports = build
