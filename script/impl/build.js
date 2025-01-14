@@ -1,28 +1,23 @@
-const { exists, mkdir, cp, join } = require("../../src/util/fs")
+const { join, readDir } = require("../../src/util/fs")
 const { getConfig } = require("../../src/config")
 const buildWebpack = require("./build-webpack")
+const { compileTemplates } = require("../../src/compile/template")
+const { touchBuildDirs } = require("../../src/compile/touch-build-dirs")
+const { copyPublicFiles } = require("../../src/compile/copy-public-files")
 
 const config = getConfig()
 
 const build = () => {
   const BUILD_PATH = config.PATH.PATH_BUILD
-  if (!exists(BUILD_PATH)) {
-    mkdir(BUILD_PATH)
-    mkdir(join(BUILD_PATH, "assets"))
-    mkdir(join(BUILD_PATH, "assets", "js"))
-    mkdir(join(BUILD_PATH, "assets", "css"))
-    mkdir(join(BUILD_PATH, "assets", "media"))
-    mkdir(join(BUILD_PATH, "assets", "media", "fonts"))
-    mkdir(join(BUILD_PATH, "assets", "media", "images"))
-    mkdir(join(BUILD_PATH, "assets", "media", "icons"))
-  }
+  const PROJECT_PATH = join(config.PATH.CWD, "project", "public")
 
-  cp(join(config.PATH.CWD, "project", "public"), join(config.PATH.PATH_BUILD), { recursive: true })
+  touchBuildDirs(BUILD_PATH)
 
-  // spawnSync("tsc", ["-outDir", "./build/assets/js"], spawnOptions)
-  // compile()
-
-  buildWebpack()
+  const publicDir = readDir(PROJECT_PATH, { recursive: true })
+  compileTemplates(BUILD_PATH, PROJECT_PATH, publicDir).then(() => {
+    copyPublicFiles(BUILD_PATH, PROJECT_PATH, publicDir)
+    buildWebpack()
+  })
 }
 
 module.exports = build
