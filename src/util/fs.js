@@ -16,7 +16,7 @@ const exists = fs.existsSync
 
 const mkdir = fs.mkdirSync
 
-const write = fs.writeSync
+const write = (path, content) => fs.writeFileSync(path, content)
 
 const cp = fs.cpSync
 

@@ -1,25 +1,34 @@
 {
-  "short_name": "eofol5",
-  "name": "Eofol5",
+  "short_name": "eofol5-app",
+  "name": "Eofol5 app",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "./assets/media/images/favicon.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "logo192.png",
+      "src": "./assets/media/images/logo-sm.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
-      "src": "logo512.png",
+      "src": "./assets/media/images/logo-md.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "320x320",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/media/images/logo-lg.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#fafafa",
-  "background_color": "#09090b"
+  "theme_color": "#26d9d9",
+  "background_color": "#000000"
 }
