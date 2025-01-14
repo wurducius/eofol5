@@ -55,7 +55,15 @@ const addAsset = (compilation) => (name, content, info) => {
 // @TODO fix html minify await
 const optimizeAssets = async (compiler, compilation) => {
   const addAssetImpl = addAsset(compilation)
+
   addAssetImpl("assets/js/eofol.js", "console.log('EOFOL RUNTIME CODE!!!')", {})
+  // Touch assets/js/dependencies.js in case no views are importing external dependencies
+  // @TODO Move somewhere else i guess
+  const dependenciesScriptName = "assets/js/dependencies.js"
+  if (!compilation.assets[dependenciesScriptName]) {
+    addAssetImpl(dependenciesScriptName, "", {})
+  }
+
   addAssetImpl("assets/css/base.css", read(join(process.cwd(), "src", "resources", "base.css")).toString(), {})
   addAssetImpl("assets/css/theme.css", read(join(process.cwd(), "src", "resources", "theme.css")).toString(), {})
 
@@ -97,9 +105,7 @@ const onCompilationFinished = (compiler) => (compilation) => {
       //   stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE,
       additionalAssets: true,
     },
-    async (compiler) => {
-      return await optimizeAssets(compiler, compilation)
-    },
+    (compiler) => optimizeAssets(compiler, compilation),
   )
 }
 

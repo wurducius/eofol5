@@ -33,9 +33,9 @@
     "rimraf": "^6.0.1",
     "sharp": "^0.33.5",
     "svgo": "^3.3.2",
-    "uglify-js": "^3.19.3",
     "ts-loader": "^9.5.2",
     "typescript": "^5.7.3",
+    "uglify-js": "^3.19.3",
     "webpack": "^5.97.1",
     "webpack-bundle-analyzer": "^4.10.2"
   },

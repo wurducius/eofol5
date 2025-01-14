@@ -9,9 +9,9 @@
 
 - Add defs
 - Add instances
-- Prepend !DOCTYPE
 
 ## Bookkeeping
 
 - Make copy public files fully async including isDirectory
-- Enable hot reload for development + singleton handling
+- Enable hot reload for development + singleton handling + hashing
+- Do not minify JS files (views) twice on template compile

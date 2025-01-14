@@ -2,7 +2,7 @@ const { join, parse, readAsync, writeAsync } = require("../util/fs")
 const { head } = require("eofol-head")
 const minifyHtml = require("./minify-html")
 
-const precompileTemplate = (buildPath, projectPath) => async (viewName) => {
+const precompileTemplate = (buildPath, projectPath, stylesStatic) => async (viewName) => {
   const headData = {
     title: "Eofol5 app",
     description: "All inclusive web framework with zero configuration, batteries included!",
@@ -19,18 +19,18 @@ const precompileTemplate = (buildPath, projectPath) => async (viewName) => {
     manifest: "manifest.json",
     themeColor: "#09090b",
   }
-  const htmlContent = (await readAsync(join(projectPath, `${viewName}.html`))).toString()
-  const stylesStatic = ""
-  const htmlResult = await head(
+  const content = await readAsync(join(projectPath, `${viewName}.html`))
+  const compiled = await head(
     headData,
-    htmlContent,
+    content.toString(),
     [viewName, "runtime", "eofol", "dependencies"],
     ["base", "theme"],
-    stylesStatic,
+    stylesStatic ?? "",
   )
   // @TODO avoid minifying twice
-  const htmlResultMinified = await minifyHtml(htmlResult)
-  await writeAsync(join(buildPath, `${viewName}.html`), htmlResultMinified)
+  const minified = await minifyHtml(compiled)
+  const html = `<!DOCTYPE html>${minified}`
+  await writeAsync(join(buildPath, `${viewName}.html`), html)
   return viewName
 }
 

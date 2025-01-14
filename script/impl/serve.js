@@ -5,7 +5,7 @@ const { getConfig } = require("../../src/config")
 const config = getConfig()
 
 const PROTOCOL = "https"
-const HOST = "0.0.0.0"
+const HOST = "localhost"
 const PORT = "3000"
 const WAIT = 150
 
