@@ -5,5 +5,6 @@ const serve = require("./impl/serve")
 console.clear()
 
 clean()
-build()
-serve()
+build().then(() => {
+  serve()
+})

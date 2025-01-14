@@ -68,6 +68,8 @@ const optimizeAssets = async (compiler, compilation) => {
         let nextSource = undefined
         if (assetName.endsWith(".js")) {
           nextSource = minifyJs(source)
+        } else if (assetName.endsWith(".css")) {
+          nextSource = await minifyHtml(source)
         } else if (assetName.endsWith(".html")) {
           nextSource = await minifyHtml(source)
         }

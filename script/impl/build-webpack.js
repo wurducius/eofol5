@@ -5,8 +5,8 @@ const { getConfig } = require("../../src/config")
 
 const config = getConfig()
 
-const buildWebpack = () => {
-  webpack(getWebpackConfig(), (err, stats) => {
+const buildWebpack = (views) => {
+  webpack(getWebpackConfig(views), (err, stats) => {
     if (err || stats.hasErrors()) {
       console.log(error(`Webpack error: ${err}`))
     } else {
