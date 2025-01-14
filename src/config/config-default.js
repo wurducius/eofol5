@@ -10,5 +10,7 @@ module.exports = {
     ...FILENAME,
     PATH_DIST: join(CWD, FILENAME.DIRNAME_DIST),
     PATH_BUILD: join(CWD, FILENAME.DIRNAME_BUILD),
+    PROJECT: join(CWD, "project"),
+    PROJECT_PUBLIC: join(CWD, "project", "public"),
   },
 }

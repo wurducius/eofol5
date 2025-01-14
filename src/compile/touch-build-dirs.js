@@ -1,15 +1,22 @@
-const { exists, join, mkdir } = require("../util/fs")
+const { exists, join, mkdirAsync } = require("../util/fs")
 
-const touchBuildDirs = (buildPath) => {
+const touchBuildDirs = async (buildPath) => {
   if (!exists(buildPath)) {
-    mkdir(buildPath)
-    mkdir(join(buildPath, "assets"))
-    mkdir(join(buildPath, "assets", "js"))
-    mkdir(join(buildPath, "assets", "css"))
-    mkdir(join(buildPath, "assets", "media"))
-    mkdir(join(buildPath, "assets", "media", "fonts"))
-    mkdir(join(buildPath, "assets", "media", "images"))
-    mkdir(join(buildPath, "assets", "media", "icons"))
+    await mkdirAsync(buildPath)
+      .then(() => mkdirAsync(join(buildPath, "assets")))
+      .then(() =>
+        Promise.all([
+          mkdirAsync(join(buildPath, "assets", "js")),
+          mkdirAsync(join(buildPath, "assets", "css")),
+          mkdirAsync(join(buildPath, "assets", "media")).then(() =>
+            Promise.all([
+              mkdirAsync(join(buildPath, "assets", "media", "fonts")),
+              mkdirAsync(join(buildPath, "assets", "media", "images")),
+              mkdirAsync(join(buildPath, "assets", "media", "icons")),
+            ]),
+          ),
+        ]),
+      )
   }
 }
 
