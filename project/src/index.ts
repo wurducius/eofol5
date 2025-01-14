@@ -1,29 +1,14 @@
-const container = document.createElement("div")
-container.style = "display:flex; justify-content:center; align-items: center; height: 100%; font-size: 36px"
-container.innerHTML = "HELLO WORLD FROM EOFOL!!!"
+import { button, div, eofolInit, h1 } from "../../src/dom"
+import { showSnackbar } from "./snackbar"
 
-const domClearChildren = (domElement) => {
-  const childrenToDelete = []
-  for (let i = 0; i < domElement.childNodes.length; i++) {
-    childrenToDelete.push(domElement.childNodes.item(i))
-  }
-  childrenToDelete.forEach((childToDelete) => {
-    if (childToDelete) {
-      domElement.removeChild(childToDelete)
-    }
-  })
-}
+// import x from "eofol-dev-server"
+//console.log(x && "DEPENDENCIES PRESENT")
 
-const eofolRender = (element: Element) => {
-  domClearChildren(element)
-  element.append(container)
-}
+const helloWorld = h1(undefined, "HELLO WORLD FROM EOFOL!!!")
+const snackbarButton = button(undefined, "Show snackbar", undefined, { onclick: () => showSnackbar("TADA") })
+const container = div(undefined, [helloWorld, snackbarButton], {
+  style:
+    "display:flex; flex-direction: column; justify-content:center; align-items: center; height: 100%; font-size: 36px",
+})
 
-const render = () => {
-  const root = document.getElementById("root")
-  if (root) {
-    eofolRender(root)
-  }
-}
-
-render()
+eofolInit("root", () => [container])

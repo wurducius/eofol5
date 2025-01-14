@@ -37,7 +37,9 @@ const minifyOptions = {
   sortClassName: true,
 }
 
-export const minifyHtml = (res) =>
+const minifyHtml = (res) =>
   minify(res, minifyOptions).catch((ex) => {
     console.log("Minify error", ex)
   })
+
+module.exports = minifyHtml

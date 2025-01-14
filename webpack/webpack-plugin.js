@@ -1,4 +1,6 @@
 const { join, read } = require("../src/util/fs")
+const minifyJs = require("../src/compile/minify-js")
+const minifyHtml = require("../src/compile/minify-html")
 
 const pluginName = "Eofol5 webpack plugin"
 
@@ -50,11 +52,37 @@ const addAsset = (compilation) => (name, content, info) => {
   })
 }
 
-const optimizeAssets = (compiler, compilation) => {
+// @TODO fix html minify await
+const optimizeAssets = async (compiler, compilation) => {
   const addAssetImpl = addAsset(compilation)
   addAssetImpl("assets/js/eofol.js", "console.log('EOFOL RUNTIME CODE!!!')", {})
   addAssetImpl("assets/css/base.css", read(join(process.cwd(), "src", "resources", "base.css")).toString(), {})
   addAssetImpl("assets/css/theme.css", read(join(process.cwd(), "src", "resources", "theme.css")).toString(), {})
+
+  return await Promise.all(
+    Object.keys(compilation.assets).map(async (assetName) => {
+      const asset = compilation.assets[assetName]
+      if (!asset.info || !asset.info.optimized) {
+        const source = asset.source()
+
+        let nextSource = undefined
+        if (assetName.endsWith(".js")) {
+          nextSource = minifyJs(source)
+        } else if (assetName.endsWith(".html")) {
+          nextSource = await minifyHtml(source)
+        }
+
+        if (nextSource) {
+          compilation.assets[assetName] = getAsset({
+            asset,
+            nextSource,
+            nextInfo: { ...asset.info, optimized: true },
+            nextSize: nextSource.length,
+          })
+        }
+      }
+    }),
+  )
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -68,7 +96,7 @@ const onCompilationFinished = (compiler) => (compilation) => {
       additionalAssets: true,
     },
     async (compiler) => {
-      optimizeAssets(compiler, compilation)
+      return await optimizeAssets(compiler, compilation)
     },
   )
 }
