@@ -3,15 +3,18 @@
 ## High priority
 
 - Include dependencies in build
-- Include internals in build
 
 ## Low priority
-
-- Add defs
-- Add instances
 
 ## Bookkeeping
 
 - Make copy public files fully async including isDirectory
 - Enable hot reload for development + singleton handling + hashing
 - Do not minify JS files (views) twice on template compile
+
+## Open
+
+- Include defs in internals?
+- Shared vs per-view internals
+- Views type should be Map or Array?
+- Typing State & SetState

@@ -29,18 +29,23 @@ p {
 h1 {
   font-size: 2em;
 }
+
 h2 {
   font-size: 1.5em;
 }
+
 h3 {
   font-size: 1.17em;
 }
+
 h4 {
   font-size: 0.83em;
 }
+
 h5 {
   font-size: 0.75em;
 }
+
 h6 {
   font-size: 0.67em;
 }
@@ -50,19 +55,36 @@ a {
   font-family: inherit;
 }
 
-.col {
+button {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0 16px;
+  height: 40px;
+}
+
+.flex-col {
   display: flex;
   flex-direction: column;
 }
 
-.row {
+.flex-row {
   display: flex;
   flex-direction: row;
-  justify-content: center;
 }
 
-.m-t-md {
-  margin-top: 16px;
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-center-full {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .container {
@@ -72,8 +94,9 @@ a {
 }
 
 .container-md {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto 0 auto;
+  text-align: center;
 }
 
 button {

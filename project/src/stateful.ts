@@ -15,10 +15,7 @@ const getStateSetter = (def: Def, idInstance: string, instance: Instance) => (ne
   const nextCustom = def.render(nextInstance.state, getStateSetter(def, idInstance, instance))
   eofolUpdate("root", () => [
     // @ts-ignore
-    div(undefined, [nextCustom], {
-      style:
-        "display:flex; flex-direction: column; justify-content:center; align-items: center; height: 100%; font-size: 36px",
-    }),
+    div("flex-center-full flex-col", [nextCustom]),
   ])
 }
 

@@ -18,47 +18,35 @@ defineComponent(COUNTER, {
   // @ts-ignore
   render: (state, setState) => {
     const handleClick = handleCounterClick(state, setState)
-    return div(
-      undefined,
-      [
-        h1(undefined, `EOFOL CUSTOM COMPONENT VALUE = ${state.value}`),
-        div(
+    return div("flex-center flex-col", [
+      h1(undefined, `EOFOL CUSTOM COMPONENT VALUE = ${state.value}`),
+      div("flex-center flex-row", [
+        button(
           undefined,
-          [
-            button(
-              undefined,
-              "+",
-              {},
-              {
-                onclick: handleClick(1),
-              },
-            ),
-            button(
-              undefined,
-              "-",
-              {},
-              {
-                onclick: handleClick(-1),
-              },
-            ),
-            button(
-              undefined,
-              "Clear",
-              {},
-              {
-                onclick: handleCounterClear(state, setState),
-              },
-            ),
-          ],
+          "+",
+          {},
           {
-            style: "display:flex; flex-direction: row; justify-content:center; align-items: center;",
+            onclick: handleClick(1),
           },
         ),
-      ],
-      {
-        style: "display:flex; flex-direction: column; justify-content:center; align-items: center;",
-      },
-    )
+        button(
+          undefined,
+          "-",
+          {},
+          {
+            onclick: handleClick(-1),
+          },
+        ),
+        button(
+          undefined,
+          "Clear",
+          {},
+          {
+            onclick: handleCounterClear(state, setState),
+          },
+        ),
+      ]),
+    ])
   },
   initialState: { value: 0 },
 })
@@ -69,9 +57,6 @@ defineComponent(COUNTER, {
 const customHello = createInstance(COUNTER)
 
 // @ts-ignore
-const container = div(undefined, [customHello], {
-  style:
-    "display:flex; flex-direction: column; justify-content:center; align-items: center; height: 100%; font-size: 36px",
-})
+const container = div("flex-center-full flex-col", [customHello])
 
 eofolInit("root", () => [container])
