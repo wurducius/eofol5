@@ -1,4 +1,4 @@
-import { button, div, eofolInit, h1 } from "../../src/dom"
+import { button, div, eofolInit, h1, input } from "../../src/dom"
 import { defineComponent } from "./defs"
 import { createInstance } from "./stateful"
 
@@ -6,7 +6,7 @@ const COUNTER = "counter"
 
 // @ts-ignore
 const handleCounterClick = (state, setState) => (offset) => () => {
-  setState({ ...state, value: (state.value ?? 0) + offset })
+  setState({ ...state, value: Math.max(state.value < 0 ? 0 : (state.value ?? 0) + offset, 0) })
 }
 
 // @ts-ignore
@@ -18,60 +18,63 @@ defineComponent(COUNTER, {
   // @ts-ignore
   render: (state, setState) => {
     const handleClick = handleCounterClick(state, setState)
-    return div(
-      undefined,
-      [
-        h1(undefined, `EOFOL CUSTOM COMPONENT VALUE = ${state.value}`),
-        div(
+    return div("flex-center flex-col", [
+      h1(undefined, `Stateful component counter value = ${state.value}`),
+      div("flex-center flex-row", [
+        button(
           undefined,
-          [
-            button(
-              undefined,
-              "+",
-              {},
-              {
-                onclick: handleClick(1),
-              },
-            ),
-            button(
-              undefined,
-              "-",
-              {},
-              {
-                onclick: handleClick(-1),
-              },
-            ),
-            button(
-              undefined,
-              "Clear",
-              {},
-              {
-                onclick: handleCounterClear(state, setState),
-              },
-            ),
-          ],
+          "+",
+          {},
           {
-            style: "display:flex; flex-direction: row; justify-content:center; align-items: center;",
+            onclick: handleClick(1),
           },
         ),
-      ],
-      {
-        style: "display:flex; flex-direction: column; justify-content:center; align-items: center;",
-      },
-    )
+        input(
+          undefined,
+          undefined,
+          { value: state.increment.toString(), type: "number" },
+          {
+            onchange: (e: { target: { value: any } }) => {
+              setState({ ...state, increment: Number(e.target.value ?? "0") })
+            },
+          },
+        ),
+        button(
+          undefined,
+          "Add amount",
+          {},
+          {
+            onclick: () => {
+              setState({ ...state, value: (state.value ?? 0) + state.increment })
+            },
+          },
+        ),
+        button(
+          undefined,
+          "-",
+          {},
+          {
+            onclick: handleClick(-1),
+          },
+        ),
+        button(
+          undefined,
+          "Clear",
+          {},
+          {
+            onclick: handleCounterClear(state, setState),
+          },
+        ),
+      ]),
+    ])
   },
-  initialState: { value: 0 },
+  initialState: { value: 0, increment: 1 },
 })
 
-// const helloWorld = h1(undefined, "HELLO WORLD FROM EOFOL!!!")
-// const snackbarButton = button(undefined, "Show snackbar", undefined, { onclick: () => showSnackbar("TADA") })
-
-const customHello = createInstance(COUNTER)
-
-// @ts-ignore
-const container = div(undefined, [customHello], {
-  style:
-    "display:flex; flex-direction: column; justify-content:center; align-items: center; height: 100%; font-size: 36px",
-})
-
-eofolInit("root", () => [container])
+eofolInit("root", () => [
+  div(
+    "container-md",
+    // @ts-ignore
+    div("flex-center-full flex-col", [h1(undefined, "Eofol5"), createInstance(COUNTER)]),
+  ),
+])
