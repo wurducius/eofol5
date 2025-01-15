@@ -3,13 +3,14 @@ import { EofolNode } from "../../src/dom"
 // @TODO finish
 interface DefInternal extends Def {
   id: string
+  // @TODO state typing
+  state: any
 }
 
 // @TODO finish
 interface Def {
   render: () => EofolNode
-  // @TODO state typing
-  state: any
+  initialState: any
 }
 
 const defsRegistry: Record<string, DefInternal> = {}
