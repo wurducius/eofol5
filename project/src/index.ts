@@ -1,8 +1,6 @@
 import { button, div, eofolInit, h1 } from "../../src/dom"
-import { showSnackbar } from "./snackbar"
-import { defineComponent, getDef } from "./defs"
-import { mergeInstance } from "./internals"
-import { generateId } from "../../src/util/crypto"
+import { defineComponent } from "./defs"
+import { createInstance } from "./stateful"
 
 const COUNTER = "counter"
 
@@ -65,46 +63,13 @@ defineComponent(COUNTER, {
   initialState: { value: 0 },
 })
 
-const helloWorld = h1(undefined, "HELLO WORLD FROM EOFOL!!!")
-const snackbarButton = button(undefined, "Show snackbar", undefined, { onclick: () => showSnackbar("TADA") })
-
-// @ts-ignore
-const getStateSetter = (def, idInstance, instance) => (nextState) => {
-  const nextInstance = { ...instance, state: nextState }
-  // @ts-ignore
-  mergeInstance(idInstance, nextInstance)
-  // @ts-ignore
-  const nextCustom = def.render(nextInstance.state, getStateSetter(def, idInstance, instance))
-  eofolInit("root", () => [
-    // @ts-ignore
-    div(undefined, [helloWorld, snackbarButton, nextCustom], {
-      style:
-        "display:flex; flex-direction: column; justify-content:center; align-items: center; height: 100%; font-size: 36px",
-    }),
-  ])
-}
-
-const createInstance = (idDef: string) => {
-  const def = getDef(idDef)
-  if (def) {
-    const idInstance = generateId()
-    const instance = { id: idInstance, def: idDef, state: def.initialState ? { ...def.initialState } : {} }
-    const state = instance.state
-    // @ts-ignore
-    const setState = getStateSetter(def, idInstance, instance)
-    mergeInstance(idInstance, instance)
-    // @ts-ignore
-    return def.render(state, setState)
-  } else {
-    console.log("error @TODO")
-    return undefined
-  }
-}
+// const helloWorld = h1(undefined, "HELLO WORLD FROM EOFOL!!!")
+// const snackbarButton = button(undefined, "Show snackbar", undefined, { onclick: () => showSnackbar("TADA") })
 
 const customHello = createInstance(COUNTER)
 
 // @ts-ignore
-const container = div(undefined, [helloWorld, snackbarButton, customHello], {
+const container = div(undefined, [customHello], {
   style:
     "display:flex; flex-direction: column; justify-content:center; align-items: center; height: 100%; font-size: 36px",
 })

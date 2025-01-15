@@ -4,13 +4,16 @@ import { mergeDeep } from "./util"
 export const getInternals = () => INTERNALS
 
 export const mergeInternals = (nextInternals: any) => {
+  //@ts-ignore
   // eslint-disable-next-line no-undef
   INTERNALS = mergeDeep(INTERNALS, nextInternals)
 }
 
 // @TODO finish
-interface Instance {
+export interface Instance {
   id: string
+  // @TODO state typing
+  state: any
 }
 
 export const getInstances = () => getInternals().instances
