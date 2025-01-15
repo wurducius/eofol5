@@ -10,7 +10,7 @@ const isAssetView = (views, assetName) =>
 const injectInternals = (assetName, source) => {
   const internals = getINTERNALS()
   let appendSource = ""
-  if (isAssetView(internals, assetName)) {
+  if (isAssetView(internals.views, assetName)) {
     appendSource = `let INTERNALS = ${JSON.stringify(internals)}\n`
   }
   return `${appendSource}${source}`

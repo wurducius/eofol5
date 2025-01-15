@@ -1,5 +1,4 @@
 import { init } from "./init"
-export * from "./internals"
 
 init()
 
