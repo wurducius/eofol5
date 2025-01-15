@@ -1,15 +1,14 @@
 import { EofolNode } from "../../src/dom"
 
 // @TODO finish
-interface DefInternal extends Def {
+export interface DefInternal extends Def {
   id: string
-  // @TODO state typing
-  state: any
 }
 
 // @TODO finish
-interface Def {
-  render: () => EofolNode
+export interface Def {
+  // eslint-disable-next-line no-unused-vars
+  render: (state: any, setState: (nextState: any) => void) => EofolNode
   initialState: any
 }
 
