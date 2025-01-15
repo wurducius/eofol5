@@ -7,7 +7,7 @@ export type Attributes = any
 export type Properties = any
 
 export type EofolElement = HTMLElement | string | undefined | false | null
-export type EofolNode = HTMLElement[] | EofolElement
+export type EofolNode = EofolElement[] | EofolElement
 
 export const e = (
   tagName: string,
