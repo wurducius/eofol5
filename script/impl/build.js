@@ -4,6 +4,7 @@ const buildWebpack = require("./build-webpack")
 const { compileTemplates } = require("../../src/compile/template")
 const { touchBuildDirs } = require("../../src/compile/touch-build-dirs")
 const { copyPublicFiles } = require("../../src/compile/copy-public-files")
+const { mergeINTERNALS } = require("../../src/compile/internals")
 
 const config = getConfig()
 
@@ -21,6 +22,7 @@ const build = () =>
     })
     .then((result) => {
       const views = result[0]
+      mergeINTERNALS({ views })
       return buildWebpack(views)
     })
 
