@@ -72,9 +72,5 @@ defineComponent(COUNTER, {
 })
 
 eofolInit("root", () => [
-  div(
-    "container-md",
-    // @ts-ignore
-    div("flex-center-full flex-col", [h1(undefined, "Eofol5"), createInstance(COUNTER)]),
-  ),
+  div("container-md", div("flex-center-full flex-col", [h1(undefined, "Eofol5"), createInstance(COUNTER)])),
 ])
