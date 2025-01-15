@@ -91,12 +91,15 @@ button {
   margin: 0 auto 0 auto;
   text-align: center;
   padding: 32px 32px;
+  height: calc(100% - 64px);
 }
 
 .container-md {
   max-width: 800px;
   margin: 0 auto 0 auto;
   text-align: center;
+  padding: 32px 32px;
+  height: calc(100% - 64px);
 }
 
 button {
@@ -109,6 +112,8 @@ button {
 input {
   font-family: inherit;
   font-size: 16px;
+  height: 38px;
+  padding: 0 16px;
 }
 
 textarea {

@@ -1,6 +1,5 @@
-// @ts-ignore
 import { Instance, mergeInstance } from "./internals"
-import { div, eofolUpdate } from "../../src/dom"
+import { div, eofolUpdate, h1 } from "../../src/dom"
 import { Def, getDef } from "./defs"
 import { generateId } from "../../src/util/crypto"
 import { eofolError } from "./util"
@@ -15,7 +14,7 @@ const getStateSetter = (def: Def, idInstance: string, instance: Instance) => (ne
   const nextCustom = def.render(nextInstance.state, getStateSetter(def, idInstance, instance))
   eofolUpdate("root", () => [
     // @ts-ignore
-    div("flex-center-full flex-col", [nextCustom]),
+    div("container-md", div("flex-center-full flex-col", [h1(undefined, "Eofol5"), nextCustom])),
   ])
 }
 
