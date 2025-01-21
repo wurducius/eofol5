@@ -1,4 +1,7 @@
 import { domAppendChildren } from "./children"
+import { DefInternal, getDef, Props } from "../../project/src/defs"
+import { createInstanceFromDef } from "../../project/src/stateful"
+import { generateId } from "../util/crypto"
 
 // @TODO typing
 
@@ -9,7 +12,7 @@ export type Properties = any
 export type EofolElement = HTMLElement | string | undefined | false | null
 export type EofolNode = EofolElement[] | EofolElement
 
-export const e = (
+export const renderTag = (
   tagName: string,
   className?: Classname,
   children?: EofolNode,
@@ -20,14 +23,17 @@ export const e = (
   if (className) {
     element.className = className
   }
-  if (attributes) {
-    Object.keys(attributes).forEach((attributeName) => {
-      const attributeValue = attributes[attributeName]
-      if (attributeValue) {
-        element.setAttribute(attributeName, attributeValue)
-      }
-    })
+  const attributesImpl = attributes ?? {}
+  const prevId = attributesImpl["id"]
+  if (prevId === undefined) {
+    attributesImpl["id"] = generateId()
   }
+  Object.keys(attributesImpl).forEach((attributeName) => {
+    const attributeValue = attributesImpl[attributeName]
+    if (attributeValue) {
+      element.setAttribute(attributeName, attributeValue)
+    }
+  })
   if (properties) {
     Object.keys(properties).forEach((propertyName) => {
       const propertyValue = properties[propertyName]
@@ -43,4 +49,29 @@ export const e = (
     domAppendChildren(childrenImpl, element)
   }
   return element
+}
+
+export const renderComponentFromDef = (def: DefInternal, children?: EofolNode, props?: Props) => {
+  let propsImpl
+  if (children) {
+    propsImpl = { ...props, children }
+  } else {
+    propsImpl = props ?? {}
+  }
+  return createInstanceFromDef(def, propsImpl)
+}
+
+export const e = (
+  tagName: string,
+  className?: Classname,
+  children?: EofolNode,
+  attributes?: Attributes | Props,
+  properties?: Properties,
+) => {
+  const def = getDef(tagName)
+  if (def) {
+    return renderComponentFromDef(def, children, attributes)
+  } else {
+    return renderTag(tagName, className, children, attributes, properties)
+  }
 }

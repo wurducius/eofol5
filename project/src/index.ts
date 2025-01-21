@@ -1,6 +1,5 @@
-import { button, div, eofolInit, h1, input } from "../../src/dom"
+import { button, div, e, eofolInit, h1, input } from "../../src/dom"
 import { defineComponent } from "./defs"
-import { createInstance } from "./stateful"
 
 const COUNTER = "counter"
 
@@ -16,7 +15,7 @@ const handleCounterClear = (state, setState) => () => {
 
 defineComponent(COUNTER, {
   // @ts-ignore
-  render: (state, setState) => {
+  render: (state, setState, props) => {
     const handleClick = handleCounterClick(state, setState)
     return div("flex-center flex-col", [
       h1(undefined, `Stateful component counter value = ${state.value}`),
@@ -71,6 +70,4 @@ defineComponent(COUNTER, {
   initialState: { value: 0, increment: 1 },
 })
 
-eofolInit("root", () => [
-  div("container-md", div("flex-center-full flex-col", [h1(undefined, "Eofol5"), createInstance(COUNTER)])),
-])
+eofolInit("root", () => [div("container-md", div("flex-center-full flex-col", [h1(undefined, "Eofol5"), e(COUNTER)]))])

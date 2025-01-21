@@ -2,7 +2,7 @@ const { mergeDeep } = require("../util/obj")
 
 let INTERNALS = {
   instances: {},
-  vdom: {},
+  vdom: { tree: [] },
   assets: {},
   env: {},
   views: {},
