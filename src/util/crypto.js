@@ -1,4 +1,4 @@
-const CRYPTO_ID_LENGTH = 17
+import { CRYPTO_ID_LENGTH } from "../constants"
 
 const generateString = (length) => () =>
   Array(length)

@@ -1,5 +1,5 @@
-import { button, div, e, eofolInit, h1, input } from "../../src/dom"
 import { defineComponent } from "./defs"
+import { button, div, e, eofolInit, h1, input } from "../../src/dom"
 
 const COUNTER = "counter"
 
@@ -13,8 +13,9 @@ const handleCounterClear = (state, setState) => () => {
   setState({ ...state, value: 0 })
 }
 
-defineComponent(COUNTER, {
+defineComponent<{ value: number; increment: number }>(COUNTER, {
   // @ts-ignore
+  // eslint-disable-next-line no-unused-vars
   render: (state, setState, props) => {
     const handleClick = handleCounterClick(state, setState)
     return div("flex-center flex-col", [

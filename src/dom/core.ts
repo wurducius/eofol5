@@ -1,9 +1,9 @@
 import { domAppendChildren, domClearChildren } from "./children"
-import { eofolFatal } from "../../project/src/util"
 import { getInstance, getInternals, mergeInternals } from "../../project/src/internals"
 import { Attributes, e, EofolNode, Properties, renderTag } from "./create-element"
 import { Props } from "../../project/src/defs"
 import { createInstance } from "../../project/src/stateful"
+import { eofolFatal } from "../component/logger"
 
 type EofolRenderHandler = () => EofolNode
 
