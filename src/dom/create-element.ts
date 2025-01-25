@@ -12,7 +12,7 @@ export type Properties = any
 export type EofolElement = HTMLElement | string | undefined | false | null
 export type EofolNode = EofolElement[] | EofolElement
 
-export const renderTag = (
+export const renderTagDom = (
   tagName: string,
   className?: Classname,
   children?: EofolNode,
@@ -51,7 +51,7 @@ export const renderTag = (
   return element
 }
 
-export const renderComponentFromDef = (def: DefInternal, children?: EofolNode, props?: Props) => {
+export const renderComponentFromDefDom = (def: DefInternal, children?: EofolNode, props?: Props) => {
   let propsImpl
   if (children) {
     propsImpl = { ...props, children }
@@ -61,10 +61,69 @@ export const renderComponentFromDef = (def: DefInternal, children?: EofolNode, p
   return createInstanceFromDef(def, propsImpl)
 }
 
-export const e = (
+export const eDom = (
   tagName: string,
   className?: Classname,
   children?: EofolNode,
+  attributes?: Attributes | Props,
+  properties?: Properties,
+) => {
+  const def = getDef(tagName)
+  if (def) {
+    return renderComponentFromDefDom(def, children, attributes)
+  } else {
+    return renderTagDom(tagName, className, children, attributes, properties)
+  }
+}
+
+export const renderTag = (
+  tagName: string,
+  className?: Classname,
+  children?: VDOM[],
+  attributes?: Attributes,
+  properties?: Properties,
+) => ({
+  type: VDOM_TYPE.TAG,
+  id: attributes?.id ?? generateId(),
+  class: className,
+  attributes,
+  properties,
+  tag: tagName,
+  children,
+})
+
+export const createInstanceFromDefVdom = (def: DefInternal<any>, props?: Props, children?: VDOM[], isNew?: boolean) => {
+  const idInstance = isNew ? generateId() : (props?.id ?? generateId())
+  const savedInstance = isNew ? undefined : getInstance(idInstance)
+  const instance = savedInstance ?? {
+    id: idInstance,
+    def: def.id,
+    state: def.initialState ? { ...def.initialState } : {},
+  }
+  mergeInstance(idInstance, instance)
+  return {
+    type: VDOM_TYPE.COMPONENT,
+    id: idInstance,
+    props: { ...props, id: idInstance, def: def.id },
+    children,
+    def: def.id,
+  }
+}
+
+export const renderComponentFromDef = (def: DefInternal<any>, children?: VDOM[], props?: Props) => {
+  let propsImpl
+  if (children) {
+    propsImpl = { ...props, children }
+  } else {
+    propsImpl = props ?? {}
+  }
+  return createInstanceFromDefVdom(def, propsImpl)
+}
+
+export const e = (
+  tagName: string,
+  className?: Classname,
+  children?: VDOM[],
   attributes?: Attributes | Props,
   properties?: Properties,
 ) => {

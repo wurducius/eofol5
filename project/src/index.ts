@@ -1,5 +1,5 @@
 import { defineComponent } from "./defs"
-import { button, div, e, eofolInit, h1, input } from "../../src/dom"
+import { button, div, eDom, eofolInit, h1, input } from "../../src/dom"
 
 const COUNTER = "counter"
 
@@ -71,4 +71,6 @@ defineComponent<{ value: number; increment: number }>(COUNTER, {
   initialState: { value: 0, increment: 1 },
 })
 
-eofolInit("root", () => [div("container-md", div("flex-center-full flex-col", [h1(undefined, "Eofol5"), e(COUNTER)]))])
+eofolInit("root", () => [
+  div("container-md", div("flex-center-full flex-col", [h1(undefined, "Eofol5"), eDom(COUNTER)])),
+])

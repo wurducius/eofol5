@@ -1,6 +1,6 @@
 import { domAppendChildren, domClearChildren } from "./children"
 import { getInstance, getInternals, mergeInternals } from "../../project/src/internals"
-import { Attributes, e, EofolNode, Properties, renderTag } from "./create-element"
+import { Attributes, eDom, EofolNode, Properties, renderTagDom } from "./create-element"
 import { Props } from "../../project/src/defs"
 import { createInstance } from "../../project/src/stateful"
 import { eofolFatal } from "../component/logger"
@@ -82,9 +82,9 @@ const vdomToDom = (tree: VDOM) => {
     const renderedChildrenImpl = renderedChildren.filter(Boolean)
     if (tree.type === "tag") {
       const attributes = tree.attributes ? nodeMapToObject(tree.attributes) : {}
-      thisNode = e(tree.tag, tree.class, renderedChildrenImpl, attributes, tree.properties)
+      thisNode = eDom(tree.tag, tree.class, renderedChildrenImpl, attributes, tree.properties)
     } else {
-      thisNode = e("span", undefined, renderedChildrenImpl)
+      thisNode = eDom("span", undefined, renderedChildrenImpl)
     }
     return thisNode
   }
@@ -123,7 +123,7 @@ const renderVdomElement = (vdomElement: VDOM) => {
       rendered = createInstance(vdomElement.def, {}, vdomElement.children?.map(renderVdomElement))
     }
   } else if (vdomElement.type === "tag") {
-    rendered = renderTag(
+    rendered = renderTagDom(
       vdomElement.tag,
       vdomElement.class,
       vdomElement.children?.map(renderVdomElement),
