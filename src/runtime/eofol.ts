@@ -1,8 +1,9 @@
 import { EofolNode, EofolRenderHandler } from "../types"
-import { domAppendChildren, domClearChildren, renderVdomElement, traverseVdom, vdomToDom } from "../dom"
+import { domAppendChildren, domClearChildren } from "../dom"
 import { getInternals, getVDOM, setVDOM } from "./internals"
 import { eofolFatal } from "../component/logger"
 import { htmlElementIndexOf } from "../util/dom"
+import { renderVdomElement, traverseVdom, vdomToDom } from "./vdom"
 
 const eofolRender = (rootElement: Element, rendered: EofolNode) => {
   domClearChildren(rootElement)

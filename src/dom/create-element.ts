@@ -2,6 +2,8 @@ import { domAppendChildren } from "./children"
 import { DefInternal, getDef, Props } from "../../project/src/defs"
 import { createInstanceFromDef } from "../../project/src/stateful"
 import { generateId } from "../util/crypto"
+import { VDOM, VDOM_TYPE } from "../types"
+// import { getInstance, mergeInstance } from "../runtime"
 
 // @TODO typing
 
@@ -94,13 +96,14 @@ export const renderTag = (
 
 export const createInstanceFromDefVdom = (def: DefInternal<any>, props?: Props, children?: VDOM[], isNew?: boolean) => {
   const idInstance = isNew ? generateId() : (props?.id ?? generateId())
-  const savedInstance = isNew ? undefined : getInstance(idInstance)
+  // const savedInstance = isNew ? undefined : getInstance(idInstance)
+  const savedInstance = undefined
   const instance = savedInstance ?? {
     id: idInstance,
     def: def.id,
     state: def.initialState ? { ...def.initialState } : {},
   }
-  mergeInstance(idInstance, instance)
+  // mergeInstance(idInstance, instance)
   return {
     type: VDOM_TYPE.COMPONENT,
     id: idInstance,
