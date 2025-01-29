@@ -1,5 +1,5 @@
-import { defineComponent } from "./defs"
 import { button, div, eDom, eofolInit, h1, input } from "../../src/dom"
+import { defineComponent } from "../../src/runtime/defs"
 
 const COUNTER = "counter"
 

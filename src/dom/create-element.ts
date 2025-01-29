@@ -1,8 +1,8 @@
 import { domAppendChildren } from "./children"
-import { DefInternal, getDef, Props } from "../../project/src/defs"
 import { createInstanceFromDef } from "../../project/src/stateful"
 import { generateId } from "../util/crypto"
-import { VDOM, VDOM_TYPE } from "../types"
+import { DefInternal, Props, VDOM, VDOM_TYPE } from "../types"
+import { getDef } from "../runtime/defs"
 // import { getInstance, mergeInstance } from "../runtime"
 
 // @TODO typing
