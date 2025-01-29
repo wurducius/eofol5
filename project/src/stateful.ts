@@ -2,7 +2,7 @@ import { Instance, mergeInstance } from "./internals"
 import { EofolNode, eofolUpdate } from "../../src/dom"
 import { Def, DefInternal, getDef, Props } from "./defs"
 import { generateId } from "../../src/util/crypto"
-import { eofolError } from "./util"
+import { eofolError } from "../../src/component/logger"
 
 const eofolErrorDefNotFound = (def: string) => {
   eofolError(`Def not found for name = "${def}".`)
