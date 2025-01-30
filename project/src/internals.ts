@@ -1,4 +1,4 @@
-import { VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOM_TYPE } from "../../src/types"
+import { Instance, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOM_TYPE } from "../../src/types"
 
 const mergeDeep = (...objects: object[]) => {
   const isObject = (obj: object) => obj && typeof obj === "object"
@@ -35,13 +35,6 @@ export const mergeInternals = (nextInternals: any) => {
   INTERNALS = mergeDeep(INTERNALS, nextInternals)
 }
 
-// @TODO finish
-export interface Instance {
-  id: string
-  // @TODO state typing
-  state: any
-}
-
 export const getInstances = () => getInternals().instances
 
 // @ts-ignore
@@ -62,3 +55,20 @@ export const isVDOMComponent = (vdomElement: VDOM): vdomElement is VDOM_COMPONEN
 export const isVDOMTag = (vdomElement: VDOM): vdomElement is VDOM_TAG =>
   typeof vdomElement === "object" && vdomElement.type === VDOM_TYPE.TAG
 export const isVDOMText = (vdomElement: VDOM): vdomElement is VDOM_TEXT => typeof vdomElement === "string"
+
+// @TODO TYPING
+export const getViews = () => getInternals().views
+
+export const setViews = (nextViews: any) => mergeInternals({ views: nextViews })
+
+export const getAssets = () => getInternals().assets
+
+export const setAssets = (nextAssets: any) => mergeInternals({ assets: nextAssets })
+
+export const getConfig = () => getInternals().config
+
+export const setConfig = (nextConfig: any) => mergeInternals({ config: nextConfig })
+
+export const getENV = () => getInternals().env
+
+export const setENV = (nextENV: any) => mergeInternals({ vdom: { env: nextENV } })
