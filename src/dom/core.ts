@@ -1,4 +1,4 @@
-import { domAppendChildren, domClearChildren, mergeDeep, deepCopyString, generateId } from "../util-runtime"
+import { domAppendChildren, domClearChildren, mergeDeep, deepCopyString, generateId } from "../util"
 import {
   getInstance,
   getInternals,

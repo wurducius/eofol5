@@ -1,4 +1,4 @@
-const { mergeDeep } = require("../util/obj")
+const { mergeDeep } = require("../util-compile/obj")
 
 let INTERNALS = {
   instances: {},

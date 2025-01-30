@@ -1,6 +1,13 @@
-const { join, parse, readAsync, writeAsync } = require("../util/fs")
+const { join, parse, readAsync, read, writeAsync } = require("../util-compile/fs")
 const { head } = require("eofol-head")
 const minifyHtml = require("./minify-html")
+const getConfig = require("../config/config")
+
+const EOFOL_TEMPLATE_PLACEHOLDER_SYMBOL = "@EOFOL_PLACEHOLDER@"
+
+const config = getConfig()
+
+const EOFOL_PLACEHOLDER = read(join(config.PATH.CWD, "src", "resources", "eofol-placeholder.html")).toString()
 
 const precompileTemplate = (buildPath, projectPath, stylesStatic) => async (viewName) => {
   const headData = {
@@ -20,9 +27,10 @@ const precompileTemplate = (buildPath, projectPath, stylesStatic) => async (view
     themeColor: "#09090b",
   }
   const content = await readAsync(join(projectPath, `${viewName}.html`))
+  const injectedContent = content.toString().replaceAll(EOFOL_TEMPLATE_PLACEHOLDER_SYMBOL, EOFOL_PLACEHOLDER)
   const compiled = await head(
     headData,
-    content.toString(),
+    injectedContent,
     [viewName, "runtime", "eofol", "dependencies"],
     ["base", "theme"],
     stylesStatic ?? "",

@@ -1,5 +1,5 @@
 import { Instance, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOM_TYPE } from "../../src/types"
-import { mergeDeep } from "../../src/util-runtime"
+import { mergeDeep } from "../../src/util"
 
 // eslint-disable-next-line no-undef
 export const getInternals = () => INTERNALS

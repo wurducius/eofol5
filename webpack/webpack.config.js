@@ -1,7 +1,7 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
 const EofolPlugin = require("./webpack-plugin")
 const { getConfig } = require("../src/config")
-const { join } = require("../src/util/fs")
+const { join } = require("../src/util-compile/fs")
 
 // @TODO: read params
 

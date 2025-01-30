@@ -1,4 +1,4 @@
-import { domAppendChildren, generateId } from "../util-runtime"
+import { domAppendChildren, generateId } from "../util"
 import { mergeInstance, getInstance } from "../../project/src/internals"
 import {
   Attributes,
