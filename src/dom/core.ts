@@ -1,7 +1,6 @@
 import { domAppendChildren, domClearChildren } from "./children"
 import { getInstance, getInternals, getVDOM, mergeInstance, setVDOM } from "../../project/src/internals"
 import { Attributes, eDom, EofolNode, Properties, renderTagDom } from "./create-element"
-
 import { generateId } from "../util/crypto"
 import { eofolFatal } from "../component/logger"
 import { DefInternal, Instance, Props, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOM_TYPE } from "../types"
@@ -9,17 +8,6 @@ import { getDef } from "../runtime/defs"
 import { eofolErrorDefNotFound } from "../log/eofol-error"
 
 const deepCopyString = (str) => ` ${str}`.slice(1)
-
-const htmlElementIndexOf = (element) => {
-  let index = -1
-  while (element) {
-    element = element.previousSibling
-    if (element.nodeType === 1) {
-      index++
-    }
-  }
-  return index
-}
 
 type EofolRenderHandler = () => EofolNode
 
@@ -83,16 +71,6 @@ export const renderInstance = (idDef: string, props?: Props, children?: EofolNod
   }
 }
 
-const nodeMapToObject = (attributeNodeMap: NamedNodeMap) => {
-  return Array.from(attributeNodeMap)
-    .map((a) => [a.name, a.value])
-    .reduce((acc, attr) => {
-      // @ts-ignore
-      acc[attr[0]] = attr[1]
-      return acc
-    }, {})
-}
-
 export const domToVdom = (tree: HTMLElement) => {
   if (tree.nodeType === 3) {
     return tree.textContent
@@ -130,7 +108,7 @@ export const vdomToDom = (tree: VDOM) => {
     let thisNode
     const renderedChildrenImpl = renderedChildren.filter(Boolean)
     if (isVDOMTag(tree)) {
-      const attributes = tree.attributes ? nodeMapToObject(tree.attributes) : {}
+      const attributes = tree.attributes ?? {}
       thisNode = eDom(tree.tag, tree.class, renderedChildrenImpl, attributes, tree.properties)
     } else {
       const instance = getInstance(tree.id)
@@ -218,6 +196,7 @@ export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) =>
 export const eofolUpdate = (id: string) => {
   // @ts-ignore
   const vdom = getVDOM()
+  /*
   const vdomUpdate = traverseVdom(
     vdom,
     (vdomElement) => {
@@ -226,7 +205,8 @@ export const eofolUpdate = (id: string) => {
       }
     },
     (vdomElement) => vdomElement,
-  )
+  )*/
+  const vdomUpdate = vdom
   if (vdomUpdate) {
     const domUpdate = vdomToDom(vdomUpdate)
     if (domUpdate) {
