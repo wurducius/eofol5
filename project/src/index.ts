@@ -4,13 +4,12 @@ import { defineFlat } from "../../src/runtime"
 
 const LAYOUT = "layout"
 
-defineFlat(LAYOUT, {
-  render: () =>
-    div(
-      "container-md",
-      div("flex-center-full flex-col", div("m-md", [h1(undefined, "Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)])),
-    ),
-})
+defineFlat(LAYOUT, () =>
+  div(
+    "container-md",
+    div("flex-center-full flex-col", div("m-md", [h1(undefined, "Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)])),
+  ),
+)
 
 // eofolInit("root", () => [e(LAYOUT)])
 
