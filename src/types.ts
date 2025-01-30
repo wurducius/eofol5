@@ -41,7 +41,7 @@ export type DefInternal<T> = Def<T> & {
 // @TODO finish
 export type Def<T> = {
   // eslint-disable-next-line no-unused-vars
-  render: (state: State<T>, setState: SetState<T>, props: Props) => EofolNode
+  render: (state: State<T>, setState: SetState<T>, props: Props, mergeState: SetState<T>) => EofolNode
   initialState: State<T>
 }
 

@@ -1,10 +1,9 @@
 import { domAppendChildren } from "./children"
-import { mergeInstance, getInstance, Instance } from "../../project/src/internals"
+import { mergeInstance, getInstance } from "../../project/src/internals"
 import { generateId } from "../util/crypto"
 import {
   Attributes,
   Classname,
-  Def,
   DefInternal,
   EofolNode,
   Properties,
@@ -14,7 +13,7 @@ import {
   VDOMChildren,
 } from "../types"
 import { getDef } from "../runtime/defs"
-import { eofolUpdate } from "./core"
+import { getStateMerge, getStateSetter } from "./core"
 
 export const renderTagDom = (
   tagName: string,
@@ -56,20 +55,14 @@ export const renderTagDom = (
 }
 
 // @TODO extract
-const getStateSetter = (def: Def<any>, idInstance: string, instance: Instance) => (nextState: any) => {
-  const nextInstance = { ...instance, state: nextState }
-  mergeInstance(idInstance, nextInstance)
-  eofolUpdate(idInstance)
-}
-
-// @TODO extract
 export const createInstanceFromDef = (def: DefInternal<any>, props?: Props, children?: EofolNode) => {
   const idInstance = generateId()
   const instance = { id: idInstance, def: def.id, state: def.initialState ? { ...def.initialState } : {} }
   const state = { ...instance.state }
-  const setState = getStateSetter(def, idInstance, instance)
+  const setState = getStateSetter(idInstance, instance)
+  const mergeState = getStateMerge(idInstance, instance)
   mergeInstance(idInstance, instance)
-  return def.render(state, setState, { ...props, id: idInstance, def: def.id, children })
+  return def.render(state, setState, { ...props, id: idInstance, def: def.id, children }, mergeState)
 }
 
 const renderComponentFromDefDom = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {
@@ -146,7 +139,7 @@ export const renderComponentFromDef = (def: DefInternal<any>, children?: VDOMChi
   return createInstanceFromDefVdom(def, propsImpl)
 }
 
-export const e = (
+const eImpl = (
   tagName: string,
   className?: Classname,
   children?: VDOM[],
@@ -160,3 +153,21 @@ export const e = (
     return renderTag(tagName, className, children, attributes, properties)
   }
 }
+
+export const e = eImpl
+
+export const f = (
+  tagName: string,
+  children?: VDOM[],
+  className?: Classname,
+  attributes?: Attributes | Props,
+  properties?: Properties,
+) => eImpl(tagName, className, children, attributes, properties)
+
+export const g = (props: {
+  tagName: string
+  children?: VDOM[]
+  className?: Classname
+  attributes?: Attributes | Props
+  properties?: Properties
+}) => eImpl(props.tagName, props.className, props.children, props.attributes, props.properties)

@@ -26,15 +26,46 @@ import {
 import { getDef } from "../runtime/defs"
 import { eofolErrorDefNotFound } from "../log/eofol-error"
 
+const mergeDeep = (...objects) => {
+  const isObject = (obj) => obj && typeof obj === "object"
+
+  return objects.reduce((prev, obj) => {
+    Object.keys(obj).forEach((key) => {
+      const pVal = prev[key]
+      const oVal = obj[key]
+
+      if (Array.isArray(pVal) && Array.isArray(oVal)) {
+        prev[key] = oVal ?? pVal
+      } else if (isObject(pVal) && isObject(oVal)) {
+        prev[key] = mergeDeep(pVal, oVal)
+      } else {
+        prev[key] = oVal
+      }
+    })
+
+    return prev
+  }, {})
+}
+
 const deepCopyString = (str: string) => ` ${str}`.slice(1)
 
 type EofolRenderHandler = () => VDOMChildren
 
-function getStateSetter<T>(idInstance: string, instance: Instance) {
+const updateState = (idInstance: string, instance: Instance, nextState: any) => {
+  const nextInstance = { ...instance, state: nextState }
+  mergeInstance(idInstance, nextInstance)
+  eofolUpdate(idInstance)
+}
+
+export function getStateSetter<T>(idInstance: string, instance: Instance) {
   return function (nextState: T) {
-    const nextInstance = { ...instance, state: nextState }
-    mergeInstance(idInstance, nextInstance)
-    eofolUpdate(idInstance)
+    updateState(idInstance, instance, nextState)
+  }
+}
+
+export function getStateMerge<T>(idInstance: string, instance: Instance) {
+  return function (nextState: T) {
+    updateState(idInstance, instance, mergeDeep(instance.state, nextState))
   }
 }
 
@@ -48,8 +79,10 @@ export const renderInstanceFromDef = (def: DefInternal<any>, props?: Props, chil
   }
   const state = { ...instance.state }
   const setState = getStateSetter(idInstance, instance)
+  const mergeState = getStateMerge(idInstance, instance)
   mergeInstance(idInstance, instance)
-  return def.render(state, setState, { ...props, id: idInstance, def: def.id, children })
+  const propsImpl = { ...props, id: idInstance, def: def.id, children }
+  return def.render(state, setState, propsImpl, mergeState)
 }
 
 export const renderInstance = (idDef: string, props?: Props, children?: EofolNode, isNew?: boolean) => {
