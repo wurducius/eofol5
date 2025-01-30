@@ -1,6 +1,6 @@
 import { CRYPTO_ID_LENGTH } from "../constants"
 
-const generateString = (length) => () =>
+const generateString = (length: number) => () =>
   Array(length)
     .fill("")
     .map(() => Math.random().toString(36).charAt(2))

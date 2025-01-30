@@ -1,7 +1,3 @@
-export * from "./crypto"
-export * from "./dom"
 export * from "./fs"
-export * from "./func"
-export * from "./string"
 export * from "./obj"
 export * from "./spawn"

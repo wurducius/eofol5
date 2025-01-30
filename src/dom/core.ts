@@ -1,4 +1,4 @@
-import { domAppendChildren, domClearChildren } from "./children"
+import { domAppendChildren, domClearChildren, mergeDeep, deepCopyString, generateId } from "../util-runtime"
 import {
   getInstance,
   getInternals,
@@ -9,7 +9,6 @@ import {
   isVDOMComponent,
 } from "../../project/src/internals"
 import { eDom, renderTagDom } from "./create-element"
-import { generateId } from "../util/crypto"
 import { eofolFatal } from "../component/logger"
 import {
   DefInternal,
@@ -25,29 +24,6 @@ import {
 } from "../types"
 import { getDef } from "../runtime/defs"
 import { eofolErrorDefNotFound } from "../log/eofol-error"
-
-const mergeDeep = (...objects) => {
-  const isObject = (obj) => obj && typeof obj === "object"
-
-  return objects.reduce((prev, obj) => {
-    Object.keys(obj).forEach((key) => {
-      const pVal = prev[key]
-      const oVal = obj[key]
-
-      if (Array.isArray(pVal) && Array.isArray(oVal)) {
-        prev[key] = oVal ?? pVal
-      } else if (isObject(pVal) && isObject(oVal)) {
-        prev[key] = mergeDeep(pVal, oVal)
-      } else {
-        prev[key] = oVal
-      }
-    })
-
-    return prev
-  }, {})
-}
-
-const deepCopyString = (str: string) => ` ${str}`.slice(1)
 
 type EofolRenderHandler = () => VDOMChildren
 

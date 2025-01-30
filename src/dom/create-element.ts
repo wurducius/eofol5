@@ -1,6 +1,5 @@
-import { domAppendChildren } from "./children"
+import { domAppendChildren, generateId } from "../util-runtime"
 import { mergeInstance, getInstance } from "../../project/src/internals"
-import { generateId } from "../util/crypto"
 import {
   Attributes,
   Classname,
