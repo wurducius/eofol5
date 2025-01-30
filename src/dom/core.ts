@@ -3,13 +3,24 @@ import { getInstance, getInternals, getVDOM, mergeInstance, setVDOM } from "../.
 import { eDom, renderTagDom } from "./create-element"
 import { generateId } from "../util/crypto"
 import { eofolFatal } from "../component/logger"
-import { DefInternal, EofolNode, Instance, Props, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOM_TYPE } from "../types"
+import {
+  DefInternal,
+  EofolNode,
+  Instance,
+  Props,
+  VDOM,
+  VDOM_COMPONENT,
+  VDOM_TAG,
+  VDOM_TEXT,
+  VDOM_TYPE,
+  VDOMChildren,
+} from "../types"
 import { getDef } from "../runtime/defs"
 import { eofolErrorDefNotFound } from "../log/eofol-error"
 
 const deepCopyString = (str: string) => ` ${str}`.slice(1)
 
-type EofolRenderHandler = () => EofolNode
+type EofolRenderHandler = () => VDOMChildren
 
 export const isVDOMComponent = (vdomElement: VDOM): vdomElement is VDOM_COMPONENT =>
   typeof vdomElement === "object" && vdomElement.type === VDOM_TYPE.COMPONENT
@@ -151,6 +162,7 @@ export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) =>
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 export const eofolUpdate = (id: string) => {
   // @ts-ignore
   const vdom = getVDOM()

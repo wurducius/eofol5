@@ -1,9 +1,20 @@
 import { domAppendChildren } from "./children"
-import { createInstanceFromDef } from "../../project/src/stateful"
-import { mergeInstance, getInstance } from "../../project/src/internals"
+import { mergeInstance, getInstance, Instance } from "../../project/src/internals"
 import { generateId } from "../util/crypto"
-import { Attributes, Classname, DefInternal, EofolNode, Properties, Props, VDOM, VDOM_TYPE } from "../types"
+import {
+  Attributes,
+  Classname,
+  Def,
+  DefInternal,
+  EofolNode,
+  Properties,
+  Props,
+  VDOM,
+  VDOM_TYPE,
+  VDOMChildren,
+} from "../types"
 import { getDef } from "../runtime/defs"
+import { eofolUpdate } from "./core"
 
 export const renderTagDom = (
   tagName: string,
@@ -44,7 +55,24 @@ export const renderTagDom = (
   return element
 }
 
-export const renderComponentFromDefDom = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {
+// @TODO extract
+const getStateSetter = (def: Def<any>, idInstance: string, instance: Instance) => (nextState: any) => {
+  const nextInstance = { ...instance, state: nextState }
+  mergeInstance(idInstance, nextInstance)
+  eofolUpdate(idInstance)
+}
+
+// @TODO extract
+export const createInstanceFromDef = (def: DefInternal<any>, props?: Props, children?: EofolNode) => {
+  const idInstance = generateId()
+  const instance = { id: idInstance, def: def.id, state: def.initialState ? { ...def.initialState } : {} }
+  const state = { ...instance.state }
+  const setState = getStateSetter(def, idInstance, instance)
+  mergeInstance(idInstance, instance)
+  return def.render(state, setState, { ...props, id: idInstance, def: def.id, children })
+}
+
+const renderComponentFromDefDom = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {
   let propsImpl
   if (children) {
     propsImpl = { ...props, children }
@@ -72,7 +100,7 @@ export const eDom = (
 export const renderTag = (
   tagName: string,
   className?: Classname,
-  children?: VDOM[],
+  children?: VDOMChildren,
   attributes?: Attributes,
   properties?: Properties,
 ) => ({
@@ -85,7 +113,12 @@ export const renderTag = (
   children,
 })
 
-export const createInstanceFromDefVdom = (def: DefInternal<any>, props?: Props, children?: VDOM[], isNew?: boolean) => {
+export const createInstanceFromDefVdom = (
+  def: DefInternal<any>,
+  props?: Props,
+  children?: VDOMChildren,
+  isNew?: boolean,
+) => {
   const idInstance = isNew ? generateId() : (props?.id ?? generateId())
   const savedInstance = isNew ? undefined : getInstance(idInstance)
   const instance = savedInstance ?? {
@@ -103,7 +136,7 @@ export const createInstanceFromDefVdom = (def: DefInternal<any>, props?: Props, 
   }
 }
 
-export const renderComponentFromDef = (def: DefInternal<any>, children?: VDOM[], props?: Props) => {
+export const renderComponentFromDef = (def: DefInternal<any>, children?: VDOMChildren, props?: Props) => {
   let propsImpl
   if (children) {
     propsImpl = { ...props, children }

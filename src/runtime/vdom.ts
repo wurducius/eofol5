@@ -83,7 +83,9 @@ export const renderVdomElement = (vdomElement: VDOM) => {
 
 export const traverseVdom = (
   tree: VDOM,
+  // eslint-disable-next-line no-unused-vars
   matches: (vdomElement: VDOM) => boolean,
+  // eslint-disable-next-line no-unused-vars
   handler: (vdomElement: VDOM) => any,
 ) => {
   if (matches(tree)) {

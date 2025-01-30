@@ -53,6 +53,8 @@ export interface Instance {
   def: string
 }
 
+export type VDOMChildren = VDOM[] | VDOM
+
 export const VDOM_TYPE = {
   COMPONENT: "component",
   TAG: "tag",
@@ -66,14 +68,14 @@ export type VDOM_TAG = {
   attributes?: Attributes
   properties: Properties
   tag: string
-  children?: VDOM[]
+  children?: VDOMChildren
 }
 
 export type VDOM_COMPONENT = {
   type: typeof VDOM_TYPE.COMPONENT
   id: string
   props?: Props
-  children?: VDOM[]
+  children?: VDOMChildren
   def: string
 }
 
