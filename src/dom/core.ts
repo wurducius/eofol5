@@ -1,5 +1,5 @@
 import { domAppendChildren, domClearChildren } from "./children"
-import { getInstance, getInternals, getVDOM, setVDOM } from "../../project/src/internals"
+import { getInstance, getInternals, getVDOM, mergeInstance, setVDOM } from "../../project/src/internals"
 import { Attributes, eDom, EofolNode, Properties, renderTagDom } from "./create-element"
 
 import { generateId } from "../util/crypto"
@@ -54,15 +54,14 @@ export const isVDOMText = (vdomElement: VDOM): vdomElement is VDOM_TEXT => typeo
 function getStateSetter<T>(idInstance: string, instance: Instance) {
   return function (nextState: T) {
     const nextInstance = { ...instance, state: nextState }
-    // mergeInstance(idInstance, nextInstance)
+    mergeInstance(idInstance, nextInstance)
     eofolUpdate(idInstance)
   }
 }
 
 export const renderInstanceFromDef = (def: DefInternal<any>, props?: Props, children?: EofolNode, isNew?: boolean) => {
   const idInstance = isNew ? generateId() : (props?.id ?? generateId())
-  //const savedInstance = isNew ? undefined : getInstance(idInstance)
-  const savedInstance = undefined
+  const savedInstance = isNew ? undefined : getInstance(idInstance)
   const instance = savedInstance ?? {
     id: idInstance,
     def: def.id,
@@ -70,7 +69,7 @@ export const renderInstanceFromDef = (def: DefInternal<any>, props?: Props, chil
   }
   const state = { ...instance.state }
   const setState = getStateSetter(idInstance, instance)
-  // mergeInstance(idInstance, instance)
+  mergeInstance(idInstance, instance)
   return def.render(state, setState, { ...props, id: idInstance, def: def.id, children })
 }
 
@@ -130,23 +129,13 @@ export const vdomToDom = (tree: VDOM) => {
     }
     let thisNode
     const renderedChildrenImpl = renderedChildren.filter(Boolean)
-    console.log(
-      renderedChildrenImpl,
-      renderedChildrenImpl.map((item) => typeof item),
-    )
     if (isVDOMTag(tree)) {
-      console.log("renderTag", renderedChildrenImpl)
       const attributes = tree.attributes ? nodeMapToObject(tree.attributes) : {}
       thisNode = eDom(tree.tag, tree.class, renderedChildrenImpl, attributes, tree.properties)
     } else {
-      console.log("renderInstance")
-      // const instance = getInstance(tree.id)
-      const instance = undefined
-      thisNode = renderInstance(
-        tree.def,
-        instance ? { ...tree.props, id: tree.id } : {},
-        renderedChildrenImpl,
-        !instance,
+      const instance = getInstance(tree.id)
+      thisNode = vdomToDom(
+        renderInstance(tree.def, instance ? { ...tree.props, id: tree.id } : {}, renderedChildrenImpl, !instance),
       )
     }
     return thisNode
@@ -218,9 +207,7 @@ export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) =>
     // @ts-ignore
     const vdom = rendered[0]
     setVDOM(vdom)
-    console.log("INIT", vdom)
     const dom = vdomToDom(vdom)
-    console.log("INIT DOM", dom)
     // @ts-ignore
     eofolRender(root, [dom])
   } else {
@@ -244,12 +231,16 @@ export const eofolUpdate = (id: string) => {
     const domUpdate = vdomToDom(vdomUpdate)
     if (domUpdate) {
       // @ts-ignore
-      const parent = domUpdate.parentNode
+      // const parent = domUpdate.parentNode
+      const root = getRootElement() as HTMLElement
+      eofolRender(root, [domUpdate])
+      /*
       if (parent) {
         parent.childNodes.item(htmlElementIndexOf(domUpdate)).replaceWith(domUpdate)
       } else {
         // efl err
       }
+       */
     } else {
       // efl error
     }

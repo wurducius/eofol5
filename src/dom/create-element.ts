@@ -3,7 +3,7 @@ import { createInstanceFromDef } from "../../project/src/stateful"
 import { generateId } from "../util/crypto"
 import { DefInternal, Props, VDOM, VDOM_TYPE } from "../types"
 import { getDef } from "../runtime/defs"
-// import { getInstance, mergeInstance } from "../runtime"
+import { mergeInstance, getInstance } from "../../project/src/internals"
 
 // @TODO typing
 
@@ -96,14 +96,13 @@ export const renderTag = (
 
 export const createInstanceFromDefVdom = (def: DefInternal<any>, props?: Props, children?: VDOM[], isNew?: boolean) => {
   const idInstance = isNew ? generateId() : (props?.id ?? generateId())
-  // const savedInstance = isNew ? undefined : getInstance(idInstance)
-  const savedInstance = undefined
+  const savedInstance = isNew ? undefined : getInstance(idInstance)
   const instance = savedInstance ?? {
     id: idInstance,
     def: def.id,
     state: def.initialState ? { ...def.initialState } : {},
   }
-  // mergeInstance(idInstance, instance)
+  mergeInstance(idInstance, instance)
   return {
     type: VDOM_TYPE.COMPONENT,
     id: idInstance,

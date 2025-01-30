@@ -55,7 +55,7 @@ export const mergeInstance = (id: string, nextInstance: Instance) => {
 
 export const getVDOM = () => getInternals().vdom.tree[0]
 
-export const setVDOM = (nextVdom: VDOM) => mergeInternals({ vdom: { tree: nextVdom } })
+export const setVDOM = (nextVdom: VDOM) => mergeInternals({ vdom: { tree: [nextVdom] } })
 
 export const isVDOMComponent = (vdomElement: VDOM): vdomElement is VDOM_COMPONENT =>
   typeof vdomElement === "object" && vdomElement.type === VDOM_TYPE.COMPONENT
