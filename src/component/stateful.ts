@@ -1,8 +1,9 @@
 import { DefInternal, EofolNode, Instance, Props } from "../types"
 import { generateId } from "../util/crypto"
 import { eofolErrorDefNotFound } from "../log"
-import { getDef, getInstance, mergeInstance } from "../runtime"
+import { getDef } from "../runtime"
 import { eofolUpdate } from "../runtime/eofol"
+import { mergeInstance, getInstance } from "../../project/src/internals"
 
 function getStateSetter<T>(idInstance: string, instance: Instance) {
   return function (nextState: T) {

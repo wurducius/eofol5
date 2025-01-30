@@ -1,10 +1,19 @@
 import { domAppendChildren, domClearChildren } from "./children"
-import { getInstance, getInternals, getVDOM, mergeInstance, setVDOM } from "../../project/src/internals"
+import {
+  getInstance,
+  getInternals,
+  getVDOM,
+  mergeInstance,
+  setVDOM,
+  isVDOMTag,
+  isVDOMComponent,
+} from "../../project/src/internals"
 import { eDom, renderTagDom } from "./create-element"
 import { generateId } from "../util/crypto"
 import { eofolFatal } from "../component/logger"
 import {
   DefInternal,
+  EofolElement,
   EofolNode,
   Instance,
   Props,
@@ -12,7 +21,6 @@ import {
   VDOM_COMPONENT,
   VDOM_TAG,
   VDOM_TEXT,
-  VDOM_TYPE,
   VDOMChildren,
 } from "../types"
 import { getDef } from "../runtime/defs"
@@ -21,12 +29,6 @@ import { eofolErrorDefNotFound } from "../log/eofol-error"
 const deepCopyString = (str: string) => ` ${str}`.slice(1)
 
 type EofolRenderHandler = () => VDOMChildren
-
-export const isVDOMComponent = (vdomElement: VDOM): vdomElement is VDOM_COMPONENT =>
-  typeof vdomElement === "object" && vdomElement.type === VDOM_TYPE.COMPONENT
-export const isVDOMTag = (vdomElement: VDOM): vdomElement is VDOM_TAG =>
-  typeof vdomElement === "object" && vdomElement.type === VDOM_TYPE.TAG
-export const isVDOMText = (vdomElement: VDOM): vdomElement is VDOM_TEXT => typeof vdomElement === "string"
 
 function getStateSetter<T>(idInstance: string, instance: Instance) {
   return function (nextState: T) {
@@ -64,9 +66,9 @@ export const vdomToDom = (tree: VDOM) => {
   if (typeof tree === "string") {
     return deepCopyString(tree)
   } else {
-    const renderedChildren = []
+    const renderedChildren: EofolElement[] = []
     const childrenArr = Array.isArray(tree.children) ? tree.children : [tree.children]
-    const childrenImpl = childrenArr.filter(Boolean)
+    const childrenImpl = childrenArr.filter(Boolean) as Array<VDOM_TEXT | VDOM_TAG | VDOM_COMPONENT>
     if (childrenImpl && childrenImpl.length > 0) {
       childrenImpl.forEach((child) => {
         renderedChildren.push(vdomToDom(child))
