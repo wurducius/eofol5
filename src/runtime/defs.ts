@@ -1,4 +1,4 @@
-import { Def, DefInternal } from "../types"
+import { Def, DEF_TYPE, DefFlat, DefInternal } from "../types"
 
 const defsRegistry: Record<string, DefInternal<any>> = {}
 
@@ -6,10 +6,14 @@ export const getDefs = () => defsRegistry
 
 export const getDef = (id: string): DefInternal<any> | undefined => defsRegistry[id]
 
-export const addDef = (id: string, nextDef: Def<any>) => {
-  defsRegistry[id] = { ...nextDef, id }
+export const addDef = (id: string, nextDef: Def<any> | DefFlat, defType: DEF_TYPE) => {
+  defsRegistry[id] = { ...nextDef, id, type: defType }
 }
 
 export function defineComponent<T>(id: string, def: Def<T>) {
-  addDef(id, def)
+  addDef(id, def, "component")
+}
+
+export function defineFlat(id: string, def: DefFlat) {
+  addDef(id, def, "flat")
 }

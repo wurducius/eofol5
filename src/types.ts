@@ -33,9 +33,21 @@ export interface Internals {
   env: InternalsEnv
 }
 
+export const DEF_TYPE_COMPONENT = "component"
+
+export const DEF_TYPE_FLAT = "flat"
+
+export type DEF_TYPE = typeof DEF_TYPE_COMPONENT | typeof DEF_TYPE_FLAT
+
+export type DefFlat = {
+  // eslint-disable-next-line no-unused-vars
+  render: (props: Props) => VDOMChildren
+}
+
 // @TODO finish
-export type DefInternal<T> = Def<T> & {
+export type DefInternal<T> = (Def<T> | DefFlat) & {
   id: string
+  type: DEF_TYPE
 }
 
 // @TODO finish

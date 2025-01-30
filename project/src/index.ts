@@ -1,7 +1,21 @@
 import { div, e, eofolInit, h1 } from "../../src/dom"
-import { COUNTER } from "./counter"
-import { EXAMPLE } from "./example"
+import { COUNTER, EXAMPLE, FLAT } from "./components"
+import { defineFlat } from "../../src/runtime"
 
+const LAYOUT = "layout"
+
+defineFlat(LAYOUT, {
+  render: () =>
+    div(
+      "container-md",
+      div("flex-center-full flex-col", div("m-md", [h1(undefined, "Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)])),
+    ),
+})
+
+// eofolInit("root", () => [e(LAYOUT)])
 eofolInit("root", () => [
-  div("container-md", div("flex-center-full flex-col", div("m-md", [h1(undefined, "Eofol5"), e(COUNTER), e(EXAMPLE)]))),
+  div(
+    "container-md",
+    div("flex-center-full flex-col", div("m-md", [h1(undefined, "Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)])),
+  ),
 ])

@@ -1,8 +1,9 @@
 import { domAppendChildren, generateId } from "../util"
-import { mergeInstance, getInstance } from "../../project/src/internals"
+import { getInstance, mergeInstance } from "../../project/src/internals"
 import {
   Attributes,
   Classname,
+  DEF_TYPE_COMPONENT,
   DefInternal,
   EofolNode,
   Properties,
@@ -74,6 +75,16 @@ const renderComponentFromDefDom = (def: DefInternal<any>, children?: EofolNode, 
   return createInstanceFromDef(def, propsImpl)
 }
 
+const renderFlatFromDefDom = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {
+  let propsImpl
+  if (children) {
+    propsImpl = { ...props, children }
+  } else {
+    propsImpl = props ?? {}
+  }
+  return def.render({ ...propsImpl, def: def.id, children })
+}
+
 export const eDom = (
   tagName: string,
   className?: Classname,
@@ -83,7 +94,11 @@ export const eDom = (
 ) => {
   const def = getDef(tagName)
   if (def) {
-    return renderComponentFromDefDom(def, children, attributes)
+    if (def.type === DEF_TYPE_COMPONENT) {
+      return renderComponentFromDefDom(def, children, attributes)
+    } else {
+      return renderFlatFromDefDom(def, children, attributes)
+    }
   } else {
     return renderTagDom(tagName, className, children, attributes, properties)
   }
@@ -138,6 +153,17 @@ export const renderComponentFromDef = (def: DefInternal<any>, children?: VDOMChi
   return createInstanceFromDefVdom(def, propsImpl)
 }
 
+const renderFlatFromDef = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {
+  const idInstance = generateId()
+  return {
+    type: VDOM_TYPE.COMPONENT,
+    id: idInstance,
+    props: { ...props, id: idInstance, def: def.id },
+    children,
+    def: def.id,
+  }
+}
+
 const eImpl = (
   tagName: string,
   className?: Classname,
@@ -147,7 +173,11 @@ const eImpl = (
 ) => {
   const def = getDef(tagName)
   if (def) {
-    return renderComponentFromDef(def, children, attributes)
+    if (def.type === DEF_TYPE_COMPONENT) {
+      return renderComponentFromDef(def, children, attributes)
+    } else {
+      return renderFlatFromDef(def, children, attributes)
+    }
   } else {
     return renderTag(tagName, className, children, attributes, properties)
   }

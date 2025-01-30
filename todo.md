@@ -3,6 +3,7 @@
 ## High priority
 
 - Include dependencies in build
+- Optimize eofol update
 
 ## Low priority
 

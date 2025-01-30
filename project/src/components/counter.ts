@@ -1,5 +1,5 @@
-import { defineComponent } from "../../src/runtime"
-import { button, div, h2, input } from "../../src/dom"
+import { defineComponent } from "../../../src/runtime"
+import { button, div, h2, input } from "../../../src/dom"
 
 export const COUNTER = "counter"
 
