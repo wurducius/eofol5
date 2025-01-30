@@ -1,80 +1,47 @@
-import { button, div, eofolInit, h1, input } from "../../src/dom"
-import { defineComponent } from "./defs"
-import { createInstance } from "./stateful"
+import { div, e, eofolInit, h1 } from "../../src/dom"
+import { COUNTER, EXAMPLE, FLAT } from "./components"
+import { defineFlat } from "../../src/runtime"
 
-const COUNTER = "counter"
+const LAYOUT = "layout"
 
-// @ts-ignore
-const handleCounterClick = (state, setState) => (offset) => () => {
-  setState({ ...state, value: Math.max(state.value < 0 ? 0 : (state.value ?? 0) + offset, 0) })
-}
-
-// @ts-ignore
-const handleCounterClear = (state, setState) => () => {
-  setState({ ...state, value: 0 })
-}
-
-defineComponent(COUNTER, {
-  // @ts-ignore
-  render: (state, setState) => {
-    const handleClick = handleCounterClick(state, setState)
-    return div("flex-center flex-col", [
-      h1(undefined, `Stateful component counter value = ${state.value}`),
-      div("flex-center flex-row", [
-        button(
-          undefined,
-          "+",
-          {},
-          {
-            onclick: handleClick(1),
-          },
-        ),
-        input(
-          undefined,
-          undefined,
-          { value: state.increment.toString(), type: "number" },
-          {
-            onchange: (e: { target: { value: any } }) => {
-              setState({ ...state, increment: Number(e.target.value ?? "0") })
-            },
-          },
-        ),
-        button(
-          undefined,
-          "Add amount",
-          {},
-          {
-            onclick: () => {
-              setState({ ...state, value: (state.value ?? 0) + state.increment })
-            },
-          },
-        ),
-        button(
-          undefined,
-          "-",
-          {},
-          {
-            onclick: handleClick(-1),
-          },
-        ),
-        button(
-          undefined,
-          "Clear",
-          {},
-          {
-            onclick: handleCounterClear(state, setState),
-          },
-        ),
-      ]),
-    ])
-  },
-  initialState: { value: 0, increment: 1 },
+defineFlat(LAYOUT, {
+  render: () =>
+    div(
+      "container-md",
+      div("flex-center-full flex-col", div("m-md", [h1(undefined, "Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)])),
+    ),
 })
 
+// eofolInit("root", () => [e(LAYOUT)])
+
+/*
 eofolInit("root", () => [
-  div(
-    "container-md",
-    // @ts-ignore
-    div("flex-center-full flex-col", [h1(undefined, "Eofol5"), createInstance(COUNTER)]),
-  ),
+  e(CONTAINER, undefined, [
+    div("flex-center-full flex-col", div("m-md", [h1(undefined, "Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)])),
+  ]),
 ])
+*/
+
+// @TODO extract try/catch block
+try {
+  eofolInit("root", () => [
+    div(
+      "container-md",
+      div("flex-center-full flex-col", div("m-md", [h1(undefined, "Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)])),
+    ),
+  ])
+} catch (ex: any) {
+  console.error(`Eofol5 compilation error: ${ex.message}${ex.stack ? ` - Stack: ${ex.stack}` : ""}`)
+  const overlayElementTitle = document.getElementById("_eofol-error-overlay-msg-title")
+  const overlayElementContent = document.getElementById("_eofol-error-overlay-msg-content")
+  const overlayElementStack = document.getElementById("_eofol-error-overlay-msg-stack")
+  if (overlayElementTitle) {
+    overlayElementTitle.innerHTML = "Eofol5 compilation error:"
+  }
+  if (overlayElementContent) {
+    overlayElementContent.innerHTML = ex.message
+  }
+  if (overlayElementStack && ex.stack) {
+    overlayElementStack.innerHTML = ex.stack
+  }
+}

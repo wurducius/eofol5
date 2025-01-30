@@ -1,4 +1,4 @@
-const { join } = require("../util/fs")
+const { join } = require("../util-compile/fs")
 
 const CWD = process.cwd()
 

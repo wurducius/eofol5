@@ -1,7 +1,7 @@
 const { execSync } = require("child_process")
 const { primary, success, error } = require("@eofol/eofol-dev-utils")
-const { spawnOptions } = require("../src/util/spawn")
-const { join } = require("../src/util/fs")
+const { spawnOptions } = require("../src/util-compile/spawn")
+const { join } = require("../src/util-compile/fs")
 
 console.log(primary("Deploying Eofol5 project..."))
 

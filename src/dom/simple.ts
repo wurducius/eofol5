@@ -1,9 +1,10 @@
-import { Attributes, Classname, e, EofolNode, Properties } from "./create-element"
+import { renderTag } from "./create-element"
+import { Attributes, Classname, Properties, VDOM } from "../types"
 
 export const simple =
   (tagName: string) =>
-  (className?: Classname, children?: EofolNode, attributes?: Attributes, properties?: Properties) =>
-    e(tagName, className, children, attributes, properties)
+  (className?: Classname, children?: VDOM[] | VDOM | undefined, attributes?: Attributes, properties?: Properties) =>
+    renderTag(tagName, className, children, attributes, properties)
 
 export const div = simple("div")
 export const span = simple("span")

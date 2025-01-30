@@ -1,4 +1,4 @@
-const { readDirAsync } = require("../../src/util/fs")
+const { readDirAsync } = require("../../src/util-compile/fs")
 const { getConfig } = require("../../src/config")
 const buildWebpack = require("./build-webpack")
 const { compileTemplates } = require("../../src/compile/template")
