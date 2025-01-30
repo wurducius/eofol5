@@ -14,18 +14,34 @@ let ROOT_ELEMENT: HTMLElement | undefined = undefined
 export const getRootElement = () => ROOT_ELEMENT
 
 export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) => {
-  const root = document.getElementById(rootElementId)
-  if (root) {
-    ROOT_ELEMENT = root
-    const rendered = handler()
-    // @ts-ignore
-    const vdom = rendered[0]
-    setVDOM(vdom)
-    const dom = vdomToDom(vdom)
-    // @ts-ignore
-    eofolRender(root, [dom])
-  } else {
-    eofolFatal(`Root element with id = "${rootElementId}" not found in DOM.`)
+  try {
+    const root = document.getElementById(rootElementId)
+    if (root) {
+      ROOT_ELEMENT = root
+      const rendered = handler()
+      // @ts-ignore
+      const vdom = rendered[0]
+      setVDOM(vdom)
+      const dom = vdomToDom(vdom)
+      // @ts-ignore
+      eofolRender(root, [dom])
+    } else {
+      eofolFatal(`Root element with id = "${rootElementId}" not found in DOM.`)
+    }
+  } catch (ex: any) {
+    console.error(`Eofol5 compilation error: ${ex.message}${ex.stack ? ` - Stack: ${ex.stack}` : ""}`)
+    const overlayElementTitle = document.getElementById("_eofol-error-overlay-msg-title")
+    const overlayElementContent = document.getElementById("_eofol-error-overlay-msg-content")
+    const overlayElementStack = document.getElementById("_eofol-error-overlay-msg-stack")
+    if (overlayElementTitle) {
+      overlayElementTitle.innerHTML = "Eofol5 compilation error:"
+    }
+    if (overlayElementContent) {
+      overlayElementContent.innerHTML = ex.message
+    }
+    if (overlayElementStack && ex.stack) {
+      overlayElementStack.innerHTML = ex.stack
+    }
   }
 }
 

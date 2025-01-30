@@ -8,10 +8,21 @@ export const appendChild = (target: Element, child: Element | string) => {
   }
 }
 
-export const domAppendChildren = (children: Array<Element | string>, target: Element) => {
-  children.forEach((child) => {
-    appendChild(target, child)
-  })
+export const domAppendChildren = (
+  children: Array<HTMLElement | string | undefined | null | false> | HTMLElement | string | undefined | null | false,
+  target: Element,
+) => {
+  if (Array.isArray(children)) {
+    children.forEach((child) => {
+      if (child) {
+        appendChild(target, child)
+      }
+    })
+  } else {
+    if (children) {
+      appendChild(target, children)
+    }
+  }
 }
 
 export const domClearChildren = (domElement: Element) => {

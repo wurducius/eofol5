@@ -72,7 +72,7 @@ const renderComponentFromDefDom = (def: DefInternal<any>, children?: EofolNode, 
   } else {
     propsImpl = props ?? {}
   }
-  return createInstanceFromDef(def, propsImpl)
+  return createInstanceFromDef(def, propsImpl, children)
 }
 
 const renderFlatFromDefDom = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {
