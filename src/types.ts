@@ -101,4 +101,4 @@ export type State<T> = T
 // eslint-disable-next-line no-unused-vars
 export type SetState<T> = (nextState: T) => void
 
-export type EofolRenderHandler = () => [VDOM]
+export type EofolRenderHandler = () => VDOMChildren

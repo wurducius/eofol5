@@ -13,7 +13,7 @@ import {
   VDOMChildren,
 } from "../types"
 import { getDef } from "../runtime"
-import { getStateMerge, getStateSetter } from "./core"
+import { getStateMerge, getStateSetter } from "./stateful"
 
 export const renderTagDom = (
   tagName: string,
