@@ -1,4 +1,4 @@
-import { button, div, e, eofolInit, h1, input } from "../../src/dom"
+import { button, div, e, eofolInit, h1, h2, input } from "../../src/dom"
 import { defineComponent } from "../../src/runtime/defs"
 
 const COUNTER = "counter"
@@ -19,7 +19,7 @@ defineComponent<{ value: number; increment: number }>(COUNTER, {
   render: (state, setState, props) => {
     const handleClick = handleCounterClick(state, setState)
     return div("flex-center flex-col", [
-      h1(undefined, `Stateful component counter value = ${state.value}`),
+      h2(undefined, `Stateful component counter value = ${state.value}`),
       div("flex-center flex-row", [
         button(
           undefined,
@@ -71,5 +71,4 @@ defineComponent<{ value: number; increment: number }>(COUNTER, {
   initialState: { value: 0, increment: 1 },
 })
 
-eofolInit("root", () => [div("container-md", div("flex-center-full flex-col", e(COUNTER)))])
-// eofolInit("root", () => [div("container-md", div("flex-center-full flex-col", [h1(undefined, "Eofol5")]))])
+eofolInit("root", () => [div("container-md", div("flex-center-full flex-col", [h1(undefined, "Eofol5"), e(COUNTER)]))])
