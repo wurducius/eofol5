@@ -1,21 +1,21 @@
 import { Instance, mergeInstance } from "./internals"
-import { EofolNode, eofolUpdate } from "../../src/dom"
+import { eofolUpdate } from "../../src/dom"
 import { generateId } from "../../src/util/crypto"
 import { eofolError } from "../../src/component/logger"
-import { Def, DefInternal, Props } from "../../src/types"
+import { Def, DefInternal, EofolNode, Props } from "../../src/types"
 import { getDef } from "../../src/runtime/defs"
 
 const eofolErrorDefNotFound = (def: string) => {
   eofolError(`Def not found for name = "${def}".`)
 }
 
-const getStateSetter = (def: Def, idInstance: string, instance: Instance) => (nextState: any) => {
+const getStateSetter = (def: Def<any>, idInstance: string, instance: Instance) => (nextState: any) => {
   const nextInstance = { ...instance, state: nextState }
   mergeInstance(idInstance, nextInstance)
   eofolUpdate(idInstance)
 }
 
-export const createInstanceFromDef = (def: DefInternal, props?: Props, children?: EofolNode) => {
+export const createInstanceFromDef = (def: DefInternal<any>, props?: Props, children?: EofolNode) => {
   const idInstance = generateId()
   const instance = { id: idInstance, def: def.id, state: def.initialState ? { ...def.initialState } : {} }
   const state = { ...instance.state }

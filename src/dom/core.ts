@@ -1,37 +1,15 @@
 import { domAppendChildren, domClearChildren } from "./children"
 import { getInstance, getInternals, getVDOM, mergeInstance, setVDOM } from "../../project/src/internals"
-import { Attributes, eDom, EofolNode, Properties, renderTagDom } from "./create-element"
+import { eDom, renderTagDom } from "./create-element"
 import { generateId } from "../util/crypto"
 import { eofolFatal } from "../component/logger"
-import { DefInternal, Instance, Props, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOM_TYPE } from "../types"
+import { DefInternal, EofolNode, Instance, Props, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOM_TYPE } from "../types"
 import { getDef } from "../runtime/defs"
 import { eofolErrorDefNotFound } from "../log/eofol-error"
 
-const deepCopyString = (str) => ` ${str}`.slice(1)
+const deepCopyString = (str: string) => ` ${str}`.slice(1)
 
 type EofolRenderHandler = () => EofolNode
-
-type VDOM =
-  | {
-      type: "tag"
-      id: string
-      class?: string
-      attributes?: Attributes
-      properties: Properties
-      tag: string
-      children?: VDOM[]
-    }
-  | {
-      type: "component"
-      id: string
-      props?: Props
-      children?: VDOM[]
-      def: string
-    }
-  | {
-      type: "text"
-      content: string
-    }
 
 export const isVDOMComponent = (vdomElement: VDOM): vdomElement is VDOM_COMPONENT =>
   typeof vdomElement === "object" && vdomElement.type === VDOM_TYPE.COMPONENT
@@ -68,28 +46,6 @@ export const renderInstance = (idDef: string, props?: Props, children?: EofolNod
   } else {
     eofolErrorDefNotFound(idDef)
     return undefined
-  }
-}
-
-export const domToVdom = (tree: HTMLElement) => {
-  if (tree.nodeType === 3) {
-    return tree.textContent
-  } else {
-    const thisNode = {
-      id: tree.getAttribute("id"),
-      type: VDOM_TYPE.TAG,
-      class: tree.className,
-      attributes: tree.attributes,
-      properties: { onclick: tree.onclick, onchange: tree.onchange },
-      tag: tree.tagName,
-      children: [],
-    }
-    if (tree.hasChildNodes()) {
-      tree.childNodes.forEach((child) => {
-        thisNode.children.push(domToVdom(child))
-      })
-    }
-    return thisNode
   }
 }
 
@@ -144,6 +100,7 @@ export const renderVdomElement = (vdomElement: VDOM) => {
   return rendered
 }
 
+/*
 export const traverseVdom = (
   tree: VDOM,
   matches: (vdomElement: VDOM) => boolean,
@@ -167,6 +124,7 @@ export const traverseVdom = (
     }
   }
 }
+*/
 
 const eofolRender = (rootElement: Element, rendered: EofolNode) => {
   domClearChildren(rootElement)

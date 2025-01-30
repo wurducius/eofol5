@@ -1,18 +1,9 @@
 import { domAppendChildren } from "./children"
 import { createInstanceFromDef } from "../../project/src/stateful"
-import { generateId } from "../util/crypto"
-import { DefInternal, Props, VDOM, VDOM_TYPE } from "../types"
-import { getDef } from "../runtime/defs"
 import { mergeInstance, getInstance } from "../../project/src/internals"
-
-// @TODO typing
-
-export type Classname = string | undefined
-export type Attributes = any
-export type Properties = any
-
-export type EofolElement = HTMLElement | string | undefined | false | null
-export type EofolNode = EofolElement[] | EofolElement
+import { generateId } from "../util/crypto"
+import { Attributes, Classname, DefInternal, EofolNode, Properties, Props, VDOM, VDOM_TYPE } from "../types"
+import { getDef } from "../runtime/defs"
 
 export const renderTagDom = (
   tagName: string,
@@ -53,7 +44,7 @@ export const renderTagDom = (
   return element
 }
 
-export const renderComponentFromDefDom = (def: DefInternal, children?: EofolNode, props?: Props) => {
+export const renderComponentFromDefDom = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {
   let propsImpl
   if (children) {
     propsImpl = { ...props, children }

@@ -8,13 +8,14 @@ const PROTOCOL = "https"
 const HOST = "0.0.0.0"
 const PORT = "3000"
 const WAIT = 150
+const OPEN = true
 
 const serveUrl = `${PROTOCOL}://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}`
 
 // @TODO remove ./src
 const serveOptions = {
   root: config.PATH.PATH_BUILD,
-  watch: ["./project", "./src"],
+  watch: ["./project", "./src", "./webpack"],
   wait: WAIT,
   mount: ["./node_modules"],
   port: PORT,
@@ -22,8 +23,10 @@ const serveOptions = {
   https: PROTOCOL === "https",
 }
 
+const openPromise = () => (OPEN ? open(serveUrl) : new Promise())
+
 const serve = () => {
-  open(serveUrl).then(() => {
+  openPromise().then(() => {
     wds(serveOptions)
   })
 }

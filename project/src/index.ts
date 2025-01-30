@@ -29,6 +29,14 @@ defineComponent<{ value: number; increment: number }>(COUNTER, {
             onclick: handleClick(1),
           },
         ),
+        button(
+          undefined,
+          "-",
+          {},
+          {
+            onclick: handleClick(-1),
+          },
+        ),
         input(
           undefined,
           undefined,
@@ -47,14 +55,6 @@ defineComponent<{ value: number; increment: number }>(COUNTER, {
             onclick: () => {
               setState({ ...state, value: (state.value ?? 0) + state.increment })
             },
-          },
-        ),
-        button(
-          undefined,
-          "-",
-          {},
-          {
-            onclick: handleClick(-1),
           },
         ),
         button(
