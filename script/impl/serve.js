@@ -15,7 +15,7 @@ const serveUrl = `${PROTOCOL}://${HOST === "0.0.0.0" ? "localhost" : HOST}:${POR
 // @TODO remove ./src
 const serveOptions = {
   root: config.PATH.PATH_BUILD,
-  watch: ["./project", "./src", "./webpack"],
+  watch: ["./build"],
   wait: WAIT,
   mount: ["./node_modules"],
   port: PORT,

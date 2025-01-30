@@ -36,6 +36,7 @@
     "ts-loader": "^9.5.2",
     "typescript": "^5.7.3",
     "uglify-js": "^3.19.3",
+    "watchpack": "^2.4.2",
     "webpack": "^5.97.1",
     "webpack-bundle-analyzer": "^4.10.2"
   },
