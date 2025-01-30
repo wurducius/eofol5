@@ -11,7 +11,10 @@ import {
 import { eDom, renderTagDom } from "./create-element"
 import { eofolFatal } from "../component/logger"
 import {
-  DefInternal,
+  Def,
+  DEF_TYPE,
+  DEF_TYPE_COMPONENT,
+  DefFlat,
   EofolElement,
   EofolNode,
   Instance,
@@ -22,8 +25,8 @@ import {
   VDOM_TEXT,
   VDOMChildren,
 } from "../types"
-import { getDef } from "../runtime/defs"
-import { eofolErrorDefNotFound } from "../log/eofol-error"
+import { getDef } from "../runtime"
+import { eofolErrorDefNotFound } from "../log"
 
 type EofolRenderHandler = () => VDOMChildren
 
@@ -45,7 +48,15 @@ export function getStateMerge<T>(idInstance: string, instance: Instance) {
   }
 }
 
-export const renderInstanceFromDef = (def: DefInternal<any>, props?: Props, children?: EofolNode, isNew?: boolean) => {
+export const renderInstanceFromDef = (
+  def: Def<any> & {
+    id: string
+    type: DEF_TYPE
+  },
+  props?: Props,
+  children?: EofolNode,
+  isNew?: boolean,
+) => {
   const idInstance = isNew ? generateId() : (props?.id ?? generateId())
   const savedInstance = isNew ? undefined : getInstance(idInstance)
   const instance = savedInstance ?? {
@@ -190,9 +201,8 @@ export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) =>
 
 // eslint-disable-next-line no-unused-vars
 export const eofolUpdate = (id: string) => {
-  // @ts-ignore
-  const vdom = getVDOM()
   /*
+  const vdom = getVDOM()
   const vdomUpdate = traverseVdom(
     vdom,
     (vdomElement) => {
@@ -202,7 +212,7 @@ export const eofolUpdate = (id: string) => {
     },
     (vdomElement) => vdomElement,
   )*/
-  const vdomUpdate = vdom
+  const vdomUpdate = getVDOM()
   if (vdomUpdate) {
     const domUpdate = vdomToDom(vdomUpdate)
     if (domUpdate) {
