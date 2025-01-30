@@ -1,12 +1,12 @@
-import { domAppendChildren, domClearChildren, mergeDeep, deepCopyString, generateId } from "../util"
+import { deepCopyString, domAppendChildren, domClearChildren, generateId, mergeDeep } from "../util"
 import {
   getInstance,
   getInternals,
   getVDOM,
+  isVDOMComponent,
+  isVDOMTag,
   mergeInstance,
   setVDOM,
-  isVDOMTag,
-  isVDOMComponent,
 } from "../../project/src/internals"
 import { eDom, renderTagDom } from "./create-element"
 import { eofolFatal } from "../component/logger"
@@ -61,10 +61,25 @@ export const renderInstanceFromDef = (def: DefInternal<any>, props?: Props, chil
   return def.render(state, setState, propsImpl, mergeState)
 }
 
+export const renderFlatFromDef = (
+  def: DefFlat & { id: string },
+  props?: Props,
+  children?: EofolNode,
+  isNew?: boolean,
+) => {
+  const idInstance = isNew ? generateId() : (props?.id ?? generateId())
+  const propsImpl = { ...props, id: idInstance, def: def.id, children }
+  return def.render(propsImpl)
+}
+
 export const renderInstance = (idDef: string, props?: Props, children?: EofolNode, isNew?: boolean) => {
   const def = getDef(idDef)
   if (def) {
-    return renderInstanceFromDef(def, props, children, isNew)
+    if (def.type === DEF_TYPE_COMPONENT) {
+      return renderInstanceFromDef(def, props, children, isNew)
+    } else {
+      return renderFlatFromDef(def, props, children)
+    }
   } else {
     eofolErrorDefNotFound(idDef)
     return undefined

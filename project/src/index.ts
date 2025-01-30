@@ -13,9 +13,10 @@ defineFlat(LAYOUT, {
 })
 
 // eofolInit("root", () => [e(LAYOUT)])
+
+/*
 eofolInit("root", () => [
-  div(
-    "container-md",
+  e(CONTAINER, undefined, [
     div("flex-center-full flex-col", div("m-md", [h1(undefined, "Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)])),
-  ),
+  ]),
 ])

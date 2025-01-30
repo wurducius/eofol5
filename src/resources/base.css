@@ -64,6 +64,10 @@ button {
   height: 40px;
 }
 
+.flex-base {
+  display: flex;
+}
+
 .flex-col {
   display: flex;
   flex-direction: column;
