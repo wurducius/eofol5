@@ -1,9 +1,25 @@
 import { domAppendChildren, domClearChildren } from "./children"
-import { getInstance, getInternals, mergeInternals } from "../../project/src/internals"
+import { getInstance, getInternals, getVDOM, setVDOM } from "../../project/src/internals"
 import { Attributes, eDom, EofolNode, Properties, renderTagDom } from "./create-element"
-import { createInstance } from "../../project/src/stateful"
+
+import { generateId } from "../util/crypto"
 import { eofolFatal } from "../component/logger"
-import { Props } from "../types"
+import { DefInternal, Instance, Props, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOM_TYPE } from "../types"
+import { getDef } from "../runtime/defs"
+import { eofolErrorDefNotFound } from "../log/eofol-error"
+
+const deepCopyString = (str) => ` ${str}`.slice(1)
+
+const htmlElementIndexOf = (element) => {
+  let index = -1
+  while (element) {
+    element = element.previousSibling
+    if (element.nodeType === 1) {
+      index++
+    }
+  }
+  return index
+}
 
 type EofolRenderHandler = () => EofolNode
 
@@ -29,9 +45,43 @@ type VDOM =
       content: string
     }
 
-const eofolRender = (rootElement: Element, rendered: EofolNode) => {
-  domClearChildren(rootElement)
-  domAppendChildren(rendered, rootElement)
+export const isVDOMComponent = (vdomElement: VDOM): vdomElement is VDOM_COMPONENT =>
+  typeof vdomElement === "object" && vdomElement.type === VDOM_TYPE.COMPONENT
+export const isVDOMTag = (vdomElement: VDOM): vdomElement is VDOM_TAG =>
+  typeof vdomElement === "object" && vdomElement.type === VDOM_TYPE.TAG
+export const isVDOMText = (vdomElement: VDOM): vdomElement is VDOM_TEXT => typeof vdomElement === "string"
+
+function getStateSetter<T>(idInstance: string, instance: Instance) {
+  return function (nextState: T) {
+    const nextInstance = { ...instance, state: nextState }
+    // mergeInstance(idInstance, nextInstance)
+    eofolUpdate(idInstance)
+  }
+}
+
+export const renderInstanceFromDef = (def: DefInternal<any>, props?: Props, children?: EofolNode, isNew?: boolean) => {
+  const idInstance = isNew ? generateId() : (props?.id ?? generateId())
+  //const savedInstance = isNew ? undefined : getInstance(idInstance)
+  const savedInstance = undefined
+  const instance = savedInstance ?? {
+    id: idInstance,
+    def: def.id,
+    state: def.initialState ? { ...def.initialState } : {},
+  }
+  const state = { ...instance.state }
+  const setState = getStateSetter(idInstance, instance)
+  // mergeInstance(idInstance, instance)
+  return def.render(state, setState, { ...props, id: idInstance, def: def.id, children })
+}
+
+export const renderInstance = (idDef: string, props?: Props, children?: EofolNode, isNew?: boolean) => {
+  const def = getDef(idDef)
+  if (def) {
+    return renderInstanceFromDef(def, props, children, isNew)
+  } else {
+    eofolErrorDefNotFound(idDef)
+    return undefined
+  }
 }
 
 const nodeMapToObject = (attributeNodeMap: NamedNodeMap) => {
@@ -44,13 +94,13 @@ const nodeMapToObject = (attributeNodeMap: NamedNodeMap) => {
     }, {})
 }
 
-const domToVdom = (tree: HTMLElement) => {
+export const domToVdom = (tree: HTMLElement) => {
   if (tree.nodeType === 3) {
-    return { type: "text", content: tree.textContent }
+    return tree.textContent
   } else {
     const thisNode = {
       id: tree.getAttribute("id"),
-      type: "tag",
+      type: VDOM_TYPE.TAG,
       class: tree.className,
       attributes: tree.attributes,
       properties: { onclick: tree.onclick, onchange: tree.onchange },
@@ -66,9 +116,9 @@ const domToVdom = (tree: HTMLElement) => {
   }
 }
 
-const vdomToDom = (tree: VDOM) => {
-  if (tree.type === "text") {
-    return tree.content
+export const vdomToDom = (tree: VDOM) => {
+  if (typeof tree === "string") {
+    return deepCopyString(tree)
   } else {
     const renderedChildren = []
     const childrenArr = Array.isArray(tree.children) ? tree.children : [tree.children]
@@ -80,49 +130,40 @@ const vdomToDom = (tree: VDOM) => {
     }
     let thisNode
     const renderedChildrenImpl = renderedChildren.filter(Boolean)
-    if (tree.type === "tag") {
+    console.log(
+      renderedChildrenImpl,
+      renderedChildrenImpl.map((item) => typeof item),
+    )
+    if (isVDOMTag(tree)) {
+      console.log("renderTag", renderedChildrenImpl)
       const attributes = tree.attributes ? nodeMapToObject(tree.attributes) : {}
       thisNode = eDom(tree.tag, tree.class, renderedChildrenImpl, attributes, tree.properties)
     } else {
-      thisNode = eDom("span", undefined, renderedChildrenImpl)
+      console.log("renderInstance")
+      // const instance = getInstance(tree.id)
+      const instance = undefined
+      thisNode = renderInstance(
+        tree.def,
+        instance ? { ...tree.props, id: tree.id } : {},
+        renderedChildrenImpl,
+        !instance,
+      )
     }
     return thisNode
   }
 }
 
-const initVDOM = (tree: HTMLElement) => {
-  return { tree: [domToVdom(tree)] }
-}
-
-let ROOT_ELEMENT: HTMLElement | undefined = undefined
-
-export const getRootElement = () => ROOT_ELEMENT
-
-export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) => {
-  const root = document.getElementById(rootElementId)
-  if (root) {
-    ROOT_ELEMENT = root
-    const rendered = handler()
-    // @ts-ignore
-    const vdom = initVDOM(rendered[0])
-    mergeInternals({ vdom })
-    eofolRender(root, rendered)
-  } else {
-    eofolFatal(`Root element with id = "${rootElementId}" not found in DOM.`)
-  }
-}
-
-const renderVdomElement = (vdomElement: VDOM) => {
+export const renderVdomElement = (vdomElement: VDOM) => {
   let rendered
-  if (vdomElement.type === "component") {
+  if (isVDOMComponent(vdomElement)) {
     const instance = getInstance(vdomElement.id)
     if (instance) {
       // @TODO update
-      rendered = createInstance(vdomElement.def, instance.props, vdomElement.children?.map(renderVdomElement))
+      rendered = renderInstance(vdomElement.def, instance.props, vdomElement.children?.map(renderVdomElement), false)
     } else {
-      rendered = createInstance(vdomElement.def, {}, vdomElement.children?.map(renderVdomElement))
+      rendered = renderInstance(vdomElement.def, {}, vdomElement.children?.map(renderVdomElement), true)
     }
-  } else if (vdomElement.type === "tag") {
+  } else if (isVDOMTag(vdomElement)) {
     rendered = renderTagDom(
       vdomElement.tag,
       vdomElement.class,
@@ -131,12 +172,16 @@ const renderVdomElement = (vdomElement: VDOM) => {
       vdomElement.properties,
     )
   } else {
-    rendered = ` ${vdomElement.content}`.slice(1)
+    rendered = deepCopyString(vdomElement)
   }
   return rendered
 }
 
-const traverseVdom = (tree: VDOM, matches: (vdomElement: VDOM) => boolean, handler: (vdomElement: VDOM) => any) => {
+export const traverseVdom = (
+  tree: VDOM,
+  matches: (vdomElement: VDOM) => boolean,
+  handler: (vdomElement: VDOM) => any,
+) => {
   if (matches(tree)) {
     return handler(tree)
   } else {
@@ -156,44 +201,61 @@ const traverseVdom = (tree: VDOM, matches: (vdomElement: VDOM) => boolean, handl
   }
 }
 
-const mapVdom = (tree: VDOM, mapping: (vdomElement: VDOM) => VDOM, result: VDOM) => {
-  const resultImpl = mapping(tree)
-  if (
-    "children" in tree &&
-    tree.children &&
-    ((Array.isArray(tree.children) && tree.children.length > 0) || !Array.isArray(tree.children))
-  ) {
-    if (Array.isArray(tree.children)) {
-      result.children = []
-      tree.children.forEach((child, index) => {
-        return mapVdom(child, mapping, result.children[index])
-      })
-    } else {
-      result.children = undefined
-      return mapVdom(tree.children, mapping, result.children)
-    }
+const eofolRender = (rootElement: Element, rendered: EofolNode) => {
+  domClearChildren(rootElement)
+  domAppendChildren(rendered, rootElement)
+}
+
+let ROOT_ELEMENT: HTMLElement | undefined = undefined
+
+export const getRootElement = () => ROOT_ELEMENT
+
+export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) => {
+  const root = document.getElementById(rootElementId)
+  if (root) {
+    ROOT_ELEMENT = root
+    const rendered = handler()
+    // @ts-ignore
+    const vdom = rendered[0]
+    setVDOM(vdom)
+    console.log("INIT", vdom)
+    const dom = vdomToDom(vdom)
+    console.log("INIT DOM", dom)
+    // @ts-ignore
+    eofolRender(root, [dom])
+  } else {
+    eofolFatal(`Root element with id = "${rootElementId}" not found in DOM.`)
   }
-  return resultImpl
 }
 
 export const eofolUpdate = (id: string) => {
-  const root = getRootElement() as HTMLElement
   // @ts-ignore
-  const vdom = getInternals().vdom.tree[0]
-  const rendered = mapVdom(
+  const vdom = getVDOM()
+  const vdomUpdate = traverseVdom(
     vdom,
     (vdomElement) => {
       if ("id" in vdomElement && vdomElement.id === id) {
-        return renderVdomElement(vdomElement)
-      } else {
-        return vdomElement
+        return true
       }
     },
-    undefined,
+    (vdomElement) => vdomElement,
   )
-  // @ts-ignore
-  const dom = vdomToDom(rendered)
-  eofolRender(root, [dom])
+  if (vdomUpdate) {
+    const domUpdate = vdomToDom(vdomUpdate)
+    if (domUpdate) {
+      // @ts-ignore
+      const parent = domUpdate.parentNode
+      if (parent) {
+        parent.childNodes.item(htmlElementIndexOf(domUpdate)).replaceWith(domUpdate)
+      } else {
+        // efl err
+      }
+    } else {
+      // efl error
+    }
+  } else {
+    // efl err
+  }
 }
 
 export const forceRerender = () => {

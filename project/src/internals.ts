@@ -1,3 +1,5 @@
+import { VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOM_TYPE } from "../../src/types"
+
 const mergeDeep = (...objects: object[]) => {
   const isObject = (obj: object) => obj && typeof obj === "object"
 
@@ -50,3 +52,13 @@ export const mergeInstance = (id: string, nextInstance: Instance) => {
   // @ts-ignore
   instances[id] = mergeDeep(instances[id] ?? {}, nextInstance)
 }
+
+export const getVDOM = () => getInternals().vdom.tree[0]
+
+export const setVDOM = (nextVdom: VDOM) => mergeInternals({ vdom: { tree: nextVdom } })
+
+export const isVDOMComponent = (vdomElement: VDOM): vdomElement is VDOM_COMPONENT =>
+  typeof vdomElement === "object" && vdomElement.type === VDOM_TYPE.COMPONENT
+export const isVDOMTag = (vdomElement: VDOM): vdomElement is VDOM_TAG =>
+  typeof vdomElement === "object" && vdomElement.type === VDOM_TYPE.TAG
+export const isVDOMText = (vdomElement: VDOM): vdomElement is VDOM_TEXT => typeof vdomElement === "string"
