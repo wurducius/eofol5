@@ -8,10 +8,21 @@ export const appendChild = (target: Element, child: Element | string) => {
   }
 }
 
-export const domAppendChildren = (children: Array<Element | string>, target: Element) => {
-  children.forEach((child) => {
-    appendChild(target, child)
-  })
+export const domAppendChildren = (
+  children: Array<HTMLElement | string | undefined | null | false> | HTMLElement | string | undefined | null | false,
+  target: Element,
+) => {
+  if (Array.isArray(children)) {
+    children.forEach((child) => {
+      if (child) {
+        appendChild(target, child)
+      }
+    })
+  } else {
+    if (children) {
+      appendChild(target, children)
+    }
+  }
 }
 
 export const domClearChildren = (domElement: Element) => {
@@ -26,7 +37,7 @@ export const domClearChildren = (domElement: Element) => {
   })
 }
 
-export const nodeMapToObject = (attributeNodeMap) => {
+export const nodeMapToObject = (attributeNodeMap: NamedNodeMap) => {
   return Array.from(attributeNodeMap)
     .map((a) => [a.name, a.value])
     .reduce((acc, attr) => {
@@ -36,11 +47,13 @@ export const nodeMapToObject = (attributeNodeMap) => {
     }, {})
 }
 
-export const htmlElementIndexOf = (element) => {
+export const htmlElementIndexOf = (element: HTMLElement) => {
   let index = -1
-  while (element) {
-    element = element.previousSibling
-    if (element.nodeType === 1) {
+  // eslint-disable-next-line no-undef
+  let elementImpl: ChildNode | null = element
+  while (elementImpl) {
+    elementImpl = elementImpl.previousSibling
+    if (elementImpl && elementImpl.nodeType === 1) {
       index++
     }
   }

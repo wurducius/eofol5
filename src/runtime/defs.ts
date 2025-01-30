@@ -1,4 +1,4 @@
-import { Def, DEF_TYPE, DefFlat, DefInternal } from "../types"
+import { Def, DEF_TYPE, DefFlat, DefInternal, Props, VDOMChildren } from "../types"
 
 const defsRegistry: Record<string, DefInternal<any>> = {}
 
@@ -14,6 +14,7 @@ export function defineComponent<T>(id: string, def: Def<T>) {
   addDef(id, def, "component")
 }
 
-export function defineFlat(id: string, def: DefFlat) {
-  addDef(id, def, "flat")
+// eslint-disable-next-line no-unused-vars
+export function defineFlat(id: string, def: (props: Props) => VDOMChildren) {
+  addDef(id, { render: def }, "flat")
 }

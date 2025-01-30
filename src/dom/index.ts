@@ -1,3 +1,5 @@
 export * from "./create-element"
-export * from "./core"
+export * from "./eofol"
 export * from "./simple"
+export * from "./stateful"
+export * from "./vdom"

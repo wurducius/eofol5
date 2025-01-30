@@ -13,7 +13,7 @@ import {
   VDOMChildren,
 } from "../types"
 import { getDef } from "../runtime"
-import { getStateMerge, getStateSetter } from "./core"
+import { getStateMerge, getStateSetter } from "./stateful"
 
 export const renderTagDom = (
   tagName: string,
@@ -72,7 +72,7 @@ const renderComponentFromDefDom = (def: DefInternal<any>, children?: EofolNode, 
   } else {
     propsImpl = props ?? {}
   }
-  return createInstanceFromDef(def, propsImpl)
+  return createInstanceFromDef(def, propsImpl, children)
 }
 
 const renderFlatFromDefDom = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {
