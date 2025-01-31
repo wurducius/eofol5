@@ -1,3 +1,5 @@
+import { DEF_TYPE_COMPONENT, DEF_TYPE_FLAT, PROP_NAME_DEF, PROP_NAME_ID, VDOM_TYPE } from "./eofol-constants"
+
 export type Classname = string | undefined
 export type Attributes = any
 export type Properties = any
@@ -33,10 +35,6 @@ export interface Internals {
   env: InternalsEnv
 }
 
-export const DEF_TYPE_COMPONENT = "component"
-
-export const DEF_TYPE_FLAT = "flat"
-
 export type DEF_TYPE = typeof DEF_TYPE_COMPONENT | typeof DEF_TYPE_FLAT
 
 export type DefFlat = {
@@ -67,12 +65,6 @@ export interface Instance {
 
 export type VDOMChildren = VDOM[] | VDOM
 
-export const VDOM_TYPE = {
-  COMPONENT: "component",
-  TAG: "tag",
-  TEXT: "text",
-}
-
 export type VDOM_TAG = {
   type: typeof VDOM_TYPE.TAG
   id: string
@@ -95,7 +87,7 @@ export type VDOM_TEXT = string
 
 export type VDOM = VDOM_TAG | VDOM_COMPONENT | VDOM_TEXT
 
-export type Props = Record<string | "id" | "def", any>
+export type Props = Record<string | typeof PROP_NAME_ID | typeof PROP_NAME_DEF, any>
 
 export type State<T> = T
 // eslint-disable-next-line no-unused-vars

@@ -1,9 +1,10 @@
-import { Def, DEF_TYPE, DEF_TYPE_COMPONENT, DefFlat, EofolNode, Instance, Props } from "../types"
+import { Def, DEF_TYPE, DefFlat, EofolNode, Instance, Props } from "../types"
 import { generateId, mergeDeep } from "../util"
 import { getDef } from "../runtime"
 import { eofolErrorDefNotFound } from "../log"
 import { getInstance, mergeInstance } from "../../project/src/internals"
 import { eofolUpdate } from "./eofol"
+import { DEF_TYPE_COMPONENT } from "../eofol-constants"
 
 const updateState = (idInstance: string, instance: Instance, nextState: any) => {
   const nextInstance = { ...instance, state: nextState }

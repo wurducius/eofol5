@@ -1,6 +1,6 @@
 import { EofolNode, EofolRenderHandler } from "../types"
 import { getInternals, getVDOM, setVDOM } from "../../project/src/internals"
-import { eofolFatal } from "../component/logger"
+import { eofolFatal } from "../log/logger"
 import { domAppendChildren, domClearChildren } from "../util"
 import { renderVdomElement, vdomToDom } from "./vdom"
 

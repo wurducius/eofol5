@@ -1,19 +1,9 @@
 import { domAppendChildren, generateId } from "../util"
 import { getInstance, mergeInstance } from "../../project/src/internals"
-import {
-  Attributes,
-  Classname,
-  DEF_TYPE_COMPONENT,
-  DefInternal,
-  EofolNode,
-  Properties,
-  Props,
-  VDOM,
-  VDOM_TYPE,
-  VDOMChildren,
-} from "../types"
+import { Attributes, Classname, DefInternal, EofolNode, Properties, Props, VDOM, VDOMChildren } from "../types"
 import { getDef } from "../runtime"
 import { getStateMerge, getStateSetter } from "./stateful"
+import { DEF_TYPE_COMPONENT, PROP_NAME_ID, VDOM_TYPE } from "../eofol-constants"
 
 export const renderTagDom = (
   tagName: string,
@@ -27,9 +17,9 @@ export const renderTagDom = (
     element.className = className
   }
   const attributesImpl = attributes ?? {}
-  const prevId = attributesImpl["id"]
+  const prevId = attributesImpl[PROP_NAME_ID]
   if (prevId === undefined) {
-    attributesImpl["id"] = generateId()
+    attributesImpl[PROP_NAME_ID] = generateId()
   }
   Object.keys(attributesImpl).forEach((attributeName) => {
     const attributeValue = attributesImpl[attributeName]
