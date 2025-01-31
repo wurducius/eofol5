@@ -52,7 +52,7 @@ export const createInstanceFromDef = (def: DefInternal<any>, props?: Props, chil
   const setState = getStateSetter(idInstance, instance)
   const mergeState = getStateMerge(idInstance, instance)
   mergeInstance(idInstance, instance)
-  return def.render(state, setState, { ...props, id: idInstance, def: def.id, children }, mergeState)
+  return def.render(state, mergeState, { ...props, id: idInstance, def: def.id, children }, setState)
 }
 
 const renderComponentFromDefDom = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {
@@ -143,7 +143,7 @@ export const renderComponentFromDef = (def: DefInternal<any>, children?: VDOMChi
   return createInstanceFromDefVdom(def, propsImpl)
 }
 
-const renderFlatFromDef = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {
+const renderFlatFromDef = (def: DefInternal<any>, children?: VDOMChildren, props?: Props) => {
   const idInstance = generateId()
   return {
     type: VDOM_TYPE.COMPONENT,
@@ -157,7 +157,7 @@ const renderFlatFromDef = (def: DefInternal<any>, children?: EofolNode, props?: 
 const eImpl = (
   tagName: string,
   className?: Classname,
-  children?: VDOM[],
+  children?: VDOMChildren,
   attributes?: Attributes | Props,
   properties?: Properties,
 ) => {
@@ -173,19 +173,25 @@ const eImpl = (
   }
 }
 
-export const e = eImpl
+export const e = (
+  tagName: string,
+  children?: VDOMChildren,
+  className?: Classname,
+  attributes?: Attributes | Props,
+  properties?: Properties,
+) => eImpl(tagName, className, children, attributes, properties)
 
 export const f = (
   tagName: string,
-  children?: VDOM[],
   className?: Classname,
+  children?: VDOMChildren,
   attributes?: Attributes | Props,
   properties?: Properties,
 ) => eImpl(tagName, className, children, attributes, properties)
 
 export const g = (props: {
   tagName: string
-  children?: VDOM[]
+  children?: VDOMChildren
   className?: Classname
   attributes?: Attributes | Props
   properties?: Properties

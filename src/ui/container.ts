@@ -1,9 +1,10 @@
 import { defineFlat } from "../runtime"
-import { div } from "../dom"
+import { div, e } from "../dom"
 
 export const CONTAINER = "eofol-container"
 
 defineFlat(CONTAINER, (props) => {
-  console.log(props)
-  return div("container-md", props.children)
+  return div(props.children, "container-md")
 })
+
+export const container = (children) => e(CONTAINER, children, undefined, { children })

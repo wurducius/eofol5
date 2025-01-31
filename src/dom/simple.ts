@@ -1,9 +1,9 @@
 import { renderTag } from "./create-element"
-import { Attributes, Classname, Properties, VDOM } from "../types"
+import { Attributes, Classname, Properties, VDOMChildren } from "../types"
 
 export const simple =
   (tagName: string) =>
-  (className?: Classname, children?: VDOM[] | VDOM | undefined, attributes?: Attributes, properties?: Properties) =>
+  (children?: VDOMChildren, className?: Classname, attributes?: Attributes, properties?: Properties) =>
     renderTag(tagName, className, children, attributes, properties)
 
 export const div = simple("div")

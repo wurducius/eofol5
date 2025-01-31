@@ -3,6 +3,7 @@ import { getInternals, getVDOM, setVDOM } from "../../project/src/internals"
 import { eofolFatal } from "../log/logger"
 import { domAppendChildren, domClearChildren } from "../util"
 import { renderVdomElement, vdomToDom } from "./vdom"
+import { init } from "../runtime/init"
 
 const eofolRender = (rootElement: Element, rendered: EofolNode) => {
   domClearChildren(rootElement)
@@ -28,6 +29,7 @@ export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) =>
     } else {
       eofolFatal(`Root element with id = "${rootElementId}" not found in DOM.`)
     }
+    init()
   } catch (ex: any) {
     console.error(`Eofol5 compilation error: ${ex.message}${ex.stack ? ` - Stack: ${ex.stack}` : ""}`)
     const overlayElementTitle = document.getElementById("_eofol-error-overlay-msg-title")
