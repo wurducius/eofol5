@@ -1,10 +1,5 @@
-export const SERVICE_WORKER = {
-  SCRIPT_FILENAME: "service-worker.js",
-}
-
-export const BASE_URL = "/"
-
-export const isBrowser = () => typeof window !== "undefined" && typeof window.document !== "undefined"
+import { BASE_URL, EOFOL_SERVICE_WORKER_FILENAME } from "../constants"
+import { isBrowser } from "../util"
 
 export const registerServiceworker = () => {
   const hostname = window.location.hostname
@@ -14,7 +9,7 @@ export const registerServiceworker = () => {
   } else {
     if (isBrowser() && "serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register(`${BASE_URL}${SERVICE_WORKER.SCRIPT_FILENAME}`)
+        .register(`${BASE_URL}${EOFOL_SERVICE_WORKER_FILENAME}`)
         .then(() => {
           console.log("Service worker registered.")
         })
