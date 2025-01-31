@@ -1,7 +1,7 @@
 const getConfig = require("../config/config")
 const { read, join } = require("../util-compile/fs")
 const HTMLParser = require("node-html-parser")
-const { EOFOL_ROOT_ELEMENT_ID } = require("../constants.js")
+const { EOFOL_ROOT_ELEMENT_ID } = require("../constants")
 const replaceRootElementId = require("./root-element-id")
 const config = getConfig()
 
