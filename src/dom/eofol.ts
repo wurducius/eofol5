@@ -1,6 +1,6 @@
 import { EofolNode, EofolRenderHandler } from "../types"
 import { getInternals, getVDOM, setVDOM } from "../../project/src/internals"
-import { eofolFatal } from "../log/logger"
+import { eofolFatal } from "../log"
 import { domAppendChildren, domClearChildren } from "../util"
 import { renderVdomElement, vdomToDom } from "./vdom"
 import { init } from "../runtime/init"
@@ -32,9 +32,13 @@ export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) =>
     init()
   } catch (ex: any) {
     console.error(`Eofol5 compilation error: ${ex.message}${ex.stack ? ` - Stack: ${ex.stack}` : ""}`)
+    const overlayElementLoading = document.getElementById("_eofol-error-overlay-msg-title-loading")
     const overlayElementTitle = document.getElementById("_eofol-error-overlay-msg-title")
     const overlayElementContent = document.getElementById("_eofol-error-overlay-msg-content")
     const overlayElementStack = document.getElementById("_eofol-error-overlay-msg-stack")
+    if (overlayElementLoading) {
+      overlayElementLoading.innerHTML = ""
+    }
     if (overlayElementTitle) {
       overlayElementTitle.innerHTML = "Eofol5 compilation error:"
     }
