@@ -25,11 +25,14 @@ body {
 ._eofol-error-overlay-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     height: 100%;
     max-width: 640px;
     margin: 0 auto 0 auto;
+}
+
+._eofol-error-overlay-text-color-loading {
+    color: #fafafa;
 }
 
 ._eofol-error-overlay-text-color {
