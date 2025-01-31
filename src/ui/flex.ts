@@ -1,5 +1,4 @@
-import { defineFlat } from "../runtime"
-import { div, e } from "../render"
+import { defineSimple, renderSimple } from "./util"
 
 export const FLEX = "eofol-flex"
 export const ROW = "eofol-row"
@@ -7,18 +6,14 @@ export const COL = "eofol-col"
 export const CENTER_FLEX = "eofol-center-flex"
 export const CENTER_FLEX_FULL = "eofol-center-flex-full"
 
-defineFlat(FLEX, (props) => div(props.children, "flex-base"))
+defineSimple(FLEX, "flex-base")
+defineSimple(ROW, "flex-row")
+defineSimple(COL, "flex-col")
+defineSimple(CENTER_FLEX, "flex-center")
+defineSimple(CENTER_FLEX_FULL, "flex-center-full")
 
-defineFlat(ROW, (props) => div(props.children, "flex-row"))
-
-defineFlat(COL, (props) => div(props.children, "flex-col"))
-
-defineFlat(CENTER_FLEX, (props) => div(props.children, "flex-center"))
-
-defineFlat(CENTER_FLEX_FULL, (props) => div(props.children, "flex-center-full"))
-
-export const flex = e(FLEX)
-export const row = e(ROW)
-export const col = e(COL)
-export const centerFlex = e(CENTER_FLEX)
-export const centerFlexFull = e(CENTER_FLEX_FULL)
+export const flex = renderSimple(FLEX)
+export const row = renderSimple(ROW)
+export const col = renderSimple(COL)
+export const centerFlex = renderSimple(CENTER_FLEX)
+export const centerFlexFull = renderSimple(CENTER_FLEX_FULL)

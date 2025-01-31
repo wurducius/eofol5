@@ -1,10 +1,7 @@
-import { defineFlat } from "../runtime"
-import { div, e } from "../render"
+import { defineSimple, renderSimple } from "./util"
 
 export const CONTAINER = "eofol-container"
 
-defineFlat(CONTAINER, (props) => {
-  return div(props.children, "container-md")
-})
+defineSimple(CONTAINER, "container-md")
 
-export const container = (children) => e(CONTAINER, children, undefined, { children })
+export const container = renderSimple(CONTAINER)

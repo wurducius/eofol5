@@ -44,7 +44,8 @@ export const renderInstanceFromDef = (
   const setState = getStateSetter(idInstance, instance)
   const mergeState = getStateMerge(idInstance, instance)
   mergeInstance(idInstance, instance)
-  const propsImpl = { ...props, id: idInstance, def: def.id, children }
+  // @TODO removed children arg from propsImpl
+  const propsImpl = { ...props, id: idInstance, def: def.id }
   return def.render(state, mergeState, propsImpl, setState)
 }
 export const renderFlatFromDef = (
