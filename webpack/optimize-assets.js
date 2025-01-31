@@ -33,6 +33,15 @@ const addInternalAssets = (compilation) => {
     {},
   )
   addAssetImpl("assets/css/theme.css", read(join(process.cwd(), "resources", "styles", "theme.css")).toString(), {})
+
+  // @TODO extract @VIEWS@ constant and add VIEWS
+  addAssetImpl(
+    "service-worker.js",
+    read(join(process.cwd(), "resources", "service-worker", "service-worker.js"))
+      .toString()
+      .replaceAll("@VIEWS@", "index.html"),
+    {},
+  )
 }
 
 const optimizeAssets = async (compiler, compilation) => {
