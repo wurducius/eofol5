@@ -2,12 +2,17 @@ const { join, parse, readAsync, read, writeAsync } = require("../util-compile/fs
 const { head } = require("eofol-head")
 const minifyHtml = require("./minify-html")
 const getConfig = require("../config/config")
-
-const EOFOL_TEMPLATE_PLACEHOLDER_SYMBOL = "@EOFOL_PLACEHOLDER@"
+const HTMLParser = require("node-html-parser")
 
 const config = getConfig()
 
-const EOFOL_PLACEHOLDER = read(join(config.PATH.CWD, "src", "resources", "eofol-placeholder.html")).toString()
+const errorOverlayHtml = read(
+  join(config.PATH.CWD, "src", "resources", "error-overlay", "error-overlay.html"),
+).toString()
+
+const errorOverlayStyles = read(
+  join(config.PATH.CWD, "src", "resources", "error-overlay", "error-overlay.css"),
+).toString()
 
 const precompileTemplate = (buildPath, projectPath, stylesStatic) => async (viewName) => {
   const headData = {
@@ -27,13 +32,21 @@ const precompileTemplate = (buildPath, projectPath, stylesStatic) => async (view
     themeColor: "#09090b",
   }
   const content = await readAsync(join(projectPath, `${viewName}.html`))
-  const injectedContent = content.toString().replaceAll(EOFOL_TEMPLATE_PLACEHOLDER_SYMBOL, EOFOL_PLACEHOLDER)
+
+  const parsed = HTMLParser.parse(content.toString())
+  const rootElement = parsed.getElementById("root")
+  if (rootElement) {
+    rootElement.innerHTML = rootElement.innerHTML + errorOverlayHtml
+  }
+  const injectedContent = parsed.toString()
+  const stylesImpl = `${stylesStatic} ${errorOverlayStyles}`
+
   const compiled = await head(
     headData,
     injectedContent,
     [viewName, "runtime", "eofol", "dependencies"],
     ["base", "theme"],
-    stylesStatic ?? "",
+    stylesImpl,
   )
   // @TODO avoid minifying twice
   const minified = await minifyHtml(compiled)

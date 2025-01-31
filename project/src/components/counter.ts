@@ -20,8 +20,7 @@ const handleIncrementChange = (state, setState) => (offset) => () => {
 
 defineComponent<{ value: number; increment: number }>(COUNTER, {
   // @ts-ignore
-  // eslint-disable-next-line no-unused-vars
-  render: (state, setState, props) => {
+  render: (state, setState) => {
     const handleClick = handleCounterClick(state, setState)
     const handleIncrement = handleIncrementChange(state, setState)
 

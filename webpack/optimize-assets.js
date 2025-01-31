@@ -26,8 +26,16 @@ const addInternalAssets = (compilation) => {
     addAssetImpl(PLUGIN_INTERNAL.DEPENDENCIES, "", {})
   }
 
-  addAssetImpl("assets/css/base.css", read(join(process.cwd(), "src", "resources", "base.css")).toString(), {})
-  addAssetImpl("assets/css/theme.css", read(join(process.cwd(), "src", "resources", "theme.css")).toString(), {})
+  addAssetImpl(
+    "assets/css/base.css",
+    read(join(process.cwd(), "src", "resources", "styles", "base.css")).toString(),
+    {},
+  )
+  addAssetImpl(
+    "assets/css/theme.css",
+    read(join(process.cwd(), "src", "resources", "styles", "theme.css")).toString(),
+    {},
+  )
 }
 
 const optimizeAssets = async (compiler, compilation) => {
