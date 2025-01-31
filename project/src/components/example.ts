@@ -6,7 +6,7 @@ export const EXAMPLE = "example"
 defineComponent(EXAMPLE, {
   // @ts-ignore
   render: () => {
-    return div("flex-center flex-col", [h2(undefined, "Example")])
+    return div([h2("Example")], "flex-center flex-col")
   },
   initialState: {},
 })

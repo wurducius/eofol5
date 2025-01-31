@@ -4,7 +4,7 @@ import { div, e } from "../dom"
 export const CONTAINER = "eofol-container"
 
 defineFlat(CONTAINER, (props) => {
-  return div("container-md", props.children)
+  return div(props.children, "container-md")
 })
 
-export const container = (children) => e(CONTAINER, undefined, children, { children })
+export const container = (children) => e(CONTAINER, children, undefined, { children })

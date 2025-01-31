@@ -157,7 +157,7 @@ const renderFlatFromDef = (def: DefInternal<any>, children?: VDOMChildren, props
 const eImpl = (
   tagName: string,
   className?: Classname,
-  children?: VDOM[],
+  children?: VDOMChildren,
   attributes?: Attributes | Props,
   properties?: Properties,
 ) => {
@@ -173,19 +173,25 @@ const eImpl = (
   }
 }
 
-export const e = eImpl
+export const e = (
+  tagName: string,
+  children?: VDOMChildren,
+  className?: Classname,
+  attributes?: Attributes | Props,
+  properties?: Properties,
+) => eImpl(tagName, className, children, attributes, properties)
 
 export const f = (
   tagName: string,
-  children?: VDOM[],
   className?: Classname,
+  children?: VDOMChildren,
   attributes?: Attributes | Props,
   properties?: Properties,
 ) => eImpl(tagName, className, children, attributes, properties)
 
 export const g = (props: {
   tagName: string
-  children?: VDOM[]
+  children?: VDOMChildren
   className?: Classname
   attributes?: Attributes | Props
   properties?: Properties
