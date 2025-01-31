@@ -1,7 +1,6 @@
 @font-face {
   font-family: "Roboto";
-  /*noinspection CssUnknownTarget*/
-  src: url("../media/fonts/Roboto-Regular.ttf") format("truetype");
+  src: url("./assets/media/fonts/Roboto-Regular.ttf") format("truetype");
   font-display: swap;
 }
 
