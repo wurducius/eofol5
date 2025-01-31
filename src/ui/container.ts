@@ -1,5 +1,5 @@
 import { defineFlat } from "../runtime"
-import { div, e } from "../dom"
+import { div, e } from "../render"
 
 export const CONTAINER = "eofol-container"
 

@@ -1,7 +1,8 @@
-import { div, e, eofolInit, h1 } from "../../src/dom"
+import { div, e, h1 } from "../../src/render"
 import { COUNTER, EXAMPLE, FLAT } from "./components"
 import { defineFlat } from "../../src/runtime"
 import { EOFOL_ROOT_ELEMENT_ID } from "../../src/constants"
+import { eofolInit } from "../../src/core"
 
 const LAYOUT = "layout"
 

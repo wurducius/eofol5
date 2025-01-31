@@ -2,7 +2,7 @@ import { domAppendChildren, generateId } from "../util"
 import { getInstance, mergeInstance } from "../../project/src/internals"
 import { Attributes, Classname, DefInternal, EofolNode, Properties, Props, VDOMChildren } from "../types"
 import { getDef } from "../runtime"
-import { getStateMerge, getStateSetter } from "./stateful"
+import { getStateMerge, getStateSetter } from "../component"
 import { DEF_TYPE_COMPONENT, PROP_NAME_ID, VDOM_TYPE } from "../eofol-constants"
 
 export const renderTagDom = (

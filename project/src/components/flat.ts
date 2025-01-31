@@ -1,5 +1,5 @@
 import { defineFlat } from "../../../src/runtime"
-import { h3 } from "../../../src/dom"
+import { h3 } from "../../../src/render"
 
 export const FLAT = "flat"
 

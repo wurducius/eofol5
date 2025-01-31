@@ -1,5 +1,5 @@
 import { defineComponent } from "../../../src/runtime"
-import { div, h2 } from "../../../src/dom"
+import { div, h2 } from "../../../src/render"
 
 export const EXAMPLE = "example"
 

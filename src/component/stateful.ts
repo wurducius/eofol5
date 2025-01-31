@@ -3,7 +3,7 @@ import { generateId, mergeDeep } from "../util"
 import { getDef } from "../runtime"
 import { eofolErrorDefNotFound } from "../log"
 import { getInstance, mergeInstance } from "../../project/src/internals"
-import { eofolUpdate } from "./eofol"
+import { eofolUpdate } from "../core"
 import { DEF_TYPE_COMPONENT } from "../eofol-constants"
 
 const updateState = (idInstance: string, instance: Instance, nextState: any) => {
