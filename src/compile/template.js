@@ -2,6 +2,7 @@ const { join, parse, readAsync, writeAsync } = require("../util-compile/fs")
 const { head } = require("eofol-head")
 const minifyHtml = require("./minify-html")
 const getErrorOverlay = require("./error-overlay")
+const replaceRootElementId = require("./root-element-id")
 
 const precompileTemplate = (buildPath, projectPath, stylesStatic) => async (viewName) => {
   const headData = {
@@ -21,7 +22,8 @@ const precompileTemplate = (buildPath, projectPath, stylesStatic) => async (view
     themeColor: "#09090b",
   }
   const content = await readAsync(join(projectPath, `${viewName}.html`))
-  const { injectedContent, errorOverlayStyles } = getErrorOverlay(content)
+  const rootedContent = replaceRootElementId(content)
+  const { injectedContent, errorOverlayStyles } = getErrorOverlay(rootedContent)
   const stylesImpl = `${stylesStatic} ${errorOverlayStyles}`
 
   const compiled = await head(

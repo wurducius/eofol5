@@ -18,7 +18,7 @@ body {
   background-attachment: fixed;
 }
 
-#root {
+#@root@ {
   height: 100%;
 }
 

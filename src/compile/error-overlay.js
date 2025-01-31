@@ -2,11 +2,14 @@ const getConfig = require("../config/config")
 const { read, join } = require("../util-compile/fs")
 const HTMLParser = require("node-html-parser")
 const { EOFOL_ROOT_ELEMENT_ID } = require("../constants.js")
+const replaceRootElementId = require("./root-element-id")
 const config = getConfig()
 
 const errorOverlayHtml = read(join(config.PATH.CWD, "resources", "error-overlay", "error-overlay.html")).toString()
 
-const errorOverlayStyles = read(join(config.PATH.CWD, "resources", "error-overlay", "error-overlay.css")).toString()
+const errorOverlayStyles = replaceRootElementId(
+  read(join(config.PATH.CWD, "resources", "error-overlay", "error-overlay.css")).toString(),
+)
 
 const getErrorOverlay = (content) => {
   const parsed = HTMLParser.parse(content.toString())

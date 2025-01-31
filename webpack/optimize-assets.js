@@ -3,6 +3,7 @@ const { read, join } = require("../src/util-compile/fs")
 const minifyJs = require("../src/compile/minify-js")
 const minifyHtml = require("../src/compile/minify-html")
 const { getINTERNALS } = require("../src/compile/internals")
+const replaceRootElementId = require("../src/compile/root-element-id")
 
 const isAssetView = (views, assetName) =>
   Object.values(views).filter((view) => `assets/js/${view}.js` === assetName).length > 0
@@ -26,7 +27,11 @@ const addInternalAssets = (compilation) => {
     addAssetImpl(PLUGIN_INTERNAL.DEPENDENCIES, "", {})
   }
 
-  addAssetImpl("assets/css/base.css", read(join(process.cwd(), "resources", "styles", "base.css")).toString(), {})
+  addAssetImpl(
+    "assets/css/base.css",
+    replaceRootElementId(read(join(process.cwd(), "resources", "styles", "base.css")).toString()),
+    {},
+  )
   addAssetImpl("assets/css/theme.css", read(join(process.cwd(), "resources", "styles", "theme.css")).toString(), {})
 }
 
