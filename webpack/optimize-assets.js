@@ -27,13 +27,17 @@ const addInternalAssets = (compilation) => {
     addAssetImpl(PLUGIN_INTERNAL.DEPENDENCIES, "", {})
   }
 
-  // @TODO extract @VIEWS@ constant and add VIEWS
+  const views = getINTERNALS().views
   addAssetImpl(
     EOFOL_SERVICE_WORKER_FILENAME,
     read(join(process.cwd(), "resources", "service-worker", EOFOL_SERVICE_WORKER_FILENAME))
       .toString()
-      // @TODO fill VIEWS
-      .replaceAll(EOFOL_VIEWS_PLACEHOLDER, "index.html"),
+      .replaceAll(
+        EOFOL_VIEWS_PLACEHOLDER,
+        Object.values(views)
+          .map((view) => `${view}.html`)
+          .join(", "),
+      ),
     {},
   )
 }
