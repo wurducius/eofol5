@@ -24,7 +24,7 @@ wp.watch({
 
 const recompile = async () => {
   console.log(primary("Recompiling..."))
-  build()
+  await build()
 }
 
 const handleChange = async () => {

@@ -1,7 +1,7 @@
 const webpack = require("webpack")
 const getWebpackConfig = require("../../webpack/webpack.config")
 const { error, success } = require("@eofol/eofol-dev-utils")
-const { getConfig } = require("../../src/config")
+const { getConfig } = require("../../compile/config")
 
 const config = getConfig()
 

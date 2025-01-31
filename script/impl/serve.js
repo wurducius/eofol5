@@ -1,6 +1,6 @@
 const wds = require("eofol-dev-server").default
 const open = require("open").default
-const { getConfig } = require("../../src/config")
+const { getConfig } = require("../../compile/config")
 
 const config = getConfig()
 

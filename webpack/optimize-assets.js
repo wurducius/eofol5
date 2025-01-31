@@ -1,8 +1,9 @@
 const { addAsset, getAsset, PLUGIN_INTERNAL } = require("./plugin-utils")
-const { read, join } = require("../src/util-compile/fs")
-const minifyJs = require("../src/compile/minify-js")
-const minifyHtml = require("../src/compile/minify-html")
-const { getINTERNALS } = require("../src/compile/internals")
+const { read, join } = require("../compile/util-compile/fs")
+const minifyJs = require("../compile/compile/minify-js")
+const minifyHtml = require("../compile/compile/minify-html")
+const { getINTERNALS } = require("../compile/compile/internals")
+const replaceRootElementId = require("../compile/compile/root-element-id")
 
 const isAssetView = (views, assetName) =>
   Object.values(views).filter((view) => `assets/js/${view}.js` === assetName).length > 0
@@ -26,8 +27,12 @@ const addInternalAssets = (compilation) => {
     addAssetImpl(PLUGIN_INTERNAL.DEPENDENCIES, "", {})
   }
 
-  addAssetImpl("assets/css/base.css", read(join(process.cwd(), "src", "resources", "base.css")).toString(), {})
-  addAssetImpl("assets/css/theme.css", read(join(process.cwd(), "src", "resources", "theme.css")).toString(), {})
+  addAssetImpl(
+    "assets/css/base.css",
+    replaceRootElementId(read(join(process.cwd(), "resources", "styles", "base.css")).toString()),
+    {},
+  )
+  addAssetImpl("assets/css/theme.css", read(join(process.cwd(), "resources", "styles", "theme.css")).toString(), {})
 }
 
 const optimizeAssets = async (compiler, compilation) => {

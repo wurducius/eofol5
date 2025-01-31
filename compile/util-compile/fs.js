@@ -17,7 +17,7 @@ const readAsync = fsPromises.readFile
 
 const exists = fs.existsSync
 
-const existsAsync = fsPromises.exists
+const existsAsync = fs.exists
 
 const mkdir = fs.mkdirSync
 

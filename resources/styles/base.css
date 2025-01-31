@@ -18,7 +18,7 @@ body {
   background-attachment: fixed;
 }
 
-#root {
+#@root@ {
   height: 100%;
 }
 
@@ -140,18 +140,4 @@ body::-webkit-scrollbar-thumb {
   border: 4px solid transparent;
   background-color: hsl(0, 0%, 67%);
   background-clip: content-box;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.animation-fade-in {
-  opacity: 0;
-  animation: fadeIn 2s forwards; /* forwards (animation-fill-mode) retains the style from the last keyframe when the animation ends */
 }

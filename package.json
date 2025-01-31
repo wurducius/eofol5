@@ -29,6 +29,7 @@
     "eofol-dev-server": "^0.0.1",
     "eofol-head": "1.0.0",
     "html-minifier-terser": "^7.2.0",
+    "node-html-parser": "^7.0.1",
     "open": "^10.1.0",
     "rimraf": "^6.0.1",
     "sharp": "^0.33.5",
