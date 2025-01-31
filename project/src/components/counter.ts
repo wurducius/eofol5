@@ -4,25 +4,25 @@ import { button, div, h2, input } from "../../../src/dom"
 export const COUNTER = "counter"
 
 // @ts-ignore
-const handleCounterClick = (state, setState) => (offset) => () => {
-  setState({ ...state, value: Math.max(state.value < 0 ? 0 : (state.value ?? 0) + offset, 0) })
+const handleCounterClick = (state, mergeState) => (offset) => () => {
+  mergeState({ value: Math.max(state.value < 0 ? 0 : (state.value ?? 0) + offset, 0) })
 }
 
 // @ts-ignore
-const handleCounterClear = (state, setState) => () => {
-  setState({ ...state, value: 0 })
+const handleCounterClear = (mergeState) => () => {
+  mergeState({ value: 0 })
 }
 
 // @ts-ignore
-const handleIncrementChange = (state, setState) => (offset) => () => {
-  setState({ ...state, increment: (state.increment ?? 0) + offset })
+const handleIncrementChange = (state, mergeState) => (offset) => () => {
+  mergeState({ increment: (state.increment ?? 0) + offset })
 }
 
 defineComponent<{ value: number; increment: number }>(COUNTER, {
   // @ts-ignore
-  render: (state, setState) => {
-    const handleClick = handleCounterClick(state, setState)
-    const handleIncrement = handleIncrementChange(state, setState)
+  render: (state, setState, props, mergeState) => {
+    const handleClick = handleCounterClick(state, mergeState)
+    const handleIncrement = handleIncrementChange(state, mergeState)
 
     return div("flex-center flex-col", [
       h2(undefined, `Stateful component counter value = ${state.value}`),
@@ -49,7 +49,7 @@ defineComponent<{ value: number; increment: number }>(COUNTER, {
           { value: state.increment.toString(), type: "number" },
           {
             onchange: (e: { target: { value: any } }) => {
-              setState({ ...state, increment: Number(e.target.value ?? "0") })
+              mergeState({ increment: Number(e.target.value ?? "0") })
             },
           },
         ),
@@ -77,7 +77,7 @@ defineComponent<{ value: number; increment: number }>(COUNTER, {
           {},
           {
             onclick: () => {
-              setState({ ...state, value: (state.value ?? 0) + state.increment })
+              mergeState({ value: (state.value ?? 0) + state.increment })
             },
           },
         ),
@@ -86,7 +86,7 @@ defineComponent<{ value: number; increment: number }>(COUNTER, {
           "Clear",
           {},
           {
-            onclick: handleCounterClear(state, setState),
+            onclick: handleCounterClear(mergeState),
           },
         ),
       ]),
