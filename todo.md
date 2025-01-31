@@ -3,9 +3,26 @@
 ## High priority
 
 - Include dependencies in build
+- Extract eofol5 to eofol-utils
+- Render properly component children by vdom
+- Fix hot reload
+- Fix typing warnings and errors
+- Move internals to src
+- Render correctly Flat
 - Optimize eofol update
+- Separate compile and runtime code
+- Fix hot reload bug crash on file does not exist
 
 ## Low priority
+
+- Refactor unite logging
+- Refactor /src/dom
+- Create element vs stateful duplicated code
+- Test mergeState
+- Test flex/container components
+- Number input component
+- Extract constants and "root"
+- Separate constants from types
 
 ## Bookkeeping
 
