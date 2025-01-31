@@ -6,11 +6,14 @@ import { eDom, renderTagDom } from "./create-element"
 import { renderInstance } from "./stateful"
 
 export const vdomToDom = (tree: VDOM) => {
+  if (!tree) {
+    return undefined
+  }
   if (typeof tree === "string") {
     return deepCopyString(tree)
   } else {
     const renderedChildren: EofolElement[] = []
-    const childrenArr = Array.isArray(tree.children) ? tree.children : [tree.children]
+    const childrenArr = tree ? (Array.isArray(tree.children) ? tree.children : [tree.children]) : []
     const childrenImpl = childrenArr.filter(Boolean) as Array<VDOM_TEXT | VDOM_TAG | VDOM_COMPONENT>
     if (childrenImpl && childrenImpl.length > 0) {
       childrenImpl.forEach((child) => {

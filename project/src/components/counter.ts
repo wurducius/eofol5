@@ -20,7 +20,7 @@ const handleIncrementChange = (state, mergeState) => (offset) => () => {
 
 defineComponent<{ value: number; increment: number }>(COUNTER, {
   // @ts-ignore
-  render: (state, setState, props, mergeState) => {
+  render: (state, mergeState) => {
     const handleClick = handleCounterClick(state, mergeState)
     const handleIncrement = handleIncrementChange(state, mergeState)
 
