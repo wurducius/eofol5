@@ -1,13 +1,14 @@
 const getConfig = require("../config/config")
 const { read, join } = require("../util-compile")
 const HTMLParser = require("node-html-parser")
-const { EOFOL_ROOT_ELEMENT_ID, EOFOL_NAME, EOFOL_NAME_PLACEHOLDER } = require("../constants")
 const replaceRootElementId = require("./root-element-id")
+const { getEnvEofolName, getEnvEofolNamePlaceholder, getEnvEofolRootElementId } = require("../config/env")
+
 const config = getConfig()
 
 const errorOverlayHtml = read(join(config.PATH.CWD, "resources", "error-overlay", "error-overlay.html"))
   .toString()
-  .replaceAll(EOFOL_NAME_PLACEHOLDER, EOFOL_NAME)
+  .replaceAll(getEnvEofolNamePlaceholder(), getEnvEofolName())
 
 const errorOverlayStyles = replaceRootElementId(
   read(join(config.PATH.CWD, "resources", "error-overlay", "error-overlay.css")).toString(),
@@ -15,7 +16,7 @@ const errorOverlayStyles = replaceRootElementId(
 
 const getErrorOverlay = (content) => {
   const parsed = HTMLParser.parse(content.toString())
-  const rootElement = parsed.getElementById(EOFOL_ROOT_ELEMENT_ID)
+  const rootElement = parsed.getElementById(getEnvEofolRootElementId())
   if (rootElement) {
     rootElement.innerHTML = rootElement.innerHTML + errorOverlayHtml
   }

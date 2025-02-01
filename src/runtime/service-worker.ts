@@ -1,6 +1,6 @@
-import { BASE_URL, EOFOL_SERVICE_WORKER_FILENAME } from "../constants"
 import { isBrowser } from "../util"
 import { runtimeLog } from "../log"
+import { getEnvBaseUrl, getEnvEofolServiceWorkerFilename } from "../../project/src/env"
 
 export const registerServiceworker = () => {
   const hostname = window.location.hostname
@@ -10,7 +10,7 @@ export const registerServiceworker = () => {
   } else {
     if (isBrowser() && "serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register(`${BASE_URL}${EOFOL_SERVICE_WORKER_FILENAME}`)
+        .register(`${getEnvBaseUrl()}${getEnvEofolServiceWorkerFilename()}`)
         .then(() => {
           runtimeLog("Service worker registered.")
         })

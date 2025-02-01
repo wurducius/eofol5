@@ -1,6 +1,6 @@
-const { EOFOL_ROOT_ELEMENT_ID, EOFOL_ROOT_ELEMENT_ID_PLACEHOLDER } = require("../constants")
+const { getEnvEofolRootElementIdPlaceholder, getEnvEofolRootElementId } = require("../config/env")
 
 const replaceRootElementId = (content) =>
-  content.toString().replaceAll(EOFOL_ROOT_ELEMENT_ID_PLACEHOLDER, EOFOL_ROOT_ELEMENT_ID)
+  content.toString().replaceAll(getEnvEofolRootElementIdPlaceholder(), getEnvEofolRootElementId())
 
 module.exports = replaceRootElementId

@@ -1,17 +1,6 @@
-import {
-  e,
-  h1,
-  h2,
-  EOFOL_NAME,
-  EOFOL_ROOT_ELEMENT_ID,
-  eofolInit,
-  centerFlex,
-  centerFlexFull,
-  col,
-  container,
-  numberInput,
-} from "../../src"
+import { e, h1, h2, eofolInit, centerFlex, centerFlexFull, col, container, numberInput } from "../../src"
 import { COUNTER, EXAMPLE, FLAT } from "./components"
+import { getEnvEofolName, getEnvEofolRootElementId } from "./env"
 
 /*
 const LAYOUT = "layout"
@@ -23,12 +12,12 @@ defineComponent(LAYOUT, {
 eofolInit(EOFOL_ROOT_ELEMENT_ID, () => [e(LAYOUT)])
 */
 
-eofolInit(EOFOL_ROOT_ELEMENT_ID, () =>
+eofolInit(getEnvEofolRootElementId(), () =>
   container(
     centerFlexFull(
       col(
         [
-          h1(EOFOL_NAME),
+          h1(getEnvEofolName()),
           h2("Controlled input example"),
           centerFlex(
             numberInput({
