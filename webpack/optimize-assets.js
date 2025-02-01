@@ -1,13 +1,6 @@
 const { addAsset, getAsset, PLUGIN_INTERNAL } = require("./plugin-utils")
-const {
-  getINTERNALS,
-  read,
-  EOFOL_SERVICE_WORKER_FILENAME,
-  join,
-  EOFOL_VIEWS_PLACEHOLDER,
-  minifyHtml,
-  minifyJs,
-} = require("../compile")
+const { getINTERNALS, read, join, minifyHtml, minifyJs } = require("../compile")
+const { getEnvEofolServiceWorkerFilename, getEnvEofolViewsPlaceholder } = require("../compile/config/env")
 
 const isAssetView = (views, assetName) =>
   Object.values(views).filter((view) => `assets/js/${view}.js` === assetName).length > 0
@@ -31,13 +24,15 @@ const addInternalAssets = (compilation) => {
     addAssetImpl(PLUGIN_INTERNAL.DEPENDENCIES, "", {})
   }
 
+  const EOFOL_SERVICE_WORKER_FILENAME = getEnvEofolServiceWorkerFilename()
+
   const views = getINTERNALS().views
   addAssetImpl(
     EOFOL_SERVICE_WORKER_FILENAME,
     read(join(process.cwd(), "resources", "service-worker", EOFOL_SERVICE_WORKER_FILENAME))
       .toString()
       .replaceAll(
-        EOFOL_VIEWS_PLACEHOLDER,
+        getEnvEofolViewsPlaceholder(),
         Object.values(views)
           .map((view) => `${view}.html`)
           .join(", "),

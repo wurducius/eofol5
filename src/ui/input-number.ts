@@ -21,11 +21,13 @@ defineComponent(INPUT_NUMBER, {
     }
      */
     const handleIncrement = handleIncrementGeneral(state, mergeState, props.onChange)
+
+    // @TODO aria label
     return row([
       input(
         undefined,
         undefined,
-        { value: state.value.toString(), type: "number" },
+        { value: state.value.toString(), type: "number", "aria-label": "input-number" },
         {
           onchange: (e: { target: { value: string } }) => {
             const nextValue = Number(e.target.value ?? "0")

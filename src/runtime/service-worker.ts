@@ -10,7 +10,7 @@ export const registerServiceworker = () => {
   } else {
     if (isBrowser() && "serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register(`${getEnvBaseUrl()}${getEnvEofolServiceWorkerFilename()}`)
+        .register(`${getEnvBaseUrl()}/${getEnvEofolServiceWorkerFilename()}`)
         .then(() => {
           runtimeLog("Service worker registered.")
         })

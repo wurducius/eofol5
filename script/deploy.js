@@ -1,6 +1,9 @@
 const { execSync } = require("child_process")
 const { primary, success, error } = require("@eofol/eofol-dev-utils")
-const { spawnOptions, join, EOFOL_NAME } = require("../compile")
+const { spawnOptions, join } = require("../compile")
+const { getEnvEofolName } = require("../compile/config/env")
+
+const EOFOL_NAME = getEnvEofolName()
 
 console.log(primary(`Deploying ${EOFOL_NAME} project...`))
 
