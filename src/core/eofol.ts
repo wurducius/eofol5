@@ -4,6 +4,7 @@ import { eofolFatal } from "../log"
 import { domAppendChildren, domClearChildren } from "../util"
 import { renderVdomElement, vdomToDom } from "../vdom"
 import { init } from "../runtime"
+import { EOFOL_NAME } from "../constants"
 
 const eofolRender = (rootElement: Element, rendered: EofolNode) => {
   domClearChildren(rootElement)
@@ -19,19 +20,16 @@ export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) =>
     const root = document.getElementById(rootElementId)
     if (root) {
       ROOT_ELEMENT = root
-      const rendered = handler()
-      // @ts-ignore
-      const vdom = rendered[0]
+      const vdom = handler()
       setVDOM(vdom)
       const dom = vdomToDom(vdom)
-      // @ts-ignore
       eofolRender(root, [dom])
     } else {
       eofolFatal(`Root element with id = "${rootElementId}" not found in DOM.`)
     }
     init()
   } catch (ex: any) {
-    console.error(`Eofol5 compilation error: ${ex.message}${ex.stack ? ` - Stack: ${ex.stack}` : ""}`)
+    console.error(`${EOFOL_NAME} compilation error: ${ex.message}${ex.stack ? ` - Stacktrace: ${ex.stack}` : ""}`)
     const overlayElementLoading = document.getElementById("_eofol-error-overlay-msg-title-loading")
     const overlayElementTitle = document.getElementById("_eofol-error-overlay-msg-title")
     const overlayElementContent = document.getElementById("_eofol-error-overlay-msg-content")
@@ -40,7 +38,7 @@ export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) =>
       overlayElementLoading.innerHTML = ""
     }
     if (overlayElementTitle) {
-      overlayElementTitle.innerHTML = "Eofol5 compilation error:"
+      overlayElementTitle.innerHTML = `${EOFOL_NAME} compilation error:`
     }
     if (overlayElementContent) {
       overlayElementContent.innerHTML = ex.message

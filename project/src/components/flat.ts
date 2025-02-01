@@ -3,4 +3,4 @@ import { h3 } from "../../../src/render"
 
 export const FLAT = "flat"
 
-defineFlat(FLAT, () => h3(undefined, "Flat element example"))
+defineFlat(FLAT, () => h3("Flat element example"))

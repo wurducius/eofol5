@@ -1,5 +1,6 @@
 import { defineComponent } from "../../../src/runtime"
 import { button, div, h2, input } from "../../../src/render"
+import { centerFlex, col, row } from "../../../src/ui"
 
 export const COUNTER = "counter"
 
@@ -24,11 +25,11 @@ defineComponent<{ value: number; increment: number }>(COUNTER, {
     const handleClick = handleCounterClick(state, mergeState)
     const handleIncrement = handleIncrementChange(state, mergeState)
 
-    return div(
-      [
+    return centerFlex(
+      col([
         h2(`Stateful component counter value = ${state.value}`),
-        div(
-          [
+        centerFlex(
+          row([
             button(
               "+",
               undefined,
@@ -79,7 +80,6 @@ defineComponent<{ value: number; increment: number }>(COUNTER, {
             button(
               "Add amount",
               undefined,
-
               {},
               {
                 onclick: () => {
@@ -90,17 +90,14 @@ defineComponent<{ value: number; increment: number }>(COUNTER, {
             button(
               "Clear",
               undefined,
-
               {},
               {
                 onclick: handleCounterClear(mergeState),
               },
             ),
-          ],
-          "flex-center flex-row",
+          ]),
         ),
-      ],
-      "flex-center flex-col",
+      ]),
     )
   },
   initialState: { value: 0, increment: 1 },

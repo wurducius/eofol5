@@ -63,7 +63,7 @@ export interface Instance {
   def: string
 }
 
-export type VDOMChildren = VDOM[] | VDOM
+export type VDOMChildren = VDOM
 
 export type VDOM_TAG = {
   type: typeof VDOM_TYPE.TAG
