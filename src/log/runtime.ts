@@ -1,7 +1,7 @@
-import { EOFOL_RUNTIME_VERBOSE } from "../constants"
+import { getEnvEofolRuntimeVerbose } from "../../project/src/env"
 
 export const runtimeLog = (msg: string) => {
-  if (EOFOL_RUNTIME_VERBOSE) {
+  if (getEnvEofolRuntimeVerbose()) {
     console.log(msg)
   }
 }

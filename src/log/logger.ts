@@ -1,7 +1,7 @@
-import { EOFOL_VERBOSITY_LEVEL } from "../constants"
+import { getEnvVerbosityLevel } from "../../project/src/env"
 
 const eofolLog = (levelName: string, level: number) => (msg: string) => {
-  if (level === 0 || level >= EOFOL_VERBOSITY_LEVEL) {
+  if (level === 0 || level >= getEnvVerbosityLevel()) {
     console.log(`Eofol${level ? ` ${levelName}` : ""}: ${msg}`)
   }
 }

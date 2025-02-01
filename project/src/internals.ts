@@ -1,4 +1,4 @@
-import { Instance, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, mergeDeep, VDOM_TYPE } from "../../src"
+import { Instance, mergeDeep, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOM_TYPE } from "../../src"
 
 // eslint-disable-next-line no-undef
 export const getInternals = () => INTERNALS

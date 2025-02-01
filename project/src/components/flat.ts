@@ -1,5 +1,5 @@
-import { h3, defineFlat } from "../../../src"
+import { defineFlat, h2 } from "../../../src"
 
 export const FLAT = "flat"
 
-defineFlat(FLAT, () => h3("Flat element example"))
+defineFlat(FLAT, () => h2("Flat element example"))

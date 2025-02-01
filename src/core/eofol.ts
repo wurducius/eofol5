@@ -4,7 +4,7 @@ import { eofolFatal, getTimeNanoseconds, runtimeDuration, runtimeLog } from "../
 import { domAppendChildren, domClearChildren } from "../util"
 import { renderVdomElement, vdomToDom } from "../vdom"
 import { init } from "../runtime"
-import { EOFOL_NAME } from "../constants"
+import { getEnvEofolName } from "../../project/src/env"
 
 const eofolRender = (rootElement: Element, rendered: EofolNode) => {
   domClearChildren(rootElement)
@@ -32,7 +32,9 @@ export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) =>
     init()
     runtimeDuration("Initial render took", timeStart)
   } catch (ex: any) {
-    console.error(`${EOFOL_NAME} compilation error: ${ex.message}${ex.stack ? ` - Stacktrace: ${ex.stack}` : ""}`)
+    console.error(
+      `${getEnvEofolName()} compilation error: ${ex.message}${ex.stack ? ` - Stacktrace: ${ex.stack}` : ""}`,
+    )
     const overlayElementLoading = document.getElementById("_eofol-error-overlay-msg-title-loading")
     const overlayElementTitle = document.getElementById("_eofol-error-overlay-msg-title")
     const overlayElementContent = document.getElementById("_eofol-error-overlay-msg-content")
@@ -41,7 +43,7 @@ export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) =>
       overlayElementLoading.innerHTML = ""
     }
     if (overlayElementTitle) {
-      overlayElementTitle.innerHTML = `${EOFOL_NAME} compilation error:`
+      overlayElementTitle.innerHTML = `${getEnvEofolName()} compilation error:`
     }
     if (overlayElementContent) {
       overlayElementContent.innerHTML = ex.message
