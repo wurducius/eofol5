@@ -34,7 +34,7 @@ eofolInit(EOFOL_ROOT_ELEMENT_ID, () =>
             numberInput({
               initialValue: 42,
               onChange: (val) => {
-                console.log(val)
+                console.log(`Controlled input value changed: ${val}`)
               },
             }),
           ),

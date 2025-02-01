@@ -1,6 +1,6 @@
 import { EofolNode, EofolRenderHandler } from "../types"
 import { getInternals, getVDOM, setVDOM } from "../../project/src/internals"
-import { eofolFatal } from "../log"
+import { eofolFatal, getTimeNanoseconds, runtimeDuration, runtimeLog } from "../log"
 import { domAppendChildren, domClearChildren } from "../util"
 import { renderVdomElement, vdomToDom } from "../vdom"
 import { init } from "../runtime"
@@ -16,6 +16,8 @@ let ROOT_ELEMENT: HTMLElement | undefined = undefined
 export const getRootElement = () => ROOT_ELEMENT
 
 export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) => {
+  runtimeLog("Eofol init")
+  const timeStart = getTimeNanoseconds()
   try {
     const root = document.getElementById(rootElementId)
     if (root) {
@@ -28,6 +30,7 @@ export const eofolInit = (rootElementId: string, handler: EofolRenderHandler) =>
       eofolFatal(`Root element with id = "${rootElementId}" not found in DOM.`)
     }
     init()
+    runtimeDuration("Initial render took", timeStart)
   } catch (ex: any) {
     console.error(`${EOFOL_NAME} compilation error: ${ex.message}${ex.stack ? ` - Stacktrace: ${ex.stack}` : ""}`)
     const overlayElementLoading = document.getElementById("_eofol-error-overlay-msg-title-loading")
@@ -62,6 +65,8 @@ export const eofolUpdate = (id: string) => {
     },
     (vdomElement) => vdomElement,
   )*/
+  runtimeLog("Eofol update")
+  const timeStart = getTimeNanoseconds()
   const vdomUpdate = getVDOM()
   if (vdomUpdate) {
     const domUpdate = vdomToDom(vdomUpdate)
@@ -83,6 +88,7 @@ export const eofolUpdate = (id: string) => {
   } else {
     // efl err
   }
+  runtimeDuration("Update render took", timeStart)
 }
 
 export const forceRerender = () => {

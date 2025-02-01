@@ -15,9 +15,11 @@ const handleIncrementGeneral = (state, mergeState, onChange) => (offset) => () =
 defineComponent(INPUT_NUMBER, {
   // @ts-ignore
   render: (state, mergeState, props) => {
+    /*
     if (!state.initialized && props.initialValue !== undefined && state.value !== props.initialValue) {
       mergeState({ value: props.initialValue, initialized: true })
     }
+     */
     const handleIncrement = handleIncrementGeneral(state, mergeState, props.onChange)
     return row([
       input(
