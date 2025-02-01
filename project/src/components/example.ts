@@ -1,6 +1,4 @@
-import { defineComponent } from "../../../src/runtime"
-import { h2 } from "../../../src/render"
-import { centerFlex, col } from "../../../src/ui"
+import { defineComponent, h2, centerFlex, col } from "../../../src"
 
 export const EXAMPLE = "example"
 

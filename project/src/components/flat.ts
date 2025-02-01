@@ -1,5 +1,4 @@
-import { defineFlat } from "../../../src/runtime"
-import { h3 } from "../../../src/render"
+import { h3, defineFlat } from "../../../src"
 
 export const FLAT = "flat"
 

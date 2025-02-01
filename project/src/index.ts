@@ -1,8 +1,17 @@
-import { div, e, h1 } from "../../src/render"
+import {
+  e,
+  h1,
+  h2,
+  EOFOL_NAME,
+  EOFOL_ROOT_ELEMENT_ID,
+  eofolInit,
+  centerFlex,
+  centerFlexFull,
+  col,
+  container,
+  numberInput,
+} from "../../src"
 import { COUNTER, EXAMPLE, FLAT } from "./components"
-import { EOFOL_NAME, EOFOL_ROOT_ELEMENT_ID } from "../../src/constants"
-import { eofolInit } from "../../src/core"
-import { centerFlexFull, col, container } from "../../src/ui"
 
 /*
 const LAYOUT = "layout"
@@ -15,5 +24,26 @@ eofolInit(EOFOL_ROOT_ELEMENT_ID, () => [e(LAYOUT)])
 */
 
 eofolInit(EOFOL_ROOT_ELEMENT_ID, () =>
-  container(centerFlexFull(col(div(div([h1(EOFOL_NAME), e(COUNTER), e(EXAMPLE), e(FLAT)], "m-md"))))),
+  container(
+    centerFlexFull(
+      col(
+        [
+          h1(EOFOL_NAME),
+          h2("Controlled input example"),
+          centerFlex(
+            numberInput({
+              initialValue: 42,
+              onChange: (val) => {
+                console.log(val)
+              },
+            }),
+          ),
+          e(COUNTER),
+          e(EXAMPLE),
+          e(FLAT),
+        ],
+        "m-md",
+      ),
+    ),
+  ),
 )

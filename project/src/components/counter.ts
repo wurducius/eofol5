@@ -1,6 +1,4 @@
-import { defineComponent } from "../../../src/runtime"
-import { button, div, h2, input } from "../../../src/render"
-import { centerFlex, col, row } from "../../../src/ui"
+import { defineComponent, button, div, h2, input, centerFlex, col, row } from "../../../src"
 
 export const COUNTER = "counter"
 

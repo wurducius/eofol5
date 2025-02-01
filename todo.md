@@ -15,14 +15,7 @@
 
 ## Low priority
 
-- Refactor unite logging
-- Refactor /src/dom
 - Create element vs stateful duplicated code
-- Test mergeState
-- Test flex/container components
-- Number input component
-- Extract constants and "root"
-- Separate constants from types
 
 ## Bookkeeping
 
