@@ -1,4 +1,4 @@
-const { getConfig } = require("../config")
+const getConfig = require("../config/config")
 const { join, read, mergeDeep } = require("../util-compile")
 const envDefault = require("../config/env-default")
 

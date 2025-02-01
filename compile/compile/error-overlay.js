@@ -6,12 +6,12 @@ const { getEnvEofolName, getEnvEofolNamePlaceholder, getEnvEofolRootElementId } 
 
 const config = getConfig()
 
-const errorOverlayHtml = read(join(config.PATH.CWD, "resources", "error-overlay", "error-overlay.html"))
+const errorOverlayHtml = read(join(config.PATH.RESOURCES_ERROROVERLAY, `error-overlay${config.EXT.HTML}`))
   .toString()
   .replaceAll(getEnvEofolNamePlaceholder(), getEnvEofolName())
 
 const errorOverlayStyles = replaceRootElementId(
-  read(join(config.PATH.CWD, "resources", "error-overlay", "error-overlay.css")).toString(),
+  read(join(config.PATH.RESOURCES_ERROROVERLAY, `error-overlay${config.EXT.CSS}`)).toString(),
 )
 
 const getErrorOverlay = (content) => {
