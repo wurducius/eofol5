@@ -1,4 +1,4 @@
-const { exists, join, mkdirAsync } = require("../util-compile/fs")
+const { exists, join, mkdirAsync } = require("../util-compile")
 
 const touchBuildDirs = async (buildPath) => {
   if (!exists(buildPath)) {

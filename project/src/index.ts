@@ -1,24 +1,49 @@
-import { div, e, eofolInit, h1 } from "../../src/dom"
+import {
+  e,
+  h1,
+  h2,
+  EOFOL_NAME,
+  EOFOL_ROOT_ELEMENT_ID,
+  eofolInit,
+  centerFlex,
+  centerFlexFull,
+  col,
+  container,
+  numberInput,
+} from "../../src"
 import { COUNTER, EXAMPLE, FLAT } from "./components"
-import { defineFlat } from "../../src/runtime"
-import { EOFOL_ROOT_ELEMENT_ID } from "../../src/constants"
-
-const LAYOUT = "layout"
-
-defineFlat(LAYOUT, () =>
-  div(div(div([h1("Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)], "m-md"), "flex-center-full flex-col"), "container-md"),
-)
-
-// eofolInit(EOFOL_ROOT_ELEMENT_ID, () => [e(LAYOUT)])
 
 /*
-eofolInit(EOFOL_ROOT_ELEMENT_ID, () => [
-  e(CONTAINER, undefined, [
-    div("flex-center-full flex-col", div("m-md", [h1(undefined, "Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)])),
-  ]),
-])
+const LAYOUT = "layout"
+
+defineComponent(LAYOUT, {
+  render: () => container(centerFlexFull(col(div(div([h1("Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)], "m-md"))))),
+})
+
+eofolInit(EOFOL_ROOT_ELEMENT_ID, () => [e(LAYOUT)])
 */
 
-eofolInit(EOFOL_ROOT_ELEMENT_ID, () => [
-  div(div(div([h1("Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)], "m-md"), "flex-center-full flex-col"), "container-md"),
-])
+eofolInit(EOFOL_ROOT_ELEMENT_ID, () =>
+  container(
+    centerFlexFull(
+      col(
+        [
+          h1(EOFOL_NAME),
+          h2("Controlled input example"),
+          centerFlex(
+            numberInput({
+              initialValue: 42,
+              onChange: (val) => {
+                console.log(val)
+              },
+            }),
+          ),
+          e(COUNTER),
+          e(EXAMPLE),
+          e(FLAT),
+        ],
+        "m-md",
+      ),
+    ),
+  ),
+)

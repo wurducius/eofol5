@@ -1,4 +1,4 @@
-const { cpAsync, isDirectory, join } = require("../util-compile/fs")
+const { cpAsync, isDirectory, join } = require("../util-compile")
 
 const copyPublicFiles = (buildPath, projectPath, publicDir) =>
   Promise.all(

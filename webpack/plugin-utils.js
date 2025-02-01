@@ -1,4 +1,6 @@
-const PLUGIN_NAME = "Eofol5 webpack plugin"
+const { EOFOL_NAME } = require("../compile")
+
+const PLUGIN_NAME = `${EOFOL_NAME} webpack plugin`
 
 const PLUGIN_INTERNAL = {
   DEPENDENCIES: "assets/js/dependencies.js",

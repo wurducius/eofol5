@@ -1,10 +1,12 @@
-const { readDirAsync } = require("../../compile/util-compile/fs")
-const { getConfig } = require("../../compile/config")
+const {
+  readDirAsync,
+  getConfig,
+  compileTemplates,
+  touchBuildDirs,
+  copyPublicFiles,
+  mergeINTERNALS,
+} = require("../../compile")
 const buildWebpack = require("./build-webpack")
-const { compileTemplates } = require("../../compile/compile/template")
-const { touchBuildDirs } = require("../../compile/compile/touch-build-dirs")
-const { copyPublicFiles } = require("../../compile/compile/copy-public-files")
-const { mergeINTERNALS } = require("../../compile/compile/internals")
 
 const config = getConfig()
 

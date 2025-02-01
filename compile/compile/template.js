@@ -1,8 +1,9 @@
-const { join, parse, readAsync, writeAsync, read } = require("../util-compile/fs")
+const { join, parse, readAsync, writeAsync, read } = require("../util-compile")
 const { head } = require("eofol-head")
 const minifyHtml = require("./minify-html")
 const getErrorOverlay = require("./error-overlay")
 const replaceRootElementId = require("./root-element-id")
+const { EOFOL_NAME } = require("../constants")
 
 const injectDoctype = (content) => `<!DOCTYPE html>${content}`
 
@@ -10,7 +11,7 @@ const baseStyles = replaceRootElementId(read(join(process.cwd(), "resources", "s
 const themeStyles = read(join(process.cwd(), "resources", "styles", "theme.css")).toString()
 
 const defaultHeadData = {
-  title: "Eofol5 app",
+  title: `${EOFOL_NAME} app`,
   description: "All inclusive web framework with zero configuration, batteries included!",
   keywords: "JS,Frontend framework",
   author: "Jakub Eliáš",

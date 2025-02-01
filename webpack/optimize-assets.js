@@ -1,8 +1,13 @@
 const { addAsset, getAsset, PLUGIN_INTERNAL } = require("./plugin-utils")
-const { read, join } = require("../compile/util-compile/fs")
-const minifyJs = require("../compile/compile/minify-js")
-const minifyHtml = require("../compile/compile/minify-html")
-const { getINTERNALS } = require("../compile/compile/internals")
+const {
+  getINTERNALS,
+  read,
+  EOFOL_SERVICE_WORKER_FILENAME,
+  join,
+  EOFOL_VIEWS_PLACEHOLDER,
+  minifyHtml,
+  minifyJs,
+} = require("../compile")
 
 const isAssetView = (views, assetName) =>
   Object.values(views).filter((view) => `assets/js/${view}.js` === assetName).length > 0
@@ -26,12 +31,17 @@ const addInternalAssets = (compilation) => {
     addAssetImpl(PLUGIN_INTERNAL.DEPENDENCIES, "", {})
   }
 
-  // @TODO extract @VIEWS@ constant and add VIEWS
+  const views = getINTERNALS().views
   addAssetImpl(
-    "service-worker.js",
-    read(join(process.cwd(), "resources", "service-worker", "service-worker.js"))
+    EOFOL_SERVICE_WORKER_FILENAME,
+    read(join(process.cwd(), "resources", "service-worker", EOFOL_SERVICE_WORKER_FILENAME))
       .toString()
-      .replaceAll("@VIEWS@", "index.html"),
+      .replaceAll(
+        EOFOL_VIEWS_PLACEHOLDER,
+        Object.values(views)
+          .map((view) => `${view}.html`)
+          .join(", "),
+      ),
     {},
   )
 }

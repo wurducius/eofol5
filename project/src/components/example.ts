@@ -1,12 +1,10 @@
-import { defineComponent } from "../../../src/runtime"
-import { div, h2 } from "../../../src/dom"
+import { defineComponent, h2, centerFlex, col } from "../../../src"
 
 export const EXAMPLE = "example"
 
 defineComponent(EXAMPLE, {
   // @ts-ignore
   render: () => {
-    return div([h2("Example")], "flex-center flex-col")
+    return centerFlex(col(h2("Example")))
   },
-  initialState: {},
 })

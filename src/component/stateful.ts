@@ -3,7 +3,7 @@ import { generateId, mergeDeep } from "../util"
 import { getDef } from "../runtime"
 import { eofolErrorDefNotFound } from "../log"
 import { getInstance, mergeInstance } from "../../project/src/internals"
-import { eofolUpdate } from "./eofol"
+import { eofolUpdate } from "../core"
 import { DEF_TYPE_COMPONENT } from "../eofol-constants"
 
 const updateState = (idInstance: string, instance: Instance, nextState: any) => {
@@ -44,7 +44,8 @@ export const renderInstanceFromDef = (
   const setState = getStateSetter(idInstance, instance)
   const mergeState = getStateMerge(idInstance, instance)
   mergeInstance(idInstance, instance)
-  const propsImpl = { ...props, id: idInstance, def: def.id, children }
+  // @TODO removed children arg from propsImpl
+  const propsImpl = { ...props, id: idInstance, def: def.id }
   return def.render(state, mergeState, propsImpl, setState)
 }
 export const renderFlatFromDef = (

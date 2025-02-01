@@ -1,5 +1,5 @@
 const rimraf = require("rimraf")
-const { getConfig } = require("../../compile/config")
+const { getConfig } = require("../../compile")
 
 const config = getConfig()
 
