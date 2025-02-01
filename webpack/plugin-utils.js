@@ -1,6 +1,6 @@
-const { EOFOL_NAME } = require("../compile")
+const { getEnvEofolName } = require("../compile/config/env")
 
-const PLUGIN_NAME = `${EOFOL_NAME} webpack plugin`
+const PLUGIN_NAME = `${getEnvEofolName()} webpack plugin`
 
 const PLUGIN_INTERNAL = {
   DEPENDENCIES: "assets/js/dependencies.js",

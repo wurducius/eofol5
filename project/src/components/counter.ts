@@ -47,7 +47,7 @@ defineComponent<{ value: number; increment: number }>(COUNTER, {
             input(
               undefined,
               undefined,
-              { value: state.increment.toString(), type: "number" },
+              { value: state.increment.toString(), type: "number", "aria-label": "counter" },
               {
                 onchange: (e: { target: { value: any } }) => {
                   mergeState({ increment: Number(e.target.value ?? "0") })
