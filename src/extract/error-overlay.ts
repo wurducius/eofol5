@@ -10,11 +10,11 @@ export const withErrorOverlay = (handler: () => void) => {
     )
     selectElementById("_eofol-error-overlay-msg-title-loading", (e) => {
       // @ts-ignore
-      e.style = "display: none;"
+      e.setAttribute("style", "display: none;")
     })
     selectElementById("_eofol-error-overlay-container-error", (e) => {
       // @ts-ignore
-      e.style = "display: flex;"
+      e.setAttribute("style", "display: flex;")
     })
     selectElementById("_eofol-error-overlay-msg-title", (e) => {
       e.innerHTML = `${getEnvEofolName()} compilation error:`

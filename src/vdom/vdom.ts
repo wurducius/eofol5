@@ -1,10 +1,10 @@
-import { EofolElement, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT } from "../types"
+import { EofolElement, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOMChildren } from "../types"
 import { deepCopyString } from "../util"
 import { getInstance, isVDOMComponent, isVDOMTag } from "../../project/src/internals"
 import { eDom, renderTagDom } from "../render"
 import { renderInstance } from "../component"
 
-export const vdomToDom = (tree: VDOM) => {
+export const vdomToDom = (tree: VDOMChildren) => {
   if (!tree) {
     return undefined
   }

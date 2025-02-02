@@ -98,7 +98,7 @@ export interface Instance {
   def: string
 }
 
-export type VDOMChildren = VDOM
+export type VDOMChildren = VDOM | VDOM[] | undefined
 
 export type VDOM_TAG = {
   type: typeof VDOM_TYPE.TAG
