@@ -6,7 +6,7 @@ export const cx = (...styles: Classname[]) => styles.filter(Boolean).join(" ")
 
 export const defineSimple = (tagName: string, className: string) =>
   defineComponent(tagName, {
-    render: (state, mergeState, props) => div(props.children, cx(className, props && props.className)),
+    render: (a) => div(a.props.children, cx(className, a.props && a.props.className)),
   })
 
 // @TODO Awful hack passing className by props

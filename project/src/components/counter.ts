@@ -19,7 +19,9 @@ const handleIncrementChange = (state, mergeState) => (offset) => () => {
 
 export default define<{ value: number; increment: number }>(COUNTER, {
   // @ts-ignore
-  render: (state, mergeState) => {
+  render: (a) => {
+    const { state, mergeState } = a
+
     const handleClick = handleCounterClick(state, mergeState)
     const handleIncrement = handleIncrementChange(state, mergeState)
 
