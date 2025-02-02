@@ -16,4 +16,6 @@ const injectViews = (views) => (content) => replace(getEnvEofolViewsPlaceholder(
 
 const injectDoctype = (content) => `<!DOCTYPE html>${content}`
 
-module.exports = { injectRootId, injectEofolName, injectViews, injectDoctype }
+const injectInternals = (content) => `let INTERNALS = ${content}\n`
+
+module.exports = { injectRootId, injectEofolName, injectViews, injectDoctype, injectInternals }

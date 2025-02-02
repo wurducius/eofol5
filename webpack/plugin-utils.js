@@ -6,9 +6,9 @@ const config = getConfig()
 const PLUGIN_NAME = `${getEnvEofolName()} webpack plugin`
 
 const PLUGIN_INTERNAL = {
-  DEPENDENCIES: `${config.FILENAME.DIRNAME_ASSETS}/${config.FILENAME.DIRNAME_JS}/dependencies.js`,
-  EOFOL: `${config.FILENAME.DIRNAME_ASSETS}/${config.FILENAME.DIRNAME_JS}/eofol.js`,
-  RUNTIME: `${config.FILENAME.DIRNAME_ASSETS}/${config.FILENAME.DIRNAME_JS}/runtime.js`,
+  DEPENDENCIES: `${config.FILENAME.DIRNAME_ASSETS}/${config.FILENAME.DIRNAME_JS}/${config.FILENAME.DEPENDENCIES}${config.EXT.JS}`,
+  EOFOL: `${config.FILENAME.DIRNAME_ASSETS}/${config.FILENAME.DIRNAME_JS}/${config.FILENAME.EOFOL}${config.EXT.JS}`,
+  RUNTIME: `${config.FILENAME.DIRNAME_ASSETS}/${config.FILENAME.DIRNAME_JS}/${config.FILENAME.RUNTIME}${config.EXT.JS}`,
 }
 
 const logInfo = (msg) => console.log(`${PLUGIN_NAME}: ${msg}`)

@@ -53,7 +53,20 @@ export const createInstanceFromDef = (def: DefInternal<any>, props?: Props, chil
   const mergeState = getStateMerge(idInstance, instance)
   mergeInstance(idInstance, instance)
   const propsImpl = { ...props, id: idInstance, def: def.id, children }
-  return def.render({ state, mergeState, props: propsImpl, setState })
+  const constructed = def.constructor ? def.constructor(def.defaultProps ?? {}) : undefined
+  const bodyImpl = { ...constructed, ...(instance.body ?? {}) }
+  const paramsImpl = {}
+  const resetState = () => {}
+
+  return def.render({
+    body: bodyImpl,
+    params: paramsImpl,
+    resetState,
+    state,
+    mergeState,
+    props: propsImpl,
+    setState,
+  })
 }
 
 const renderComponentFromDefDom = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {
@@ -118,11 +131,16 @@ export const createInstanceFromDefVdom = (
   isNew?: boolean,
 ) => {
   const idInstance = isNew ? generateId() : (props?.id ?? generateId())
+  let bodyImpl = {}
+  if (isNew && def.constructor) {
+    bodyImpl = def.constructor(def.defaultParams ?? {})
+  }
   const savedInstance = isNew ? undefined : getInstance(idInstance)
   const instance = savedInstance ?? {
     id: idInstance,
     def: def.id,
     state: def.initialState ? { ...def.initialState } : {},
+    body: bodyImpl,
   }
   mergeInstance(idInstance, instance)
   return {

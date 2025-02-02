@@ -1,6 +1,6 @@
 import { h1, h2, eofolInit, centerFlex, centerFlexFull, col, container, numberInput } from "../../src"
 import { getEnvEofolName } from "./env"
-import { example, counter, flat, forceUpdate } from "./components"
+import { counter, example, flat, forceUpdate } from "./components"
 
 eofolInit(() =>
   container(
