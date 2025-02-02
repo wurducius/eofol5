@@ -101,4 +101,7 @@ export default define<{ value: number; increment: number }>(COUNTER, {
     )
   },
   initialState: { value: 0, increment: 1 },
+  constructor: () => {
+    return { constructed: true }
+  },
 })

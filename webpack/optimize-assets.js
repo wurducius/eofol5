@@ -3,7 +3,7 @@ const { getINTERNALS, minifyHtml, minifyJs } = require("../compile")
 const { getEnvEofolServiceWorkerFilename } = require("../compile/config/env")
 const { getConfig } = require("../compile/config")
 const { eReadFull } = require("../compile/util-compile/e-fs")
-const { injectViews } = require("../compile/helper/inject")
+const { injectViews, injectInternals } = require("../compile/helper/inject")
 
 const config = getConfig()
 
@@ -12,7 +12,7 @@ const isAssetView = (views, assetName) =>
     (view) => `${config.PATH.DIRNAME_ASSETS}/${config.PATH.DIRNAME_JS}/${view}${config.EXT.JS}` === assetName,
   ).length > 0
 
-const injectInternals = (assetName, source) => {
+const injectInternalsImpl = (assetName, source) => {
   const internals = getINTERNALS()
   let appendSource = ""
   if (isAssetView(internals.views, assetName)) {
@@ -52,7 +52,7 @@ const optimizeAssets = async (compiler, compilation) => {
         const source = asset.source()
         let nextSource = undefined
         if (assetName.endsWith(config.EXT.JS)) {
-          nextSource = minifyJs(injectInternals(assetName, source))
+          nextSource = minifyJs(injectInternalsImpl(assetName, source))
         } else if (assetName.endsWith(config.EXT.CSS)) {
           nextSource = await minifyHtml(source)
         } else if (assetName.endsWith(config.EXT.HTML)) {

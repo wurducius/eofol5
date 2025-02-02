@@ -48,11 +48,46 @@ export type DefInternal<T> = (Def<T> | DefFlat) & {
   type: DEF_TYPE
 }
 
+export type DefRenderArg<T> = {
+  state: State<T>
+  mergeState: SetState<Partial<T>>
+  setState: SetState<T>
+  resetState: () => void
+  props: Props
+  params: Props
+  body: Props
+}
+
+export type Multi<T> = T | T[] | undefined
+
+// eslint-disable-next-line no-unused-vars
+export type Effect<T> = (arg: DefRenderArg<T>) => void
+
+// eslint-disable-next-line no-unused-vars
+export type DefRender<T> = (arg: DefRenderArg<T>) => EofolNode
+
 // @TODO finish
 export type Def<T> = {
+  render: DefRender<T>
+  initialState?: State<T>
+  defaultProps?: Props
+  defaultParams?: Props
+  className?: Multi<string>
   // eslint-disable-next-line no-unused-vars
-  render: (arg: { state: State<T>; mergeState: SetState<Partial<T>>; props: Props; setState: SetState<T> }) => EofolNode
-  initialState: State<T>
+  constructor?: (defaultProps: Props) => Props
+  effect?: Multi<Effect<T>>
+  subscribe?: Multi<string>
+  // eslint-disable-next-line no-unused-vars
+  shouldUpdate?: (arg: DefRenderArg<T>) => boolean
+  memo?: boolean
+  // eslint-disable-next-line no-unused-vars
+  getDerivedStateFromProps?: (arg: DefRenderArg<T>) => T
+  // eslint-disable-next-line no-unused-vars
+  onBeforeUpdate?: (arg: DefRenderArg<T>) => void
+  // eslint-disable-next-line no-unused-vars
+  onMounted?: (arg: DefRenderArg<T>) => void
+  // eslint-disable-next-line no-unused-vars
+  onUnmounted?: (arg: DefRenderArg<T>) => void
 }
 
 // @TODO finish

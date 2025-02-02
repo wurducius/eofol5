@@ -32,6 +32,7 @@ export const renderInstanceFromDef = (
   props?: Props,
   children?: EofolNode,
   isNew?: boolean,
+  body?: Props,
 ) => {
   const idInstance = isNew ? generateId() : (props?.id ?? generateId())
   const savedInstance = isNew ? undefined : getInstance(idInstance)
@@ -43,10 +44,23 @@ export const renderInstanceFromDef = (
   const state = { ...instance.state }
   const setState = getStateSetter(idInstance, instance)
   const mergeState = getStateMerge(idInstance, instance)
+  const resetState = () => {}
+  const constructed = def.constructor ? def.constructor(def.defaultProps ?? {}) : {}
+  const bodyImpl = { ...body, ...constructed }
+  const paramsImpl = {}
   mergeInstance(idInstance, instance)
   // @TODO removed children arg from propsImpl
   const propsImpl = { ...props, id: idInstance, def: def.id }
-  return def.render({ state, mergeState, props: propsImpl, setState })
+
+  return def.render({
+    body: bodyImpl,
+    params: paramsImpl,
+    resetState,
+    state,
+    mergeState,
+    props: propsImpl,
+    setState,
+  })
 }
 export const renderFlatFromDef = (
   def: DefFlat & { id: string },
@@ -58,11 +72,11 @@ export const renderFlatFromDef = (
   const propsImpl = { ...props, id: idInstance, def: def.id, children }
   return def.render(propsImpl)
 }
-export const renderInstance = (idDef: string, props?: Props, children?: EofolNode, isNew?: boolean) => {
+export const renderInstance = (idDef: string, props?: Props, children?: EofolNode, isNew?: boolean, body?: Props) => {
   const def = getDef(idDef)
   if (def) {
     if (def.type === DEF_TYPE_COMPONENT) {
-      return renderInstanceFromDef(def, props, children, isNew)
+      return renderInstanceFromDef(def, props, children, isNew, body)
     } else {
       return renderFlatFromDef(def, props, children)
     }
