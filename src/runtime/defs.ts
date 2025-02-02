@@ -1,4 +1,4 @@
-import { Def, DEF_TYPE, DefFlat, DefInternal, Props, VDOMChildren } from "../types"
+import { Classname, Def, DEF_TYPE, DefFlat, DefInternal, Properties, Props, VDOMChildren } from "../types"
 import { e } from "../render"
 
 const defsRegistry: Record<string, DefInternal<any>> = {}
@@ -22,5 +22,6 @@ export function defineFlat(id: string, def: (props: Props) => VDOMChildren) {
 
 export function define<T>(id: string, def: Def<T>) {
   defineComponent(id, def)
-  return () => e(id)
+  return (children: VDOMChildren, className: Classname, props: Props, properties: Properties) =>
+    e(id, children, className, props, properties)
 }

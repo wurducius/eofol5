@@ -1,19 +1,13 @@
-import { defineSimple, renderSimple } from "./util"
+import { defineSimple } from "./util"
 
-export const FLEX = "eofol-flex"
-export const ROW = "eofol-row"
-export const COL = "eofol-col"
-export const CENTER_FLEX = "eofol-center-flex"
-export const CENTER_FLEX_FULL = "eofol-center-flex-full"
+const FLEX = "eofol-flex"
+const ROW = "eofol-row"
+const COL = "eofol-col"
+const CENTER_FLEX = "eofol-center-flex"
+const CENTER_FLEX_FULL = "eofol-center-flex-full"
 
-defineSimple(FLEX, "flex-base")
-defineSimple(ROW, "flex-row")
-defineSimple(COL, "flex-col")
-defineSimple(CENTER_FLEX, "flex-center")
-defineSimple(CENTER_FLEX_FULL, "flex-center-full")
-
-export const flex = renderSimple(FLEX)
-export const row = renderSimple(ROW)
-export const col = renderSimple(COL)
-export const centerFlex = renderSimple(CENTER_FLEX)
-export const centerFlexFull = renderSimple(CENTER_FLEX_FULL)
+export const flex = defineSimple(FLEX, "flex-base")
+export const row = defineSimple(ROW, "flex-row")
+export const col = defineSimple(COL, "flex-col")
+export const centerFlex = defineSimple(CENTER_FLEX, "flex-center")
+export const centerFlexFull = defineSimple(CENTER_FLEX_FULL, "flex-center-full")

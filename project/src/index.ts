@@ -1,44 +1,6 @@
-import {
-  h1,
-  h2,
-  eofolInit,
-  centerFlex,
-  centerFlexFull,
-  col,
-  container,
-  numberInput,
-  button,
-  eofolForceUpdate,
-  div,
-  generateId,
-  define,
-} from "../../src"
+import { h1, h2, eofolInit, centerFlex, centerFlexFull, col, container, numberInput } from "../../src"
 import { getEnvEofolName } from "./env"
-import counter from "./components/counter"
-import example from "./components/example"
-import flat from "./components/flat"
-
-/*
-const LAYOUT = "layout"
-
-defineComponent(LAYOUT, {
-  render: () => container(centerFlexFull(col(div(div([h1("Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)], "m-md"))))),
-})
-
-eofolInit(EOFOL_ROOT_ELEMENT_ID, () => [e(LAYOUT)])
-*/
-
-const eForceUpdate = define("force-update", {
-  render: () =>
-    col([
-      button("Force update", undefined, undefined, {
-        onclick: () => {
-          eofolForceUpdate()
-        },
-      }),
-      div(`Nonce: ${generateId()}`),
-    ]),
-})
+import { example, counter, flat, forceUpdate } from "./components"
 
 eofolInit(() =>
   container(
@@ -58,7 +20,7 @@ eofolInit(() =>
           counter(),
           example(),
           flat(),
-          eForceUpdate(),
+          forceUpdate(),
         ],
         "m-md",
       ),
