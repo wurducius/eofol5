@@ -4,7 +4,7 @@ const minifyHtml = require("./minify-html")
 const { getConfig } = require("../config")
 const getErrorOverlay = require("../../src/extract/error-overlay-compile")
 const { injectRootId, injectDoctype } = require("../helper")
-const defaultHeadData = require("./head-data-default")
+const defaultHeadData = require("../../resources/head/head-data-default")
 
 const config = getConfig()
 

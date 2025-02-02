@@ -1,4 +1,4 @@
-const { getEnvEofolName } = require("../config/env")
+const { getEnvEofolName } = require("../../compile/config/env")
 
 const defaultHeadData = {
   title: `${getEnvEofolName()} app`,

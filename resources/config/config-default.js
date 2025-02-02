@@ -1,4 +1,4 @@
-const { join } = require("../util-compile")
+const { join } = require("../../compile/util-compile")
 
 const CWD = process.cwd()
 

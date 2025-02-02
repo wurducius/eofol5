@@ -1,27 +1,31 @@
 import { getEnvEofolName } from "../../project/src/env"
+import { selectElementById } from "../util"
 
 export const withErrorOverlay = (handler: () => void) => {
   try {
-    handler()
+    return handler()
   } catch (ex: any) {
     console.error(
       `${getEnvEofolName()} compilation error: ${ex.message}${ex.stack ? ` - Stacktrace: ${ex.stack}` : ""}`,
     )
-    const overlayElementLoading = document.getElementById("_eofol-error-overlay-msg-title-loading")
-    const overlayElementTitle = document.getElementById("_eofol-error-overlay-msg-title")
-    const overlayElementContent = document.getElementById("_eofol-error-overlay-msg-content")
-    const overlayElementStack = document.getElementById("_eofol-error-overlay-msg-stack")
-    if (overlayElementLoading) {
-      overlayElementLoading.style = "display: none;"
-    }
-    if (overlayElementTitle) {
-      overlayElementTitle.innerHTML = `${getEnvEofolName()} compilation error:`
-    }
-    if (overlayElementContent) {
-      overlayElementContent.innerHTML = ex.message
-    }
-    if (overlayElementStack && ex.stack) {
-      overlayElementStack.innerHTML = ex.stack
+    selectElementById("_eofol-error-overlay-msg-title-loading", (e) => {
+      // @ts-ignore
+      e.style = "display: none;"
+    })
+    selectElementById("_eofol-error-overlay-container-error", (e) => {
+      // @ts-ignore
+      e.style = "display: flex;"
+    })
+    selectElementById("_eofol-error-overlay-msg-title", (e) => {
+      e.innerHTML = `${getEnvEofolName()} compilation error:`
+    })
+    selectElementById("_eofol-error-overlay-msg-content", (e) => {
+      e.innerHTML = ex.message
+    })
+    if (ex.stack) {
+      selectElementById("_eofol-error-overlay-msg-stack", (e) => {
+        e.innerHTML = ex.stack
+      })
     }
   }
 }

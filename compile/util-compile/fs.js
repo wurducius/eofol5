@@ -51,22 +51,6 @@ const touch = (path) => {
   }
 }
 
-const CWD = process.cwd()
-
-const eJoin = (...path) => join(CWD, ...path)
-
-const eReadImpl = (path) => fs.readFileSync(path).toString()
-
-const eRead = (...path) => eReadImpl(eJoin(...path))
-
-const eReadFull = (...path) => eReadImpl(join(...path))
-
-const eWriteAsyncImpl = (content, path) => fsPromises.writeFile(path, content)
-
-const eWriteAsync = (content, ...path) => eWriteAsyncImpl(content, eJoin(...path))
-
-const eWriteAsyncFull = (content, ...path) => eWriteAsyncImpl(content, join(...path))
-
 module.exports = {
   join,
   read,
@@ -90,8 +74,4 @@ module.exports = {
   isDirectory,
   isDirectoryAsync,
   stat,
-  eRead,
-  eReadFull,
-  eWriteAsync,
-  eWriteAsyncFull,
 }

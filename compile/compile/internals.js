@@ -1,5 +1,5 @@
 const { eRead, mergeDeep } = require("../util-compile")
-const envDefault = require("../config/env-default")
+const envDefault = require("../../resources/env/env-default")
 
 let INTERNALS = {
   instances: {},
