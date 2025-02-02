@@ -5,8 +5,8 @@ import { getRoot, selectRoot } from "./root"
 import { eofolFatal } from "../log"
 import { getEnvEofolRootElementId } from "../../project/src/env"
 import { init } from "../runtime"
-import { withErrorOverlay } from "./helper"
-import { domAppendChildren, domClearChildren } from "../util"
+import { domAppendChildren, domClearChildren, pipe } from "../util"
+import { withErrorOverlay } from "../extract/error-overlay"
 
 const eofolRenderImpl = (rootElement: Element, rendered: EofolNode) => {
   domClearChildren(rootElement)
@@ -34,9 +34,7 @@ export const eofolInitImplWithOverlay = (handler: EofolRenderHandler) => () => {
   withErrorOverlay(eofolInitImpl(handler))
 }
 
-export const eofolUpdateImpl = () => {
-  eofolRender(vdomToDom(getVDOM()))
-}
+export const eofolUpdateImpl = pipe(getVDOM, vdomToDom, eofolRender)
 
 /*
 const vdom = getVDOM()

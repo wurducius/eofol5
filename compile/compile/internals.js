@@ -1,5 +1,4 @@
-const getConfig = require("../config/config")
-const { join, read, mergeDeep } = require("../util-compile")
+const { eRead, mergeDeep } = require("../util-compile")
 const envDefault = require("../config/env-default")
 
 let INTERNALS = {
@@ -11,10 +10,7 @@ let INTERNALS = {
   config: {},
 }
 
-const config = getConfig()
-
-const envContent = read(join(config.PATH.CWD, ".env")).toString()
-const envParsed = envContent
+const envParsed = eRead(".env")
   .split("\n")
   .map((line) => {
     const splitLine = line.split("=")

@@ -1,5 +1,5 @@
 const { addAsset, getAsset, PLUGIN_INTERNAL } = require("./plugin-utils")
-const { getINTERNALS, read, join, minifyHtml, minifyJs } = require("../compile")
+const { getINTERNALS, minifyHtml, minifyJs, join, read } = require("../compile")
 const { getEnvEofolServiceWorkerFilename, getEnvEofolViewsPlaceholder } = require("../compile/config/env")
 const { getConfig } = require("../compile/config")
 
