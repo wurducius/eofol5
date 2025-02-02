@@ -52,7 +52,8 @@ export const createInstanceFromDef = (def: DefInternal<any>, props?: Props, chil
   const setState = getStateSetter(idInstance, instance)
   const mergeState = getStateMerge(idInstance, instance)
   mergeInstance(idInstance, instance)
-  return def.render(state, mergeState, { ...props, id: idInstance, def: def.id, children }, setState)
+  const propsImpl = { ...props, id: idInstance, def: def.id, children }
+  return def.render({ state, mergeState, props: propsImpl, setState })
 }
 
 const renderComponentFromDefDom = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {

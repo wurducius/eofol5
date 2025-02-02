@@ -1,18 +1,8 @@
-import { e, h1, h2, eofolInit, centerFlex, centerFlexFull, col, container, numberInput } from "../../src"
-import { COUNTER, EXAMPLE, FLAT } from "./components"
-import { getEnvEofolName, getEnvEofolRootElementId } from "./env"
+import { h1, h2, eofolInit, centerFlex, centerFlexFull, col, container, numberInput } from "../../src"
+import { getEnvEofolName } from "./env"
+import { example, counter, flat, forceUpdate } from "./components"
 
-/*
-const LAYOUT = "layout"
-
-defineComponent(LAYOUT, {
-  render: () => container(centerFlexFull(col(div(div([h1("Eofol5"), e(COUNTER), e(EXAMPLE), e(FLAT)], "m-md"))))),
-})
-
-eofolInit(EOFOL_ROOT_ELEMENT_ID, () => [e(LAYOUT)])
-*/
-
-eofolInit(getEnvEofolRootElementId(), () =>
+eofolInit(() =>
   container(
     centerFlexFull(
       col(
@@ -27,9 +17,10 @@ eofolInit(getEnvEofolRootElementId(), () =>
               },
             }),
           ),
-          e(COUNTER),
-          e(EXAMPLE),
-          e(FLAT),
+          counter(),
+          example(),
+          flat(),
+          forceUpdate(),
         ],
         "m-md",
       ),

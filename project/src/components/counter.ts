@@ -1,6 +1,6 @@
-import { defineComponent, button, div, h2, input, centerFlex, col, row } from "../../../src"
+import { button, div, h2, input, centerFlex, col, row, define } from "../../../src"
 
-export const COUNTER = "counter"
+const COUNTER = "counter"
 
 // @ts-ignore
 const handleCounterClick = (state, mergeState) => (offset) => () => {
@@ -17,9 +17,11 @@ const handleIncrementChange = (state, mergeState) => (offset) => () => {
   mergeState({ increment: (state.increment ?? 0) + offset })
 }
 
-defineComponent<{ value: number; increment: number }>(COUNTER, {
+export default define<{ value: number; increment: number }>(COUNTER, {
   // @ts-ignore
-  render: (state, mergeState) => {
+  render: (a) => {
+    const { state, mergeState } = a
+
     const handleClick = handleCounterClick(state, mergeState)
     const handleIncrement = handleIncrementChange(state, mergeState)
 

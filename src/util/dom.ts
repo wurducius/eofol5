@@ -59,3 +59,20 @@ export const htmlElementIndexOf = (element: HTMLElement) => {
   }
   return index
 }
+
+export const selectElementById = (
+  id: string,
+  // eslint-disable-next-line no-unused-vars
+  handler: (element: HTMLElement) => void,
+  // eslint-disable-next-line no-unused-vars
+  onError?: (id?: string) => void,
+) => {
+  const element = document.getElementById(id)
+  if (element) {
+    handler(element)
+  } else {
+    if (onError) {
+      onError(id)
+    }
+  }
+}

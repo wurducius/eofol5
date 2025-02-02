@@ -1,4 +1,4 @@
-const configDefault = require("./config-default")
+const configDefault = require("../../resources/config/config-default")
 const { join, read } = require("../util-compile")
 
 const configProjectContent = read(join(process.cwd(), "eofol-config.json"))

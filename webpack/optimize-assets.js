@@ -1,9 +1,16 @@
 const { addAsset, getAsset, PLUGIN_INTERNAL } = require("./plugin-utils")
-const { getINTERNALS, read, join, minifyHtml, minifyJs } = require("../compile")
-const { getEnvEofolServiceWorkerFilename, getEnvEofolViewsPlaceholder } = require("../compile/config/env")
+const { getINTERNALS, minifyHtml, minifyJs } = require("../compile")
+const { getEnvEofolServiceWorkerFilename } = require("../compile/config/env")
+const { getConfig } = require("../compile/config")
+const { eReadFull } = require("../compile/util-compile/e-fs")
+const { injectViews } = require("../compile/helper/inject")
+
+const config = getConfig()
 
 const isAssetView = (views, assetName) =>
-  Object.values(views).filter((view) => `assets/js/${view}.js` === assetName).length > 0
+  Object.values(views).filter(
+    (view) => `${config.PATH.DIRNAME_ASSETS}/${config.PATH.DIRNAME_JS}/${view}${config.EXT.JS}` === assetName,
+  ).length > 0
 
 const injectInternals = (assetName, source) => {
   const internals = getINTERNALS()
@@ -25,18 +32,13 @@ const addInternalAssets = (compilation) => {
   }
 
   const EOFOL_SERVICE_WORKER_FILENAME = getEnvEofolServiceWorkerFilename()
-
-  const views = getINTERNALS().views
   addAssetImpl(
     EOFOL_SERVICE_WORKER_FILENAME,
-    read(join(process.cwd(), "resources", "service-worker", EOFOL_SERVICE_WORKER_FILENAME))
-      .toString()
-      .replaceAll(
-        getEnvEofolViewsPlaceholder(),
-        Object.values(views)
-          .map((view) => `${view}.html`)
-          .join(", "),
-      ),
+    injectViews(
+      Object.values(getINTERNALS().views)
+        .map((view) => `${view}${config.EXT.HTML}`)
+        .join(", "),
+    )(eReadFull(config.PATH.RESOURCES_SERVICEWORKER, EOFOL_SERVICE_WORKER_FILENAME)),
     {},
   )
 }
@@ -49,11 +51,11 @@ const optimizeAssets = async (compiler, compilation) => {
       if (!asset.info || !asset.info.optimized) {
         const source = asset.source()
         let nextSource = undefined
-        if (assetName.endsWith(".js")) {
+        if (assetName.endsWith(config.EXT.JS)) {
           nextSource = minifyJs(injectInternals(assetName, source))
-        } else if (assetName.endsWith(".css")) {
+        } else if (assetName.endsWith(config.EXT.CSS)) {
           nextSource = await minifyHtml(source)
-        } else if (assetName.endsWith(".html")) {
+        } else if (assetName.endsWith(config.EXT.HTML)) {
           nextSource = await minifyHtml(source)
         }
 

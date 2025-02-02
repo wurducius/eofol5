@@ -1,8 +1,8 @@
-import { defineComponent, h2, centerFlex, col } from "../../../src"
+import { define, h2, centerFlex, col } from "../../../src"
 
-export const EXAMPLE = "example"
+const EXAMPLE = "example"
 
-defineComponent(EXAMPLE, {
+export default define(EXAMPLE, {
   // @ts-ignore
   render: () => {
     return centerFlex(col(h2("Example")))

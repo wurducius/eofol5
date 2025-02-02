@@ -1,20 +1,17 @@
 import { getENV } from "./internals"
 
-export const getEnvBaseUrl = () => getENV().BASE_URL
-export const getEnvEofolRuntimeVerbose = () => getENV().EOFOL_RUNTIME_VERBOSE === "true"
 // @ts-ignore
-export const getEnvVerbosityLevel = () => Number(getENV().EOFOL_VERBOSITY_LEVEL)
-// @ts-ignore
-export const getEnvEofolRootElementId = () => getENV().EOFOL_ROOT_ELEMENT_ID
-// @ts-ignore
-export const getEnvEofolRootElementIdPlaceholder = () => getENV().EOFOL_ROOT_ELEMENT_ID_PLACEHOLDER
-// @ts-ignore
-export const getEnvEofolViewsPlaceholder = () => getENV().EOFOL_VIEWS_PLACEHOLDER
-// @ts-ignore
-export const getEnvEofolNamePlaceholder = () => getENV().EOFOL_NAME_PLACEHOLDER
-// @ts-ignore
-export const getEnvEofolServiceWorkerFilename = () => getENV().EOFOL_SERVICE_WORKER_FILENAME
-// @ts-ignore
-export const getEnvCryptoIdLength = () => Number(getENV().CRYPTO_ID_LENGTH)
-// @ts-ignore
-export const getEnvEofolName = () => getENV().EOFOL_NAME
+const envString = (name: string) => getENV()[name]
+const envBool = (name: string) => envString(name) === "true"
+const envNumber = (name: string) => Number(envString(name))
+
+export const getEnvBaseUrl = () => envString("BASE_URL")
+export const getEnvEofolRuntimeVerbose = () => envBool("EOFOL_RUNTIME_VERBOSE")
+export const getEnvVerbosityLevel = () => envNumber("EOFOL_VERBOSITY_LEVEL")
+export const getEnvEofolRootElementId = () => envString("EOFOL_ROOT_ELEMENT_ID")
+export const getEnvEofolRootElementIdPlaceholder = () => envString("EOFOL_ROOT_ELEMENT_ID_PLACEHOLDER")
+export const getEnvEofolViewsPlaceholder = () => envString("EOFOL_VIEWS_PLACEHOLDER")
+export const getEnvEofolNamePlaceholder = () => envString("EOFOL_NAME_PLACEHOLDER")
+export const getEnvEofolServiceWorkerFilename = () => envString("EOFOL_SERVICE_WORKER_FILENAME")
+export const getEnvCryptoIdLength = () => envNumber("CRYPTO_ID_LENGTH")
+export const getEnvEofolName = () => envString("EOFOL_NAME")

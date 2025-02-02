@@ -1,7 +1,5 @@
-import { defineSimple, renderSimple } from "./util"
+import { defineSimple } from "./util"
 
-export const CONTAINER = "eofol-container"
+const CONTAINER = "eofol-container"
 
-defineSimple(CONTAINER, "container-md")
-
-export const container = renderSimple(CONTAINER)
+export const container = defineSimple(CONTAINER, "container-md")

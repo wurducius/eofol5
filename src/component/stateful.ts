@@ -46,7 +46,7 @@ export const renderInstanceFromDef = (
   mergeInstance(idInstance, instance)
   // @TODO removed children arg from propsImpl
   const propsImpl = { ...props, id: idInstance, def: def.id }
-  return def.render(state, mergeState, propsImpl, setState)
+  return def.render({ state, mergeState, props: propsImpl, setState })
 }
 export const renderFlatFromDef = (
   def: DefFlat & { id: string },

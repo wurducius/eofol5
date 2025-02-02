@@ -9,7 +9,7 @@
     "reinstall": "node ./script/reinstall.js",
     "reinstall-f": "node ./script/reinstall.js -f",
     "deploy": "node ./script/deploy.js",
-    "deploy-build": "npm run clean && npm run build && npm run deploy",
+    "release": "npm run clean && npm run build && npm run deploy",
     "check": "npx eslint -c eslint.config.mjs .",
     "check-fix": "npx eslint -c eslint.config.mjs --fix .",
     "prettify": "npx prettier --config .prettierrc --write .",

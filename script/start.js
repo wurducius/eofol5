@@ -3,10 +3,13 @@ const build = require("./impl/build")
 const serve = require("./impl/serve")
 const Watchpack = require("watchpack")
 const { primary } = require("@eofol/eofol-dev-utils")
+const { getConfig } = require("../compile/config")
+
+const config = getConfig()
 
 const listOfFiles = []
 const listOfNotExistingItems = []
-const listOfDirectories = ["src", "project"]
+const listOfDirectories = [config.FILENAME.DIRNAME_SRC, config.FILENAME.DIRNAME_PROJECT]
 
 const wp = new Watchpack({
   aggregateTimeout: 1000,
