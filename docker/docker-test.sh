@@ -1,5 +1,3 @@
-#!/bin/bash
-
 echo "Eofol5 Docker test"
 echo "[1/3] Cloning Eofol5..."
 git clone https://github.com/wurducius/eofol5
