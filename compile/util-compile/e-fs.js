@@ -12,7 +12,7 @@ const eRead = (...path) => eReadImpl(eJoin(...path))
 
 const eReadFull = (...path) => eReadImpl(join(...path))
 
-const eReadAsyncImpl = (path) => fs.readFile(path).toString()
+const eReadAsyncImpl = (path) => fsPromises.readFile(path).toString()
 
 const eReadAsync = (...path) => eReadAsyncImpl(eJoin(...path))
 

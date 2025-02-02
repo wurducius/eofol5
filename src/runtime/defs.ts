@@ -22,6 +22,6 @@ export function defineFlat(id: string, def: (props: Props) => VDOMChildren) {
 
 export function define<T>(id: string, def: Def<T>) {
   defineComponent(id, def)
-  return (children: VDOMChildren, className: Classname, props: Props, properties: Properties) =>
+  return (children?: VDOMChildren, className?: Classname, props?: Props, properties?: Properties) =>
     e(id, children, className, props, properties)
 }
