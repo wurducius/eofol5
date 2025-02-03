@@ -102,6 +102,7 @@ export default define<{ value: number; increment: number }>(COUNTER, {
   },
   initialState: { value: 0, increment: 1 },
   constructor: () => {
+    console.log("CONSTRUCTOR")
     return { constructed: true }
   },
 })

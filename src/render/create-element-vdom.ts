@@ -1,27 +1,9 @@
-// @TODO extract
-import { Attributes, Classname, DefInternal, EofolNode, Properties, Props, VDOMChildren } from "../types"
+import { Attributes, Classname, DefInternal, Properties, Props, VDOMChildren } from "../types"
 import { generateId } from "../util"
 import { DEF_TYPE_COMPONENT, VDOM_TYPE } from "../eofol-constants"
 import { getInstance, mergeInstance } from "../../project/src/internals"
-import { getStateTransforms } from "../component"
 import { getDef } from "../runtime"
-
-export const createInstanceFromDef = (def: DefInternal<any>, props?: Props, children?: EofolNode) => {
-  const idInstance = generateId()
-  const instance = { id: idInstance, def: def.id, state: def.initialState ? { ...def.initialState } : {} }
-  const stateTransforms = getStateTransforms(idInstance, instance, def.initialState)
-  mergeInstance(idInstance, instance)
-  const propsImpl = { ...props, id: idInstance, def: def.id, children }
-  const constructed = def.constructor ? def.constructor(def.defaultProps ?? {}) : undefined
-  const bodyImpl = { ...constructed, ...(instance.body ?? {}) }
-  const paramsImpl = {}
-  return def.render({
-    ...stateTransforms,
-    body: bodyImpl,
-    params: paramsImpl,
-    props: propsImpl,
-  })
-}
+import { addChildrenToProps, getComponentInstance, getProps, playConstructor } from "../component"
 
 export const renderTag = (
   tagName: string,
@@ -45,40 +27,20 @@ export const createInstanceFromDefVdom = (def: DefInternal<any>, props?: Props, 
   const idInstance = propsId ?? generateId()
   const savedInstance = !isNew ? getInstance(propsId) : undefined
   let bodyImpl = {}
-  const instance = savedInstance ?? {
-    id: idInstance,
-    def: def.id,
-    state: def.initialState ? { ...def.initialState } : {},
-    body: bodyImpl,
-  }
-  const propsImpl = { ...props, id: idInstance, def: def.id }
-  if (isNew && def.constructor) {
-    const constructorArgs = {
-      props: propsImpl ?? {},
-      defaultProps: def.defaultProps ?? {},
-      defaultParams: def.defaultParams ?? {},
-      //  params: {},
-    }
-    bodyImpl = def.constructor(constructorArgs)
+  const instance = getComponentInstance(savedInstance, idInstance, def, bodyImpl)
+  const propsImpl = getProps(props, idInstance, def, undefined)
+  const constructed = playConstructor(def, propsImpl, isNew)
+  if (constructed) {
+    bodyImpl = constructed
   }
   mergeInstance(idInstance, instance)
   return {
     type: VDOM_TYPE.COMPONENT,
     id: idInstance,
-    props: { ...props, id: idInstance, def: def.id },
+    props: propsImpl,
     children,
     def: def.id,
   }
-}
-
-export const renderComponentFromDef = (def: DefInternal<any>, children?: VDOMChildren, props?: Props) => {
-  let propsImpl
-  if (children) {
-    propsImpl = { ...props, children }
-  } else {
-    propsImpl = props ?? {}
-  }
-  return createInstanceFromDefVdom(def, propsImpl, children)
 }
 
 export const eImpl = (
@@ -91,7 +53,7 @@ export const eImpl = (
   const def = getDef(tagName)
   if (def) {
     if (def.type === DEF_TYPE_COMPONENT) {
-      return renderComponentFromDef(def, children, attributes)
+      return createInstanceFromDefVdom(def, addChildrenToProps(attributes, children), children)
     }
   } else {
     return renderTag(tagName, className, children, attributes, properties)

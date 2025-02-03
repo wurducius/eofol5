@@ -105,6 +105,7 @@ export interface Instance {
   // @TODO state typing
   state: State<any>
   def: string
+  body?: Body
 }
 
 export type VDOMChildren = VDOM | VDOM[] | undefined
