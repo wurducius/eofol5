@@ -8,7 +8,6 @@
 - Fix hot reload
 - Fix typing warnings and errors
 - Move internals to src
-- Render correctly Flat
 - Optimize eofol update
 - Separate compile and runtime code
 - Fix hot reload bug crash on file does not exist

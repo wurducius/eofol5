@@ -1,4 +1,4 @@
-import { Def, DEF_TYPE, DefFlat, EofolNode, Props } from "../types"
+import { Def, DEF_TYPE, EofolNode, Props } from "../types"
 import { generateId } from "../util"
 import { getDef } from "../runtime"
 import { eofolErrorDefNotFound } from "../log"
@@ -37,24 +37,11 @@ export const renderInstanceFromDef = (
   })
 }
 
-export const renderFlatFromDef = (
-  def: DefFlat & { id: string },
-  props?: Props,
-  children?: EofolNode,
-  isNew?: boolean,
-) => {
-  const idInstance = isNew ? generateId() : (props?.id ?? generateId())
-  const propsImpl = { ...props, id: idInstance, def: def.id, children }
-  return def.render(propsImpl)
-}
-
 export const renderInstance = (idDef: string, props?: Props, children?: EofolNode, isNew?: boolean, body?: Props) => {
   const def = getDef(idDef)
   if (def) {
     if (def.type === DEF_TYPE_COMPONENT) {
       return renderInstanceFromDef(def, props, children, isNew, body)
-    } else {
-      return renderFlatFromDef(def, props, children)
     }
   } else {
     eofolErrorDefNotFound(idDef)

@@ -81,17 +81,6 @@ export const renderComponentFromDef = (def: DefInternal<any>, children?: VDOMChi
   return createInstanceFromDefVdom(def, propsImpl, children)
 }
 
-export const renderFlatFromDef = (def: DefInternal<any>, children?: VDOMChildren, props?: Props) => {
-  const idInstance = generateId()
-  return {
-    type: VDOM_TYPE.COMPONENT,
-    id: idInstance,
-    props: { ...props, id: idInstance, def: def.id },
-    children,
-    def: def.id,
-  }
-}
-
 export const eImpl = (
   tagName: string,
   className?: Classname,
@@ -103,8 +92,6 @@ export const eImpl = (
   if (def) {
     if (def.type === DEF_TYPE_COMPONENT) {
       return renderComponentFromDef(def, children, attributes)
-    } else {
-      return renderFlatFromDef(def, children, attributes)
     }
   } else {
     return renderTag(tagName, className, children, attributes, properties)

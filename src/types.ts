@@ -1,4 +1,4 @@
-import { DEF_TYPE_COMPONENT, DEF_TYPE_FLAT, PROP_NAME_DEF, PROP_NAME_ID, VDOM_TYPE } from "./eofol-constants"
+import { DEF_TYPE_COMPONENT, PROP_NAME_DEF, PROP_NAME_ID, VDOM_TYPE } from "./eofol-constants"
 
 export type Classname = string | undefined
 export type Attributes = any
@@ -37,15 +37,10 @@ export interface Internals {
   env: InternalsEnv
 }
 
-export type DEF_TYPE = typeof DEF_TYPE_COMPONENT | typeof DEF_TYPE_FLAT
-
-export type DefFlat = {
-  // eslint-disable-next-line no-unused-vars
-  render: (props: Props) => VDOMChildren
-}
+export type DEF_TYPE = typeof DEF_TYPE_COMPONENT
 
 // @TODO finish
-export type DefInternal<T> = (Def<T> | DefFlat) & {
+export type DefInternal<T> = Def<T> & {
   id: string
   type: DEF_TYPE
 }

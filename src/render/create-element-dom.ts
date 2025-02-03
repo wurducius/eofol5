@@ -53,16 +53,6 @@ const renderComponentFromDefDom = (def: DefInternal<any>, children?: EofolNode, 
   return createInstanceFromDef(def, propsImpl, children)
 }
 
-const renderFlatFromDefDom = (def: DefInternal<any>, children?: EofolNode, props?: Props) => {
-  let propsImpl
-  if (children) {
-    propsImpl = { ...props, children }
-  } else {
-    propsImpl = props ?? {}
-  }
-  return def.render({ ...propsImpl, def: def.id, children })
-}
-
 export const eDom = (
   tagName: string,
   className?: Classname,
@@ -74,8 +64,6 @@ export const eDom = (
   if (def) {
     if (def.type === DEF_TYPE_COMPONENT) {
       return renderComponentFromDefDom(def, children, attributes)
-    } else {
-      return renderFlatFromDefDom(def, children, attributes)
     }
   } else {
     return renderTagDom(tagName, className, children, attributes, properties)
