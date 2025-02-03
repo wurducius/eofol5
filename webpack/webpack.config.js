@@ -1,6 +1,6 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
 const EofolPlugin = require("./webpack-plugin")
-const { getViewPathTarget } = require("../src/extract/jsx")
+const { getViewPathTarget } = require("../src/extract/jsx-compiler/jsx")
 const { getConfig } = require("../compile/config")
 
 // @TODO: read params

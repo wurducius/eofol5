@@ -1,7 +1,7 @@
-const { join } = require("../../compile")
+const { join } = require("../../../compile")
 const fs = require("node:fs")
 const compileJsx = require("./jsx-compiler")
-const { getConfig } = require("../../compile/config")
+const { getConfig } = require("../../../compile/config")
 
 const injectImportPragma = (content) => `import { j } from "../../src"\n${content}`
 

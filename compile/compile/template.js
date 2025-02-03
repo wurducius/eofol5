@@ -2,7 +2,7 @@ const { eWriteAsyncFull, parse, eReadFull } = require("../util-compile")
 const { head } = require("eofol-head")
 const minifyHtml = require("./minify-html")
 const { getConfig } = require("../config")
-const getErrorOverlay = require("../../src/extract/error-overlay-compile")
+const getErrorOverlay = require("../../src/extract/error-overlay/error-overlay-compile")
 const { injectRootId, injectDoctype } = require("../helper")
 const defaultHeadData = require("../../resources/head/head-data-default")
 

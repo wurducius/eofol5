@@ -6,7 +6,7 @@ import { eofolFatal } from "../log"
 import { getEnvEofolRootElementId } from "../../project/src/env"
 import { init } from "../runtime"
 import { domAppendChildren, domClearChildren, pipe } from "../util"
-import { withErrorOverlay } from "../extract/error-overlay"
+import { withErrorOverlay } from "../extract/error-overlay/error-overlay"
 
 const eofolRenderImpl = (rootElement: Element, rendered: EofolNode) => {
   domClearChildren(rootElement)

@@ -1,5 +1,5 @@
-import { getEnvEofolName } from "../../project/src/env"
-import { selectElementById } from "../util"
+import { getEnvEofolName } from "../../../project/src/env"
+import { selectElementById } from "../../util"
 
 export const withErrorOverlay = (handler: () => void) => {
   try {

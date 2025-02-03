@@ -7,7 +7,7 @@ const {
   mergeINTERNALS,
 } = require("../../compile")
 const buildWebpack = require("./build-webpack")
-const { compileViewsJsx } = require("../../src/extract/jsx")
+const { compileViewsJsx } = require("../../src/extract/jsx-compiler/jsx")
 
 const config = getConfig()
 
