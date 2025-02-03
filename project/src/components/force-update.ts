@@ -1,6 +1,6 @@
 import { button, col, define, div, eofolForceUpdate, generateId } from "../../../src"
 
-export default define("force-update", {
+export default define("forceUpdate", {
   render: () =>
     col([
       button("Force update", undefined, undefined, {

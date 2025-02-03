@@ -25,9 +25,13 @@
   "description": "All inclusive web framework with zero configuration, batteries included!",
   "dependencies": {
     "@eofol/eofol-dev-utils": "^0.2.26",
+    "acorn-jsx": "^5.3.2",
     "dotenv": "^16.4.7",
     "eofol-dev-server": "0.0.3",
     "eofol-head": "1.0.0",
+    "esast-util-from-js": "^2.0.1",
+    "estree-util-build-jsx": "^3.0.1",
+    "estree-util-to-js": "^2.0.0",
     "html-minifier-terser": "^7.2.0",
     "node-html-parser": "^7.0.1",
     "open": "^10.1.0",
