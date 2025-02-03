@@ -12,11 +12,15 @@ const MODE = "development"
 
 const ANALYZE = false
 
+const getViewPathSource = (next) => join(config.PATH.PROJECT_SRC, `${next}.tsx`)
+const getViewPathTarget = (next) => join(config.PATH.PROJECT_SRC, `${next}.js`)
+
 const getEntry = (views) => {
-  const path = (next, ext) => join(config.PATH.PROJECT_SRC, `${next}.${ext}`)
-  const jsx = fs.readFileSync(path("index", "tsx")).toString()
-  fs.writeFileSync(path("index", "js"), compileJsx(jsx))
-  return views.reduce((acc, next) => ({ ...acc, [next]: join(config.PATH.PROJECT_SRC, `${next}.js`) }), {})
+  // touch(join(config.PATH.CWD, "derived"))
+  views.forEach((view) => {
+    fs.writeFileSync(getViewPathTarget(view), compileJsx(fs.readFileSync(getViewPathSource(view)).toString()))
+  })
+  return views.reduce((acc, next) => ({ ...acc, [next]: getViewPathTarget(next) }), {})
 }
 
 const getWebpackConfig = (views) => ({

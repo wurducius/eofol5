@@ -25,5 +25,5 @@ export const g = (props: {
   properties?: Properties
 }) => eImpl(props.tagName, props.className, props.children, props.attributes, props.properties)
 
-export const j = (tagName: string, attributes: Attributes | Props, children: VDOMChildren) =>
+export const j = (tagName: string, attributes: Attributes | Props, ...children: VDOMChildren[]) =>
   eImpl(tagName, undefined, children, attributes, undefined)
