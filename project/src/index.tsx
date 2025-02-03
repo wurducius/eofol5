@@ -1,14 +1,14 @@
-import { eofolInit, centerFlex, centerFlexFull, col, container, numberInput, j } from "../../src"
 import { getEnvEofolName } from "./env"
 import { counter, example, flat, forceUpdate } from "./components"
+import { eofolInit } from "../../src"
 
 eofolInit(() => (
   <eContainer>
     <eCenterFlexFull>
-      <eCol>
+      <eCol className={"flex-center"}>
         <h1>{getEnvEofolName()}</h1>
         <h2>Controlled input example</h2>
-        <eCol>
+        <eCol className={"flex-center"}>
           <counter />
           <example />
           <flat />

@@ -6,3 +6,4 @@ build
 dist
 
 deploy.bat
+project/**/*.js

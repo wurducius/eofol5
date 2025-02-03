@@ -1,8 +1,7 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
 const EofolPlugin = require("./webpack-plugin")
-const { getConfig, join } = require("../compile")
-const fs = require("node:fs")
-const compileJsx = require("../src/extract/jsx-compiler")
+const { getViewPathTarget } = require("../src/extract/jsx")
+const { getConfig } = require("../compile/config")
 
 // @TODO: read params
 
@@ -12,16 +11,7 @@ const MODE = "development"
 
 const ANALYZE = false
 
-const getViewPathSource = (next) => join(config.PATH.PROJECT_SRC, `${next}.tsx`)
-const getViewPathTarget = (next) => join(config.PATH.PROJECT_SRC, `${next}.js`)
-
-const getEntry = (views) => {
-  // touch(join(config.PATH.CWD, "derived"))
-  views.forEach((view) => {
-    fs.writeFileSync(getViewPathTarget(view), compileJsx(fs.readFileSync(getViewPathSource(view)).toString()))
-  })
-  return views.reduce((acc, next) => ({ ...acc, [next]: getViewPathTarget(next) }), {})
-}
+const getEntry = (views) => views.reduce((acc, next) => ({ ...acc, [next]: getViewPathTarget(next) }), {})
 
 const getWebpackConfig = (views) => ({
   mode: MODE ?? "development",

@@ -7,6 +7,7 @@ const {
   mergeINTERNALS,
 } = require("../../compile")
 const buildWebpack = require("./build-webpack")
+const { compileViewsJsx } = require("../../src/extract/jsx")
 
 const config = getConfig()
 
@@ -25,6 +26,7 @@ const build = () =>
     .then((result) => {
       const views = result[0]
       mergeINTERNALS({ views })
+      compileViewsJsx(views)
       return buildWebpack(views)
     })
 
