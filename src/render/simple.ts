@@ -1,5 +1,5 @@
-import { renderTag } from "./create-element"
 import { Attributes, Classname, Properties, VDOMChildren } from "../types"
+import { renderTag } from "./create-element-vdom"
 
 export const simple =
   (tagName: string) =>

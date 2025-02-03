@@ -1,28 +1,10 @@
-import { Def, DEF_TYPE, DefFlat, EofolNode, Instance, Props } from "../types"
-import { generateId, mergeDeep } from "../util"
+import { Def, DEF_TYPE, DefFlat, EofolNode, Props } from "../types"
+import { generateId } from "../util"
 import { getDef } from "../runtime"
 import { eofolErrorDefNotFound } from "../log"
-import { getInstance, mergeInstance } from "../../project/src/internals"
-import { eofolUpdate } from "../core"
+import { getInstance } from "../../project/src/internals"
 import { DEF_TYPE_COMPONENT } from "../eofol-constants"
-
-const updateState = (idInstance: string, instance: Instance, nextState: any) => {
-  const nextInstance = { ...instance, state: nextState }
-  mergeInstance(idInstance, nextInstance)
-  eofolUpdate(idInstance)
-}
-
-export function getStateSetter<T>(idInstance: string, instance: Instance) {
-  return function (nextState: T) {
-    updateState(idInstance, instance, nextState)
-  }
-}
-
-export function getStateMerge<T>(idInstance: string, instance: Instance) {
-  return function (nextState: T) {
-    updateState(idInstance, instance, mergeDeep(instance.state, nextState))
-  }
-}
+import { getResetState, getStateMerge, getStateSetter } from "./state"
 
 export const renderInstanceFromDef = (
   def: Def<any> & {
@@ -44,7 +26,7 @@ export const renderInstanceFromDef = (
   const state = { ...instance.state }
   const setState = getStateSetter(idInstance, instance)
   const mergeState = getStateMerge(idInstance, instance)
-  const resetState = () => {}
+  const resetState = getResetState(idInstance, instance, def.initialState)
   const propsImpl = { ...props, id: idInstance, def: def.id }
   const paramsImpl = {}
   // mergeInstance(idInstance, instance)
