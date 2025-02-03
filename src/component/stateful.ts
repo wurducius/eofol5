@@ -4,7 +4,7 @@ import { getDef } from "../runtime"
 import { eofolErrorDefNotFound } from "../log"
 import { getInstance } from "../../project/src/internals"
 import { DEF_TYPE_COMPONENT } from "../eofol-constants"
-import { getResetState, getStateMerge, getStateSetter } from "./state"
+import { getStateTransforms } from "./state"
 
 export const renderInstanceFromDef = (
   def: Def<any> & {
@@ -23,10 +23,7 @@ export const renderInstanceFromDef = (
     def: def.id,
     state: def.initialState ? { ...def.initialState } : {},
   }
-  const state = { ...instance.state }
-  const setState = getStateSetter(idInstance, instance)
-  const mergeState = getStateMerge(idInstance, instance)
-  const resetState = getResetState(idInstance, instance, def.initialState)
+  const stateTransforms = getStateTransforms(idInstance, instance, def.initialState)
   const propsImpl = { ...props, id: idInstance, def: def.id }
   const paramsImpl = {}
   // mergeInstance(idInstance, instance)
@@ -35,11 +32,8 @@ export const renderInstanceFromDef = (
   return def.render({
     body,
     params: paramsImpl,
-    resetState,
-    state,
-    mergeState,
+    ...stateTransforms,
     props: propsImpl,
-    setState,
   })
 }
 

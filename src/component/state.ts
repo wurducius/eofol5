@@ -26,3 +26,16 @@ export function getResetState<T>(idInstance: string, instance: Instance, initial
     updateState(idInstance, instance, initialState)
   }
 }
+
+export function getState(instance: Instance) {
+  return { ...instance.state }
+}
+
+export function getStateTransforms<T>(idInstance: string, instance: Instance, initialState: T) {
+  return {
+    setState: getStateSetter(idInstance, instance),
+    mergeState: getStateMerge(idInstance, instance),
+    resetState: getResetState(idInstance, instance, initialState),
+    state: getState(instance),
+  }
+}

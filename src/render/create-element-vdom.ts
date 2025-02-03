@@ -3,29 +3,23 @@ import { Attributes, Classname, DefInternal, EofolNode, Properties, Props, VDOMC
 import { generateId } from "../util"
 import { DEF_TYPE_COMPONENT, VDOM_TYPE } from "../eofol-constants"
 import { getInstance, mergeInstance } from "../../project/src/internals"
-import { getResetState, getStateMerge, getStateSetter } from "../component"
+import { getStateTransforms } from "../component"
 import { getDef } from "../runtime"
 
 export const createInstanceFromDef = (def: DefInternal<any>, props?: Props, children?: EofolNode) => {
   const idInstance = generateId()
   const instance = { id: idInstance, def: def.id, state: def.initialState ? { ...def.initialState } : {} }
-  const state = { ...instance.state }
-  const setState = getStateSetter(idInstance, instance)
-  const mergeState = getStateMerge(idInstance, instance)
-  const resetState = getResetState(idInstance, instance, def.initialState)
+  const stateTransforms = getStateTransforms(idInstance, instance, def.initialState)
   mergeInstance(idInstance, instance)
   const propsImpl = { ...props, id: idInstance, def: def.id, children }
   const constructed = def.constructor ? def.constructor(def.defaultProps ?? {}) : undefined
   const bodyImpl = { ...constructed, ...(instance.body ?? {}) }
   const paramsImpl = {}
   return def.render({
+    ...stateTransforms,
     body: bodyImpl,
     params: paramsImpl,
-    resetState,
-    state,
-    mergeState,
     props: propsImpl,
-    setState,
   })
 }
 
