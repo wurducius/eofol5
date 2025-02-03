@@ -7,7 +7,6 @@ eofolInit(() => (
     <eCenterFlexFull>
       <eCol className={"flex-center"}>
         <h1>{getEnvEofolName()}</h1>
-        <h2>Controlled input example</h2>
         <eCol className={"flex-center"}>
           <counter />
           <example />

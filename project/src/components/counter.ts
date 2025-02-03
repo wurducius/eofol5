@@ -26,78 +26,82 @@ export default define<{ value: number; increment: number }>(COUNTER, {
     const handleIncrement = handleIncrementChange(state, mergeState)
 
     return centerFlex(
-      col([
-        h2(`Stateful component counter value = ${state.value}`),
-        centerFlex(
-          row([
-            button(
-              "+",
-              undefined,
-              {},
-              {
-                onclick: handleClick(1),
-              },
-            ),
-            button(
-              "-",
-              undefined,
-              {},
-              {
-                onclick: handleClick(-1),
-              },
-            ),
-            input(
-              undefined,
-              undefined,
-              { value: state.increment.toString(), type: "number", "aria-label": "counter" },
-              {
-                onchange: (e: { target: { value: any } }) => {
-                  mergeState({ increment: Number(e.target.value ?? "0") })
+      col(
+        [
+          h2(`Stateful component counter value = ${state.value}`),
+          centerFlex(
+            row([
+              button(
+                "+",
+                undefined,
+                {},
+                {
+                  onclick: handleClick(1),
                 },
-              },
-            ),
-            div(
-              [
-                button(
-                  "+",
-                  "input-number-arrow",
-                  {},
-                  {
-                    onclick: handleIncrement(1),
-                  },
-                ),
-                button(
-                  "-",
-                  "input-number-arrow",
-                  {},
-                  {
-                    onclick: handleIncrement(-1),
-                  },
-                ),
-              ],
-              "flex-col",
-            ),
-            button(
-              "Add amount",
-              undefined,
-              {},
-              {
-                onclick: () => {
-                  mergeState({ value: (state.value ?? 0) + state.increment })
+              ),
+              button(
+                "-",
+                undefined,
+                {},
+                {
+                  onclick: handleClick(-1),
                 },
-              },
-            ),
-            button(
-              "Clear",
-              undefined,
-              {},
-              {
-                onclick: handleCounterClear(mergeState),
-              },
-            ),
-          ]),
-        ),
-      ]),
+              ),
+              input(
+                undefined,
+                undefined,
+                { value: state.increment.toString(), type: "number", "aria-label": "counter" },
+                {
+                  onchange: (e: { target: { value: any } }) => {
+                    mergeState({ increment: Number(e.target.value ?? "0") })
+                  },
+                },
+              ),
+              div(
+                [
+                  button(
+                    "+",
+                    "input-number-arrow",
+                    {},
+                    {
+                      onclick: handleIncrement(1),
+                    },
+                  ),
+                  button(
+                    "-",
+                    "input-number-arrow",
+                    {},
+                    {
+                      onclick: handleIncrement(-1),
+                    },
+                  ),
+                ],
+                "flex-col",
+              ),
+              button(
+                "Add amount",
+                undefined,
+                {},
+                {
+                  onclick: () => {
+                    mergeState({ value: (state.value ?? 0) + state.increment })
+                  },
+                },
+              ),
+              button(
+                "Clear",
+                undefined,
+                {},
+                {
+                  onclick: handleCounterClear(mergeState),
+                },
+              ),
+            ]),
+          ),
+        ],
+        undefined,
+        { className: "flex-center" },
+      ),
     )
   },
   initialState: { value: 0, increment: 1 },
