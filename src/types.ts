@@ -4,6 +4,8 @@ export type Classname = string | undefined
 export type Attributes = any
 export type Properties = any
 
+export type Body = any
+
 export type EofolElement = HTMLElement | string | undefined | false | null
 export type EofolNode = EofolElement[] | EofolElement
 
@@ -55,10 +57,35 @@ export type DefRenderArg<T> = {
   resetState: () => void
   props: Props
   params: Props
-  body: Props
+  body: Body
 }
 
 export type Multi<T> = T | T[] | undefined
+
+export type ComponentRender<T> = {
+  render: DefRender<T>
+}
+
+export type ComponentLifecycle<T> = ComponentRender<T> & {
+  // eslint-disable-next-line no-unused-vars
+  constructor?: (arg: { props: Props; defaultProps: Props; defaultParams: Props }) => Body
+  // eslint-disable-next-line no-unused-vars
+  shouldUpdate?: (arg: DefRenderArg<T>) => boolean
+  // eslint-disable-next-line no-unused-vars
+  getDerivedStateFromProps?: (arg: DefRenderArg<T>) => T
+  // eslint-disable-next-line no-unused-vars
+  onBeforeUpdate?: (arg: DefRenderArg<T>) => void
+  // eslint-disable-next-line no-unused-vars
+  onUpdated?: (arg: DefRenderArg<T>) => void
+  // eslint-disable-next-line no-unused-vars
+  beforeMount?: (arg: DefRenderArg<T>) => void
+  // eslint-disable-next-line no-unused-vars
+  onMounted?: (arg: DefRenderArg<T>) => void
+  // eslint-disable-next-line no-unused-vars
+  beforeUnmount?: (arg: DefRenderArg<T>) => void
+  // eslint-disable-next-line no-unused-vars
+  onUnmounted?: (arg: DefRenderArg<T>) => void
+}
 
 // eslint-disable-next-line no-unused-vars
 export type Effect<T> = (arg: DefRenderArg<T>) => void
@@ -67,27 +94,14 @@ export type Effect<T> = (arg: DefRenderArg<T>) => void
 export type DefRender<T> = (arg: DefRenderArg<T>) => EofolNode
 
 // @TODO finish
-export type Def<T> = {
-  render: DefRender<T>
+export type Def<T> = ComponentLifecycle<T> & {
   initialState?: State<T>
   defaultProps?: Props
-  defaultParams?: Props
+  defaultParams?: Params
   className?: Multi<string>
-  // eslint-disable-next-line no-unused-vars
-  constructor?: (defaultProps: Props) => Props
   effect?: Multi<Effect<T>>
   subscribe?: Multi<string>
-  // eslint-disable-next-line no-unused-vars
-  shouldUpdate?: (arg: DefRenderArg<T>) => boolean
   memo?: boolean
-  // eslint-disable-next-line no-unused-vars
-  getDerivedStateFromProps?: (arg: DefRenderArg<T>) => T
-  // eslint-disable-next-line no-unused-vars
-  onBeforeUpdate?: (arg: DefRenderArg<T>) => void
-  // eslint-disable-next-line no-unused-vars
-  onMounted?: (arg: DefRenderArg<T>) => void
-  // eslint-disable-next-line no-unused-vars
-  onUnmounted?: (arg: DefRenderArg<T>) => void
 }
 
 // @TODO finish
@@ -123,6 +137,8 @@ export type VDOM_TEXT = string
 export type VDOM = VDOM_TAG | VDOM_COMPONENT | VDOM_TEXT
 
 export type Props = Record<string | typeof PROP_NAME_ID | typeof PROP_NAME_DEF, any>
+
+export type Params = Record<string | typeof PROP_NAME_ID | typeof PROP_NAME_DEF, any>
 
 export type State<T> = T
 // eslint-disable-next-line no-unused-vars

@@ -124,23 +124,27 @@ export const renderTag = (
   children,
 })
 
-export const createInstanceFromDefVdom = (
-  def: DefInternal<any>,
-  props?: Props,
-  children?: VDOMChildren,
-  isNew?: boolean,
-) => {
-  const idInstance = isNew ? generateId() : (props?.id ?? generateId())
+export const createInstanceFromDefVdom = (def: DefInternal<any>, props?: Props, children?: VDOMChildren) => {
+  const propsId = props?.id
+  const isNew = propsId === undefined
+  const idInstance = propsId ?? generateId()
+  const savedInstance = !isNew ? getInstance(propsId) : undefined
   let bodyImpl = {}
-  if (isNew && def.constructor) {
-    bodyImpl = def.constructor(def.defaultParams ?? {})
-  }
-  const savedInstance = isNew ? undefined : getInstance(idInstance)
   const instance = savedInstance ?? {
     id: idInstance,
     def: def.id,
     state: def.initialState ? { ...def.initialState } : {},
     body: bodyImpl,
+  }
+  const propsImpl = { ...props, id: idInstance, def: def.id }
+  if (isNew && def.constructor) {
+    const constructorArgs = {
+      props: propsImpl ?? {},
+      defaultProps: def.defaultProps ?? {},
+      defaultParams: def.defaultParams ?? {},
+      //  params: {},
+    }
+    bodyImpl = def.constructor(constructorArgs)
   }
   mergeInstance(idInstance, instance)
   return {
@@ -159,7 +163,7 @@ export const renderComponentFromDef = (def: DefInternal<any>, children?: VDOMChi
   } else {
     propsImpl = props ?? {}
   }
-  return createInstanceFromDefVdom(def, propsImpl)
+  return createInstanceFromDefVdom(def, propsImpl, children)
 }
 
 const renderFlatFromDef = (def: DefInternal<any>, children?: VDOMChildren, props?: Props) => {

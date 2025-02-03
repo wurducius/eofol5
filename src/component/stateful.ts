@@ -45,15 +45,13 @@ export const renderInstanceFromDef = (
   const setState = getStateSetter(idInstance, instance)
   const mergeState = getStateMerge(idInstance, instance)
   const resetState = () => {}
-  const constructed = def.constructor ? def.constructor(def.defaultProps ?? {}) : {}
-  const bodyImpl = { ...body, ...constructed }
-  const paramsImpl = {}
-  mergeInstance(idInstance, instance)
-  // @TODO removed children arg from propsImpl
   const propsImpl = { ...props, id: idInstance, def: def.id }
+  const paramsImpl = {}
+  // mergeInstance(idInstance, instance)
+  // @TODO removed children arg from propsImpl
 
   return def.render({
-    body: bodyImpl,
+    body,
     params: paramsImpl,
     resetState,
     state,
@@ -62,6 +60,7 @@ export const renderInstanceFromDef = (
     setState,
   })
 }
+
 export const renderFlatFromDef = (
   def: DefFlat & { id: string },
   props?: Props,
@@ -72,6 +71,7 @@ export const renderFlatFromDef = (
   const propsImpl = { ...props, id: idInstance, def: def.id, children }
   return def.render(propsImpl)
 }
+
 export const renderInstance = (idDef: string, props?: Props, children?: EofolNode, isNew?: boolean, body?: Props) => {
   const def = getDef(idDef)
   if (def) {

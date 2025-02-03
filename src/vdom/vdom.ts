@@ -1,7 +1,7 @@
-import { EofolElement, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOMChildren } from "../types"
+import { EofolElement, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOMChildren } from "../types"
 import { deepCopyString } from "../util"
-import { getInstance, isVDOMComponent, isVDOMTag } from "../../project/src/internals"
-import { eDom, renderTagDom } from "../render"
+import { getInstance, isVDOMTag } from "../../project/src/internals"
+import { eDom } from "../render"
 import { renderInstance } from "../component"
 
 export const vdomToDom = (tree: VDOMChildren) => {
@@ -26,45 +26,18 @@ export const vdomToDom = (tree: VDOMChildren) => {
       thisNode = eDom(tree.tag, tree.class, renderedChildrenImpl, attributes, tree.properties)
     } else {
       const instance = getInstance(tree.id)
-      if (!instance && tree.def.constructor) {
-        tree.def.constructor(tree.def.defaultParams ?? {})
-      }
       thisNode = vdomToDom(
         renderInstance(
           tree.def,
           instance ? { ...tree.props, id: tree.id } : {},
           renderedChildrenImpl,
-          !instance,
+          instance === undefined,
           instance.body,
         ),
       )
     }
     return thisNode
   }
-}
-
-export const renderVdomElement = (vdomElement: VDOM) => {
-  let rendered
-  if (isVDOMComponent(vdomElement)) {
-    const instance = getInstance(vdomElement.id)
-    if (instance) {
-      // @TODO update
-      rendered = renderInstance(vdomElement.def, instance.props, vdomElement.children?.map(renderVdomElement), false)
-    } else {
-      rendered = renderInstance(vdomElement.def, {}, vdomElement.children?.map(renderVdomElement), true)
-    }
-  } else if (isVDOMTag(vdomElement)) {
-    rendered = renderTagDom(
-      vdomElement.tag,
-      vdomElement.class,
-      vdomElement.children?.map(renderVdomElement),
-      vdomElement.attributes,
-      vdomElement.properties,
-    )
-  } else {
-    rendered = deepCopyString(vdomElement)
-  }
-  return rendered
 }
 
 /*
