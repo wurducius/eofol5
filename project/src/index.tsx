@@ -1,5 +1,5 @@
 import { getEnvEofolName } from "./env"
-import { counter, example, flat, forceUpdate } from "./components"
+import { counter, flat, forceUpdate } from "./components"
 import { eofolInit } from "../../src"
 
 eofolInit(() => (
@@ -9,7 +9,6 @@ eofolInit(() => (
         <h1>{getEnvEofolName()}</h1>
         <eCol className={"flex-center"}>
           <counter />
-          <example />
           <flat />
           <forceUpdate />
         </eCol>

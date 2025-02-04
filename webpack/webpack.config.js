@@ -1,7 +1,8 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
 const EofolPlugin = require("./webpack-plugin")
-const { getViewPathTarget } = require("../src/extract/jsx-compiler/jsx")
 const { getConfig } = require("../compile/config")
+const { join } = require("../compile")
+const { parse } = require("../compile/util-compile/fs")
 
 // @TODO: read params
 
@@ -11,7 +12,8 @@ const MODE = "development"
 
 const ANALYZE = false
 
-const getEntry = (views) => views.reduce((acc, next) => ({ ...acc, [next]: getViewPathTarget(next) }), {})
+const getEntry = (views) =>
+  views.reduce((acc, next) => ({ ...acc, [next]: join(config.PATH.PROJECT_SRC, `${parse(next).base}.js`) }), {})
 
 const getWebpackConfig = (views) => ({
   mode: MODE ?? "development",
