@@ -1,16 +1,28 @@
-import { centerFlex, col, define, ERROR, fetchx, h2, isReady, renderCase, setLoading, StatefulData } from "../../../src"
+import {
+  centerFlex,
+  col,
+  define,
+  ERROR,
+  fetchx,
+  h2,
+  isReady,
+  renderCase,
+  setLoading,
+  spinner,
+  StatefulData,
+} from "../../../src"
 
 const url =
   "https://api.open-meteo.com/v1/forecast?latitude=50.089&longitude=14.400&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m"
 
 const ready = () => centerFlex(col(h2("Weather initializing...")))
 
-const loading = () => centerFlex(col(h2("Weather loading...")))
+const loading = () => centerFlex(col([spinner(), h2("Weather loading...")]))
 
 // @TODO add error message
 const error = (errorData?: string) => centerFlex(col(h2(errorData ? `Weather error: ${errorData}` : "Weather error")))
 
-const good = (data: number) => centerFlex(col(h2(`Temperature: ${data}°C`)))
+const good = (data: number) => centerFlex(col([h2(`Temperature: ${data}°C`)]))
 
 export default define<{ temperature: StatefulData<number>; temperatureError?: string }>("weather", {
   // @ts-ignore

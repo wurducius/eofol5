@@ -1,16 +1,9 @@
-import { VDOMChildren } from "../types"
-
-export type StatefulData<T> = typeof READY | typeof LOADING | typeof ERROR | T
-
-export const READY = undefined
+import { StatefulData, VDOMChildren } from "../types"
+import { ERROR, LOADING, READY } from "../eofol-constants"
 
 export const isReady = (data: StatefulData<any>) => data === READY
 
-export const LOADING = "LOADING"
-
 export const isLoading = (data: StatefulData<any>) => data === LOADING
-
-export const ERROR = "ERROR"
 
 export const isError = (data: StatefulData<any>) => data === ERROR
 

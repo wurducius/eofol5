@@ -1,4 +1,4 @@
-import { DEF_TYPE_COMPONENT, PROP_NAME_DEF, PROP_NAME_ID, VDOM_TYPE } from "./eofol-constants"
+import { DEF_TYPE_COMPONENT, ERROR, LOADING, PROP_NAME_DEF, PROP_NAME_ID, READY, VDOM_TYPE } from "./eofol-constants"
 
 export type Classname = string | undefined
 export type Attributes = any
@@ -141,3 +141,5 @@ export type State<T> = T
 export type SetState<T> = (nextState: T) => void
 
 export type EofolRenderHandler = () => VDOMChildren
+
+export type StatefulData<T> = typeof READY | typeof LOADING | typeof ERROR | T
