@@ -5,6 +5,7 @@ import { eofolErrorDefNotFound } from "../log"
 import { getInstance } from "../../project/src/internals"
 import { DEF_TYPE_COMPONENT } from "../eofol-constants"
 import { getStateTransforms } from "./state"
+import { playEffect } from "../lifecycle"
 
 export const renderInstanceFromDef = (
   def: Def<any> & {
@@ -28,6 +29,8 @@ export const renderInstanceFromDef = (
   const paramsImpl = {}
   // mergeInstance(idInstance, instance)
   // @TODO removed children arg from propsImpl
+
+  playEffect(def, idInstance, instance)
 
   return def.render({
     body,

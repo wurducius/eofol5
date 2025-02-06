@@ -1,21 +1,21 @@
 const clean = require("./impl/clean")
 const build = require("./impl/build")
 const serve = require("./impl/serve")
-const Watchpack = require("watchpack")
-const { primary } = require("@eofol/eofol-dev-utils")
-const { getConfig } = require("../compile/config")
 
+/*
 const config = getConfig()
 
 const listOfFiles = []
 const listOfNotExistingItems = []
 const listOfDirectories = [config.FILENAME.DIRNAME_SRC, config.FILENAME.DIRNAME_PROJECT]
 
+const ignored = "**" + "/.git"
+
 const wp = new Watchpack({
   aggregateTimeout: 1000,
   poll: true,
   followSymlinks: true,
-  ignored: "**/.git",
+  ignored,
 })
 
 wp.watch({
@@ -40,6 +40,7 @@ const handleRemove = async () => {
 
 wp.on("change", handleChange)
 wp.on("remove", handleRemove)
+ */
 
 console.clear()
 

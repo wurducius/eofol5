@@ -3,7 +3,8 @@ import { generateId } from "../util"
 import { DEF_TYPE_COMPONENT, VDOM_TYPE } from "../eofol-constants"
 import { getInstance, mergeInstance } from "../../project/src/internals"
 import { getDef } from "../runtime"
-import { addChildrenToProps, getComponentInstance, getProps, playConstructor } from "../component"
+import { addChildrenToProps, getComponentInstance, getProps } from "../component"
+import { playConstructor, playEffect } from "../lifecycle"
 
 export const renderTag = (
   tagName: string,
@@ -34,6 +35,7 @@ export const createInstanceFromDefVdom = (def: DefInternal<any>, props?: Props, 
     bodyImpl = constructed
   }
   mergeInstance(idInstance, instance)
+  playEffect(def, idInstance, instance)
   return {
     type: VDOM_TYPE.COMPONENT,
     id: idInstance,

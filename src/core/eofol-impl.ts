@@ -36,6 +36,12 @@ export const eofolInitImplWithOverlay = (handler: EofolRenderHandler) => () => {
 
 export const eofolUpdateImpl = pipe(getVDOM, vdomToDom, eofolRender)
 
+export const eofolUnmountImpl = () => {
+  const vdom = ""
+  setVDOM(vdom)
+  eofolRender(vdomToDom(vdom))
+}
+
 /*
 const vdom = getVDOM()
 const vdomUpdate = traverseVdom(

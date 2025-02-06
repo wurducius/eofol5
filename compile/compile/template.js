@@ -31,6 +31,7 @@ const precompileTemplate = (buildPath, projectPath, stylesStatic) => async (view
   return viewName
 }
 
+// @TODO in case index.html is not present, add empty file
 const compileTemplates = (buildPath, projectPath, publicDir) =>
   Promise.all(
     publicDir
