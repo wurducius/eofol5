@@ -26,7 +26,7 @@ export const createInstanceFromDefVdom = (def: DefInternal<any>, props?: Props, 
   const propsId = props?.id
   const isNew = propsId === undefined
   const idInstance = propsId ?? generateId()
-  const savedInstance = !isNew ? getInstance(propsId) : undefined
+  const savedInstance = isNew ? undefined : getInstance(propsId)
   let bodyImpl = {}
   const instance = getComponentInstance(savedInstance, idInstance, def, bodyImpl)
   const propsImpl = getProps(props, idInstance, def, undefined)
