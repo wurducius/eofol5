@@ -1,9 +1,6 @@
 const clean = require("./impl/clean")
 const build = require("./impl/build")
 const serve = require("./impl/serve")
-const Watchpack = require("watchpack")
-const { primary } = require("@eofol/eofol-dev-utils")
-const { getConfig } = require("../compile/config")
 
 /*
 const config = getConfig()

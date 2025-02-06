@@ -1,5 +1,3 @@
 import { defineSimple } from "./util"
 
-const CONTAINER = "eofolContainer"
-
-export const container = defineSimple(CONTAINER, "container-md")
+export const container = defineSimple("eContainer", "container-md")

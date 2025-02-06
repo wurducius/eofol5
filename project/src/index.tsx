@@ -1,16 +1,17 @@
 import { getEnvEofolName } from "./env"
-import { counter, example, flat, forceUpdate } from "./components"
-import { eofolInit } from "../../src"
+import { counter, weather, forceUpdate } from "./components"
+import { eofolCreateRoot, eofolMount } from "../../src"
 
-eofolInit(() => (
+eofolCreateRoot()
+
+eofolMount(() => (
   <eContainer>
     <eCenterFlexFull>
       <eCol className={"flex-center"}>
         <h1>{getEnvEofolName()}</h1>
         <eCol className={"flex-center"}>
           <counter />
-          <example />
-          <flat />
+          <weather />
           <forceUpdate />
         </eCol>
       </eCol>
