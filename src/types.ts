@@ -143,3 +143,10 @@ export type SetState<T> = (nextState: T) => void
 export type EofolRenderHandler = () => VDOM
 
 export type StatefulData<T> = typeof READY | typeof LOADING | typeof ERROR | T
+
+export type StateTransform<T> = {
+  state: T
+  setState: SetState<T>
+  mergeState: SetState<Partial<T>>
+  resetState: () => void
+}

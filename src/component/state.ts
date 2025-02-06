@@ -1,4 +1,4 @@
-import { DefInternal, Instance } from "../types"
+import { DefInternal, Instance, StateTransform } from "../types"
 import { mergeInstance } from "../../project/src/internals"
 import { eofolUpdate } from "../core"
 import { mergeDeep } from "../util"
@@ -33,7 +33,7 @@ export function getState(instance: Instance) {
 
 export const initializeState = (def: DefInternal<any>) => (def.initialState ? { ...def.initialState } : {})
 
-export function getStateTransforms<T>(idInstance: string, instance: Instance, initialState: T) {
+export function getStateTransforms<T>(idInstance: string, instance: Instance, initialState: T): StateTransform<T> {
   return {
     setState: getStateSetter(idInstance, instance),
     mergeState: getStateMerge(idInstance, instance),

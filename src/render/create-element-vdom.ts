@@ -1,9 +1,9 @@
 import { Attributes, Classname, DefInternal, Properties, Props, VDOMChildren } from "../types"
 import { generateId } from "../util"
 import { DEF_TYPE_COMPONENT, VDOM_TYPE } from "../eofol-constants"
-import { getInstance, mergeInstance } from "../../project/src/internals"
+import { mergeInstance } from "../../project/src/internals"
 import { getDef } from "../runtime"
-import { addChildrenToProps, getComponentInstance, getProps } from "../component"
+import { addChildrenToProps, renderInstanceGeneral } from "../component"
 import { playConstructor, playEffect } from "../lifecycle"
 
 export const renderTag = (
@@ -23,25 +23,20 @@ export const renderTag = (
 })
 
 export const createInstanceFromDefVdom = (def: DefInternal<any>, props?: Props, children?: VDOMChildren) => {
-  const propsId = props?.id
-  const isNew = propsId === undefined
-  const idInstance = propsId ?? generateId()
-  const savedInstance = isNew ? undefined : getInstance(propsId)
-  let bodyImpl = {}
-  const instance = getComponentInstance(savedInstance, idInstance, def, bodyImpl)
-  const propsImpl = getProps(props, idInstance, def, undefined)
-  const constructed = playConstructor(def, propsImpl, isNew)
-  if (constructed) {
-    bodyImpl = constructed
-  }
+  const isNew = props?.id === undefined
+  const { instance, bodyImpl, propsImpl, paramsImpl, idInstance } = renderInstanceGeneral(def, props, isNew, true)
+  const constructed = playConstructor(def, propsImpl, isNew) ?? {}
+  instance.body = { ...constructed, bodyImpl }
   mergeInstance(idInstance, instance)
   playEffect(def, idInstance, instance)
+
   return {
     type: VDOM_TYPE.COMPONENT,
     id: idInstance,
     props: propsImpl,
     children,
     def: def.id,
+    params: paramsImpl,
   }
 }
 

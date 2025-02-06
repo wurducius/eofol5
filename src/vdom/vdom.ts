@@ -27,13 +27,7 @@ export const vdomToDom = (tree: VDOMChildren) => {
     } else {
       const instance = getInstance(tree.id)
       thisNode = vdomToDom(
-        renderInstance(
-          tree.def,
-          instance ? { ...tree.props, id: tree.id } : {},
-          renderedChildrenImpl,
-          instance === undefined,
-          instance.body,
-        ),
+        renderInstance(tree.def, instance ? { ...tree.props, id: tree.id } : {}, instance === undefined),
       )
     }
     return thisNode

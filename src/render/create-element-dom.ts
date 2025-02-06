@@ -1,9 +1,8 @@
-import { Attributes, Classname, DefInternal, EofolNode, Properties, Props } from "../types"
+import { Attributes, Classname, DefInternal, EofolNode, Properties, Props, StateTransform } from "../types"
 import { DEF_TYPE_COMPONENT, PROP_NAME_ID } from "../eofol-constants"
 import { domAppendChildren, generateId } from "../util"
 import { getDef } from "../runtime"
-import { getComponentInstance, getStateTransforms, getProps, addChildrenToProps } from "../component"
-import { mergeInstance } from "../../project/src/internals"
+import { addChildrenToProps, renderInstanceGeneral } from "../component"
 
 export const renderTagDom = (
   tagName: string,
@@ -44,17 +43,16 @@ export const renderTagDom = (
   return element
 }
 
-export const createInstanceFromDefDom = (def: DefInternal<any>, props?: Props, children?: EofolNode) => {
-  const idInstance = generateId()
-  const instance = getComponentInstance(undefined, idInstance, def)
-  const stateTransforms = getStateTransforms(idInstance, instance, def.initialState)
-  mergeInstance(idInstance, instance)
-  const propsImpl = getProps(props, idInstance, def, children)
-  const body = instance.body ?? {}
-  const paramsImpl = {}
+export const createInstanceFromDefDom = (def: DefInternal<any>, props?: Props) => {
+  const { stateTransforms, bodyImpl, propsImpl, paramsImpl } = renderInstanceGeneral(def, props, true)
+  const stateTransformsx = stateTransforms as StateTransform<any>
+
   return def.render({
-    ...stateTransforms,
-    body,
+    state: stateTransformsx.state,
+    setState: stateTransformsx.setState,
+    mergeState: stateTransformsx.mergeState,
+    resetState: stateTransformsx.resetState,
+    body: bodyImpl,
     params: paramsImpl,
     props: propsImpl,
   })
@@ -70,7 +68,7 @@ export const eDom = (
   const def = getDef(tagName)
   if (def) {
     if (def.type === DEF_TYPE_COMPONENT) {
-      return createInstanceFromDefDom(def, addChildrenToProps(attributes, children), children)
+      return createInstanceFromDefDom(def, addChildrenToProps(attributes, children))
     }
   } else {
     return renderTagDom(tagName, className, children, attributes, properties)
