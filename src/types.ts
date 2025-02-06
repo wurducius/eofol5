@@ -140,6 +140,6 @@ export type State<T> = T
 // eslint-disable-next-line no-unused-vars
 export type SetState<T> = (nextState: T) => void
 
-export type EofolRenderHandler = () => VDOMChildren
+export type EofolRenderHandler = () => VDOM
 
 export type StatefulData<T> = typeof READY | typeof LOADING | typeof ERROR | T
