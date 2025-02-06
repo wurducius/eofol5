@@ -55,7 +55,7 @@ export const eImpl = (
   const def = getDef(tagName)
   if (def) {
     if (def.type === DEF_TYPE_COMPONENT) {
-      return createInstanceFromDefVdom(def, addChildrenToProps(attributes, children), children)
+      return createInstanceFromDefVdom(def, addChildrenToProps(attributes, children), undefined)
     }
   } else {
     return renderTag(tagName, className, children, attributes, properties)
