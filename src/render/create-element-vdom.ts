@@ -3,8 +3,8 @@ import { generateId } from "../util"
 import { DEF_TYPE_COMPONENT, VDOM_TYPE } from "../eofol-constants"
 import { getInstance, mergeInstance } from "../../project/src/internals"
 import { getDef } from "../runtime"
-import { addChildrenToProps, getComponentInstance, getProps, playConstructor } from "../component"
-import { playEffect } from "../lifecycle"
+import { addChildrenToProps, getComponentInstance, getProps } from "../component"
+import { playConstructor, playEffect } from "../lifecycle"
 
 export const renderTag = (
   tagName: string,
