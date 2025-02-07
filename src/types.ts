@@ -146,3 +146,14 @@ export type StateTransform<T> = {
   mergeState: SetState<Partial<T>>
   resetState: () => void
 }
+
+export type LifecycleArg = {
+  def: DefInternal<any>
+  props: Props
+  idInstance: string
+  instance: Instance
+  isNew?: boolean
+  children?: VDOM[]
+  stateTransforms?: StateTransform<any>
+  body?: Body
+}

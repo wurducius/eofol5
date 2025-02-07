@@ -3,7 +3,7 @@ import { DEF_TYPE_COMPONENT, VDOM_TYPE } from "../eofol-constants"
 import { mergeInstance } from "../../project/src/internals"
 import { getDef } from "../runtime"
 import { addChildrenToProps } from "../component"
-import { playConstructor, playEffect } from "../lifecycle"
+import { lifecycle } from "../lifecycle"
 import { renderVdomElement } from "../vdom"
 import { generateId, wrapArray } from "../util"
 import { renderInstanceGeneral } from "./render-general"
@@ -33,18 +33,15 @@ export const createInstanceFromDefVdom = (
 ) => {
   const isNew = props?.id === undefined
   const { instance, bodyImpl, propsImpl, idInstance } = renderInstanceGeneral(def, props, isNew, true)
-  const constructed = playConstructor(def, propsImpl, isNew) ?? {}
+  const lifecycleArg = { def, props: propsImpl, isNew, idInstance, instance, children: wrapArray<VDOM>(children) }
+  const constructed = lifecycle.constructor(lifecycleArg)
   instance.body = { ...constructed, ...bodyImpl }
+  lifecycleArg.props = lifecycle.getDerivedStateFromProps(lifecycleArg)
   mergeInstance(idInstance, instance)
-  playEffect(def, idInstance, instance, props)
-  return renderVdomElement({
-    type: VDOM_TYPE.COMPONENT,
-    tagName: undefined,
-    children: wrapArray<VDOM>(children),
-    id: idInstance,
-    attributes: propsImpl,
-    def: def.id,
-  })
+  lifecycle.beforeMount(lifecycleArg)
+  const rendered = lifecycle.render(lifecycleArg, true)
+  lifecycle.afterMount(lifecycleArg)
+  return rendered
 }
 
 export const eImpl = (
@@ -66,12 +63,26 @@ export const eImpl = (
 export const renderInstanceImpl = (def: DefInternal<any>, props: Props | undefined, isNew?: boolean) => {
   if (def.type === DEF_TYPE_COMPONENT) {
     const renderedInstance = renderInstanceGeneral(def, props, isNew)
-    playEffect(def, renderedInstance.idInstance, renderedInstance.instance, renderedInstance.propsImpl)
-    return def.render({
-      ...(renderedInstance.stateTransforms as StateTransform<StateTransform<any>>),
-      body: renderedInstance.bodyImpl,
+    const lifecycleArg = {
+      def,
       props: renderedInstance.propsImpl,
-    })
+      idInstance: renderedInstance.idInstance,
+      instance: renderedInstance.instance,
+      isNew,
+      body: renderedInstance.bodyImpl,
+      stateTransforms: renderedInstance.stateTransforms as StateTransform<any>,
+    }
+    const shouldUpdate = lifecycle.shouldUpdate(lifecycleArg)
+    if (shouldUpdate) {
+      lifecycleArg.props = lifecycle.getDerivedStateFromProps(lifecycleArg)
+      lifecycle.beforeUpdate(lifecycleArg)
+      const rendered = lifecycle.render(lifecycleArg, false)
+      lifecycle.afterUpdate(lifecycleArg)
+      return rendered
+    } else {
+      // @TODO finish shouldUpdate
+      return undefined
+    }
   }
 }
 
