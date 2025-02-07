@@ -2,10 +2,11 @@ import { Attributes, Classname, DefInternal, Properties, Props, VDOM, VDOMChildr
 import { VDOM_TYPE } from "../eofol-constants"
 import { mergeInstance } from "../../project/src/internals"
 import { getDef } from "../runtime"
-import { addChildrenToProps, renderInstanceGeneral } from "../component"
+import { addChildrenToProps } from "../component"
 import { playConstructor, playEffect } from "../lifecycle"
 import { renderVdomElement } from "../vdom"
-import { generateId } from "../util"
+import { generateId, wrapArray } from "../util"
+import { renderInstanceGeneral } from "./render-general"
 
 export const renderTag = (
   tagName: string,
@@ -40,7 +41,7 @@ export const createInstanceFromDefVdom = (
   return renderVdomElement(
     VDOM_TYPE.COMPONENT,
     undefined,
-    (Array.isArray(children) ? children : [children]).filter(Boolean) as VDOM[],
+    wrapArray(children) as VDOM[],
     idInstance,
     undefined,
     propsImpl,
@@ -58,7 +59,7 @@ export const eImpl = (
   properties?: Properties,
 ) => {
   const def = getDef(tagName)
-  const childrenImpl = (Array.isArray(children) ? children : [children]).filter(Boolean) as VDOM[]
+  const childrenImpl = wrapArray(children) as VDOM[]
   if (def) {
     return createInstanceFromDefVdom(def, addChildrenToProps(attributes, childrenImpl), undefined)
   } else {

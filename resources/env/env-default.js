@@ -9,6 +9,16 @@ const envDefault = {
   EOFOL_SERVICE_WORKER_FILENAME: "service-worker.js",
   CRYPTO_ID_LENGTH: 17,
   EOFOL_NAME: "Eofol5",
+  PORT: 3000,
+  BROWSER: "chrome",
+  HOST: "0.0.0.0",
+  HTTPS: true,
+  GENERATE_SOURCEMAP: true,
+  CHOKIDAR_USEPOLLING: true,
+  BUILD_PATH: "/build",
+  EOFOL_STRICT: false,
+  MODE: "development",
+  SERVICE_WORKER: true,
 }
 
 module.exports = envDefault

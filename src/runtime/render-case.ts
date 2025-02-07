@@ -3,7 +3,7 @@ import { centerFlex, spinner } from "../ui"
 import { div } from "../render"
 import { isError, isLoading, isReady } from "./stateful-data"
 
-const readyDefault = () => centerFlex(div("Ready..."))
+const readyDefault = () => centerFlex(div(""))
 
 const loadingDefault = () => centerFlex(spinner())
 

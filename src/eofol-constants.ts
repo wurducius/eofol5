@@ -1,7 +1,5 @@
 export const DEF_TYPE_COMPONENT = "component"
 
-export const DEF_TYPE_FLAT = "flat"
-
 export const VDOM_TYPE = {
   COMPONENT: "component",
   TAG: "tag",
