@@ -26,7 +26,7 @@ const eofolInitImpl = (handler: EofolRenderHandler) => () => {
   selectRoot()
   const vdom = handler()
   setVDOM(vdom)
-  eofolRender(vdomToDom(vdom))
+  eofolRender(vdomToDom(vdom) as EofolElement)
   init()
 }
 
@@ -39,7 +39,7 @@ export const eofolUpdateImpl = pipe(getVDOM, vdomToDom, eofolRender)
 export const eofolUnmountImpl = () => {
   const vdom = ""
   setVDOM(vdom)
-  eofolRender(vdomToDom(vdom))
+  eofolRender(vdomToDom(vdom) as EofolElement)
 }
 
 /*

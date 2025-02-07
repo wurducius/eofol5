@@ -1,5 +1,7 @@
-const _pipe = (f: Function, g: Function) => (arg: any) => g(f(arg))
-export const pipe = (...fns: Function[]) => fns.reduce(_pipe)
+// eslint-disable-next-line no-unused-vars
+const _pipe = (f: (x?: any) => any, g: (y?: any) => any) => (arg: any) => g(f(arg))
+// eslint-disable-next-line no-unused-vars
+export const pipe = (...fns: ((z?: any) => any)[]) => fns.reduce(_pipe)
 
 export const sleep = (ms: number) =>
   new Promise((resolve) => {

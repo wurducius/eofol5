@@ -63,7 +63,7 @@ export type ComponentRender<T> = {
 
 export type ComponentLifecycle<T> = ComponentRender<T> & {
   // eslint-disable-next-line no-unused-vars
-  constructor?: (arg: { props: Props; defaultProps: Props; defaultParams: Props }) => Body
+  constructor?: (arg: { props?: Props; defaultProps?: Props; defaultParams?: Props }) => Body
   // eslint-disable-next-line no-unused-vars
   shouldUpdate?: (arg: DefRenderArg<T>) => boolean
   // eslint-disable-next-line no-unused-vars
@@ -86,7 +86,7 @@ export type ComponentLifecycle<T> = ComponentRender<T> & {
 export type Effect<T> = (arg: DefRenderArg<T>) => void
 
 // eslint-disable-next-line no-unused-vars
-export type DefRender<T> = (arg: DefRenderArg<T>) => EofolNode
+export type DefRender<T> = (arg: DefRenderArg<T>) => VDOMChildren
 
 // @TODO finish
 export type Def<T> = ComponentLifecycle<T> & {
@@ -143,3 +143,10 @@ export type SetState<T> = (nextState: T) => void
 export type EofolRenderHandler = () => VDOM
 
 export type StatefulData<T> = typeof READY | typeof LOADING | typeof ERROR | T
+
+export type StateTransform<T> = {
+  state: T
+  setState: SetState<T>
+  mergeState: SetState<Partial<T>>
+  resetState: () => void
+}
