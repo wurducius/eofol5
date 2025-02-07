@@ -1,13 +1,46 @@
-import { Attributes, Classname, DefInternal, Properties, Props, StateTransform, VDOM, VDOMChildren } from "../types"
+import {
+  Attributes,
+  Classname,
+  DefInternal,
+  Properties,
+  Props,
+  VDOM,
+  VDOM_COMPONENT,
+  VDOM_TAG,
+  VDOMChildren,
+} from "../types"
 import { DEF_TYPE_COMPONENT, VDOM_TYPE } from "../eofol-constants"
 import { mergeInstance } from "../../project/src/internals"
 import { getDef } from "../runtime"
 import { addChildrenToProps } from "../component"
 import { lifecycle } from "../lifecycle"
-import { renderVdomElement } from "../vdom"
-import { generateId, wrapArray } from "../util"
+import { ax, generateId, wrapArray } from "../util"
 import { renderInstanceGeneral } from "./render-general"
 import { eofolErrorDefNotFound } from "../log"
+
+export const renderVdomElement = (arg: {
+  type: typeof VDOM_TYPE.COMPONENT | typeof VDOM_TYPE.TAG
+  tagName: string | undefined
+  children: VDOMChildren | undefined
+  id: string
+  className?: string
+  attributes?: Attributes | undefined
+  properties?: Properties | undefined
+  def?: string | undefined
+}) => {
+  const { type, tagName, children, id, className, attributes, properties, def } = arg
+  return ax(
+    {
+      class: className,
+      [type === VDOM_TYPE.COMPONENT ? "props" : "attributes"]: attributes,
+      properties,
+      tag: tagName,
+      children,
+      def,
+    },
+    { type, id },
+  ) as VDOM_COMPONENT | VDOM_TAG
+}
 
 export const renderTag = (
   tagName: string,
@@ -32,15 +65,36 @@ export const createInstanceFromDefVdom = (
   children?: VDOMChildren | VDOMChildren[],
 ) => {
   const isNew = props?.id === undefined
-  const { instance, bodyImpl, propsImpl, idInstance } = renderInstanceGeneral(def, props, isNew, true)
-  const lifecycleArg = { def, props: propsImpl, isNew, idInstance, instance, children: wrapArray<VDOM>(children) }
+  const renderedInstance = renderInstanceGeneral(def, props, isNew)
+  const lifecycleArg = {
+    def,
+    props: renderedInstance.propsImpl,
+    isNew,
+    idInstance: renderedInstance.idInstance,
+    instance: renderedInstance.instance,
+    children: wrapArray<VDOM>(children),
+    body: renderedInstance.bodyImpl,
+    stateTransforms: renderedInstance.stateTransforms,
+  }
+
   const constructed = lifecycle.constructor(lifecycleArg)
-  instance.body = { ...constructed, ...bodyImpl }
-  lifecycleArg.props = lifecycle.getDerivedStateFromProps(lifecycleArg)
-  mergeInstance(idInstance, instance)
+  const constructedBody = { ...lifecycleArg.body, ...constructed }
+  lifecycleArg.instance.body = constructedBody
+  lifecycleArg.body = constructedBody
+
+  const derivedState = lifecycle.getDerivedStateFromProps(lifecycleArg)
+  lifecycleArg.instance.state = derivedState
+  lifecycleArg.stateTransforms.state = derivedState
+  lifecycleArg.instance.state = derivedState
+
+  mergeInstance(lifecycleArg.idInstance, lifecycleArg.instance)
+
   lifecycle.beforeMount(lifecycleArg)
+
   const rendered = lifecycle.render(lifecycleArg, true)
+
   lifecycle.afterMount(lifecycleArg)
+
   return rendered
 }
 
@@ -70,14 +124,24 @@ export const renderInstanceImpl = (def: DefInternal<any>, props: Props | undefin
       instance: renderedInstance.instance,
       isNew,
       body: renderedInstance.bodyImpl,
-      stateTransforms: renderedInstance.stateTransforms as StateTransform<any>,
+      stateTransforms: renderedInstance.stateTransforms,
     }
+
     const shouldUpdate = lifecycle.shouldUpdate(lifecycleArg)
+
     if (shouldUpdate) {
-      lifecycleArg.props = lifecycle.getDerivedStateFromProps(lifecycleArg)
+      const derivedState = lifecycle.getDerivedStateFromProps(lifecycleArg)
+      lifecycleArg.stateTransforms.state = derivedState
+      lifecycleArg.instance.state = derivedState
+
+      mergeInstance(lifecycleArg.idInstance, lifecycleArg.instance)
+
       lifecycle.beforeUpdate(lifecycleArg)
+
       const rendered = lifecycle.render(lifecycleArg, false)
+
       lifecycle.afterUpdate(lifecycleArg)
+
       return rendered
     } else {
       // @TODO finish shouldUpdate

@@ -154,6 +154,6 @@ export type LifecycleArg = {
   instance: Instance
   isNew?: boolean
   children?: VDOM[]
-  stateTransforms?: StateTransform<any>
-  body?: Body
+  stateTransforms: StateTransform<any>
+  body: Body
 }
