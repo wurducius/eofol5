@@ -32,7 +32,6 @@ export const renderComponentDom = (def: DefInternal<any>, props: Props | undefin
       idInstance: renderedInstance.idInstance,
       instance: renderedInstance.instance,
       isNew,
-      body: renderedInstance.bodyImpl,
       stateTransforms: renderedInstance.stateTransforms,
     }
 

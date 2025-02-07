@@ -9,6 +9,5 @@ export const getRenderArgs = (def: DefInternal<any>, props: Props | undefined, i
   const instance = getComponentInstance(savedInstance, idInstance, def)
   const stateTransforms = getStateTransforms(idInstance, instance, def.initialState)
   const propsImpl = getProps(props, idInstance, def, undefined)
-  const bodyImpl = instance.body ?? {}
-  return { stateTransforms, instance, idInstance, propsImpl, bodyImpl }
+  return { stateTransforms, instance, idInstance, propsImpl }
 }

@@ -5,11 +5,11 @@ import { VDOM_TYPE } from "../eofol-constants"
 import { wrapArray } from "../util"
 import { renderVdomElement } from "../render"
 
-const getRenderArg = (arg: LifecycleArg) => ({ ...arg.stateTransforms, props: arg.props, body: arg.body })
+const getRenderArg = (arg: LifecycleArg) => ({ ...arg.stateTransforms, props: arg.props })
 
 const constructor = (arg: LifecycleArg) => {
   const { def, props, isNew } = arg
-  return playConstructor(def, props, isNew) ?? {}
+  playConstructor(def, props, isNew)
 }
 
 const getDerivedStateFromProps = (arg: LifecycleArg): Props => {

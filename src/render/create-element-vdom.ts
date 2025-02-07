@@ -60,7 +60,8 @@ export const renderTag = (
 
 export const renderComponent = (def: DefInternal<any>, props?: Props, children?: VDOMChildren | VDOMChildren[]) => {
   const isNew = props?.id === undefined
-  const renderedInstance = getRenderArgs(def, props, isNew)
+  const propsInitialized = isNew && def.defaultProps ? { ...def.defaultProps, ...(props ?? {}) } : props
+  const renderedInstance = getRenderArgs(def, propsInitialized, isNew)
   const lifecycleArg = {
     def,
     props: renderedInstance.propsImpl,
@@ -68,14 +69,10 @@ export const renderComponent = (def: DefInternal<any>, props?: Props, children?:
     idInstance: renderedInstance.idInstance,
     instance: renderedInstance.instance,
     children: wrapArray<VDOM>(children),
-    body: renderedInstance.bodyImpl,
     stateTransforms: renderedInstance.stateTransforms,
   }
 
-  const constructed = lifecycle.constructor(lifecycleArg)
-  const constructedBody = { ...lifecycleArg.body, ...constructed }
-  lifecycleArg.instance.body = constructedBody
-  lifecycleArg.body = constructedBody
+  lifecycle.constructor(lifecycleArg)
 
   const derivedState = lifecycle.getDerivedStateFromProps(lifecycleArg)
   lifecycleArg.instance.state = derivedState

@@ -4,8 +4,6 @@ export type Classname = string | undefined
 export type Attributes = any
 export type Properties = any
 
-export type Body = any
-
 export type EofolElement = HTMLElement | string | undefined | false | null
 export type EofolNode = EofolElement[] | EofolElement
 
@@ -51,7 +49,6 @@ export type DefRenderArg<T> = {
   setState: SetState<T>
   resetState: () => void
   props: Props
-  body: Body
 }
 
 export type Multi<T> = T | T[] | undefined
@@ -62,7 +59,7 @@ export type ComponentRender<T> = {
 
 export type ComponentLifecycle<T> = ComponentRender<T> & {
   // eslint-disable-next-line no-unused-vars
-  constructor?: (arg: { props?: Props; defaultProps?: Props }) => Body
+  constructor?: (arg: { props?: Props; defaultProps?: Props }) => void
   // eslint-disable-next-line no-unused-vars
   shouldUpdate?: (arg: DefRenderArg<T>) => boolean
   // eslint-disable-next-line no-unused-vars
@@ -103,7 +100,6 @@ export interface Instance {
   // @TODO state typing
   state: State<any>
   def: string
-  body?: Body
 }
 
 export type VDOMChildren = VDOM | VDOM[] | undefined
@@ -155,5 +151,4 @@ export type LifecycleArg = {
   isNew?: boolean
   children?: VDOM[]
   stateTransforms: StateTransform<any>
-  body: Body
 }
