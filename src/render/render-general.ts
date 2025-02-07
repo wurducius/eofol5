@@ -14,7 +14,6 @@ export const renderInstanceGeneral = (
   const instance = getComponentInstance(savedInstance, idInstance, def)
   const stateTransforms = skipState ? {} : getStateTransforms(idInstance, instance, def.initialState)
   const propsImpl = getProps(props, idInstance, def, undefined)
-  const paramsImpl = {}
   const bodyImpl = instance.body ?? {}
-  return { stateTransforms, instance, idInstance, propsImpl, paramsImpl, bodyImpl }
+  return { stateTransforms, instance, idInstance, propsImpl, bodyImpl }
 }

@@ -19,14 +19,14 @@ export const getComponentInstance = (
   body?: Body | undefined,
 ) =>
   savedInstance ??
-  ax(
+  (ax(
     { body },
     {
       id: idInstance,
       def: def.id,
       state: initializeState(def),
     },
-  )
+  ) as Instance)
 
 export const addChildrenToProps = (props: Props | undefined, children: EofolNode | VDOMChildren | undefined) =>
   ax({ children }, props ?? {})

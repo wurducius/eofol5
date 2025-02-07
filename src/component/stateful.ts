@@ -10,7 +10,6 @@ export const renderInstanceFromDef = (def: DefInternal<any>, props?: Props | und
   return def.render({
     ...(renderedInstance.stateTransforms as StateTransform<StateTransform<any>>),
     body: renderedInstance.bodyImpl,
-    params: renderedInstance.paramsImpl,
     props: renderedInstance.propsImpl,
   })
 }

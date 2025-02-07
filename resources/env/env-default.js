@@ -10,7 +10,6 @@ const envDefault = {
   CRYPTO_ID_LENGTH: 17,
   EOFOL_NAME: "Eofol5",
   PORT: 3000,
-  BROWSER: "chrome",
   HOST: "0.0.0.0",
   HTTPS: true,
   GENERATE_SOURCEMAP: true,
@@ -19,6 +18,7 @@ const envDefault = {
   EOFOL_STRICT: false,
   MODE: "development",
   SERVICE_WORKER: true,
+  ANALYZE: false,
 }
 
 module.exports = envDefault

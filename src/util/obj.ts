@@ -20,4 +20,6 @@ export const hx = (
     }
   })
 
-export const wrapArray = (arg: any) => (Array.isArray(arg) ? arg : [arg]).filter(Boolean)
+export function wrapArray<T>(arg: any) {
+  return (Array.isArray(arg) ? arg : [arg]).filter(Boolean) as T[]
+}

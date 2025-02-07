@@ -15,17 +15,15 @@ export const renderTag = (
   attributes?: Attributes,
   properties?: Properties,
 ) =>
-  renderVdomElement(
-    VDOM_TYPE.TAG,
+  renderVdomElement({
+    type: VDOM_TYPE.TAG,
     tagName,
     children,
-    attributes?.id ?? generateId(),
+    id: attributes?.id ?? generateId(),
     className,
     attributes,
     properties,
-    undefined,
-    undefined,
-  )
+  })
 
 export const createInstanceFromDefVdom = (
   def: DefInternal<any>,
@@ -33,22 +31,19 @@ export const createInstanceFromDefVdom = (
   children?: VDOMChildren | VDOMChildren[],
 ) => {
   const isNew = props?.id === undefined
-  const { instance, bodyImpl, propsImpl, paramsImpl, idInstance } = renderInstanceGeneral(def, props, isNew, true)
+  const { instance, bodyImpl, propsImpl, idInstance } = renderInstanceGeneral(def, props, isNew, true)
   const constructed = playConstructor(def, propsImpl, isNew) ?? {}
-  instance.body = { ...constructed, bodyImpl }
+  instance.body = { ...constructed, ...bodyImpl }
   mergeInstance(idInstance, instance)
-  playEffect(def, idInstance, instance)
-  return renderVdomElement(
-    VDOM_TYPE.COMPONENT,
-    undefined,
-    wrapArray(children) as VDOM[],
-    idInstance,
-    undefined,
-    propsImpl,
-    undefined,
-    def.id,
-    paramsImpl,
-  )
+  playEffect(def, idInstance, instance, props)
+  return renderVdomElement({
+    type: VDOM_TYPE.COMPONENT,
+    tagName: undefined,
+    children: wrapArray<VDOM>(children),
+    id: idInstance,
+    attributes: propsImpl,
+    def: def.id,
+  })
 }
 
 export const eImpl = (
@@ -59,7 +54,7 @@ export const eImpl = (
   properties?: Properties,
 ) => {
   const def = getDef(tagName)
-  const childrenImpl = wrapArray(children) as VDOM[]
+  const childrenImpl = wrapArray<VDOM>(children)
   if (def) {
     return createInstanceFromDefVdom(def, addChildrenToProps(attributes, childrenImpl), undefined)
   } else {

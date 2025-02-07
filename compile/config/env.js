@@ -16,6 +16,16 @@ const getEnvEofolNamePlaceholder = () => envString("EOFOL_NAME_PLACEHOLDER")
 const getEnvEofolServiceWorkerFilename = () => envString("EOFOL_SERVICE_WORKER_FILENAME")
 const getEnvCryptoIdLength = () => envNumber("CRYPTO_ID_LENGTH")
 const getEnvEofolName = () => envString("EOFOL_NAME")
+const getEnvPort = () => envNumber("PORT")
+const getEnvHost = () => envString("HOST")
+const getEnvHTTPS = () => envBool("HTTPS")
+const getEnvGenerateSourceMap = () => envBool("GENERATE_SOURCEMAP")
+const getEnvChokidarUsePolling = () => envBool("CHOKIDAR_USEPOLLING")
+const getEnvBuildPath = () => envString("BUILD_PATH")
+const getEnvEofolStrictMode = () => envBool("EOFOL_STRICT")
+const getEnvMode = () => envString("MODE")
+const getEnvServiceWorker = () => envBool("SERVICE_WORKER")
+const getEnvAnalyze = () => envBool("ANALYZE")
 
 module.exports = {
   getEnvEofolServiceWorkerFilename,
@@ -28,4 +38,14 @@ module.exports = {
   getEnvEofolNamePlaceholder,
   getEnvCryptoIdLength,
   getEnvVerbosityLevel,
+  getEnvChokidarUsePolling,
+  getEnvGenerateSourceMap,
+  getEnvMode,
+  getEnvServiceWorker,
+  getEnvHost,
+  getEnvHTTPS,
+  getEnvPort,
+  getEnvEofolStrictMode,
+  getEnvBuildPath,
+  getEnvAnalyze,
 }
