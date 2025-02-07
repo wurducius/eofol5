@@ -3,7 +3,7 @@ const { getINTERNALS } = require("../compile/internals")
 const getENV = () => getINTERNALS().env
 
 const envString = (name) => getENV()[name]
-const envBool = (name) => envString(name) === "true"
+const envBool = (name) => envString(name) === true
 const envNumber = (name) => Number(envString(name))
 
 const getEnvBaseUrl = () => envString("BASE_URL")
