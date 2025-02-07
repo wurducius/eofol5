@@ -1,5 +1,6 @@
 import { button, define, div, eofolForceUpdate, eofolUnmount, generateId } from "../../../src"
 
+// @ts-ignore
 export default define("forceUpdate", {
   render: () =>
     div([

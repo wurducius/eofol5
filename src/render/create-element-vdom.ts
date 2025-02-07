@@ -1,10 +1,11 @@
-import { Attributes, Classname, DefInternal, Properties, Props, VDOMChildren } from "../types"
-import { generateId } from "../util"
-import { DEF_TYPE_COMPONENT, VDOM_TYPE } from "../eofol-constants"
+import { Attributes, Classname, DefInternal, Properties, Props, VDOM, VDOMChildren } from "../types"
+import { VDOM_TYPE } from "../eofol-constants"
 import { mergeInstance } from "../../project/src/internals"
 import { getDef } from "../runtime"
 import { addChildrenToProps, renderInstanceGeneral } from "../component"
 import { playConstructor, playEffect } from "../lifecycle"
+import { renderVdomElement } from "../vdom"
+import { generateId } from "../util"
 
 export const renderTag = (
   tagName: string,
@@ -12,47 +13,55 @@ export const renderTag = (
   children?: VDOMChildren,
   attributes?: Attributes,
   properties?: Properties,
-) => ({
-  type: VDOM_TYPE.TAG,
-  id: attributes?.id ?? generateId(),
-  class: className,
-  attributes,
-  properties,
-  tag: tagName,
-  children,
-})
+) =>
+  renderVdomElement(
+    VDOM_TYPE.TAG,
+    tagName,
+    children,
+    attributes?.id ?? generateId(),
+    className,
+    attributes,
+    properties,
+    undefined,
+    undefined,
+  )
 
-export const createInstanceFromDefVdom = (def: DefInternal<any>, props?: Props, children?: VDOMChildren) => {
+export const createInstanceFromDefVdom = (
+  def: DefInternal<any>,
+  props?: Props,
+  children?: VDOMChildren | VDOMChildren[],
+) => {
   const isNew = props?.id === undefined
   const { instance, bodyImpl, propsImpl, paramsImpl, idInstance } = renderInstanceGeneral(def, props, isNew, true)
   const constructed = playConstructor(def, propsImpl, isNew) ?? {}
   instance.body = { ...constructed, bodyImpl }
   mergeInstance(idInstance, instance)
   playEffect(def, idInstance, instance)
-
-  return {
-    type: VDOM_TYPE.COMPONENT,
-    id: idInstance,
-    props: propsImpl,
-    children,
-    def: def.id,
-    params: paramsImpl,
-  }
+  return renderVdomElement(
+    VDOM_TYPE.COMPONENT,
+    undefined,
+    (Array.isArray(children) ? children : [children]).filter(Boolean) as VDOM[],
+    idInstance,
+    undefined,
+    propsImpl,
+    undefined,
+    def.id,
+    paramsImpl,
+  )
 }
 
 export const eImpl = (
   tagName: string,
   className?: Classname,
-  children?: VDOMChildren,
+  children?: Array<VDOM | undefined> | VDOM | undefined,
   attributes?: Attributes | Props,
   properties?: Properties,
 ) => {
   const def = getDef(tagName)
+  const childrenImpl = (Array.isArray(children) ? children : [children]).filter(Boolean) as VDOM[]
   if (def) {
-    if (def.type === DEF_TYPE_COMPONENT) {
-      return createInstanceFromDefVdom(def, addChildrenToProps(attributes, children), undefined)
-    }
+    return createInstanceFromDefVdom(def, addChildrenToProps(attributes, childrenImpl), undefined)
   } else {
-    return renderTag(tagName, className, children, attributes, properties)
+    return renderTag(tagName, className, childrenImpl, attributes, properties)
   }
 }

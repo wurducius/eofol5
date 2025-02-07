@@ -6,7 +6,7 @@ let ROOT_ELEMENT: HTMLElement | undefined = undefined
 
 export const getRoot = () => ROOT_ELEMENT
 
-const setRoot = (e) => {
+const setRoot = (e: HTMLElement | undefined) => {
   ROOT_ELEMENT = e
 }
 

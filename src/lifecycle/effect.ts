@@ -5,7 +5,7 @@ import { getStateTransforms } from "../component"
 const playEffectImpl = (def: Def<any>, instance: Instance, idInstance: string) => (effect: Effect<any>) => {
   const stateTransforms = getStateTransforms(idInstance, instance, def.initialState)
   // @TODO add props and such
-  effect({ ...stateTransforms })
+  effect({ body: instance.body, params: instance.params, props: instance.props, ...stateTransforms })
 }
 
 export const playEffect = (def: Def<any>, idInstance: string, instance: Instance) => {

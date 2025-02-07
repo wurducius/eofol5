@@ -4,16 +4,27 @@ import { col, row } from "./flex"
 
 export const INPUT_NUMBER = "eofol-input-number"
 
-const handleIncrementGeneral = (state, mergeState, onChange) => (offset) => () => {
-  const nextValue = (state.value ?? 0) + offset
-  mergeState({ value: nextValue })
-  if (onChange) {
-    onChange(nextValue)
-  }
-}
+type InputNumberState = { value: number; initialized?: boolean }
 
-defineComponent(INPUT_NUMBER, {
-  // @ts-ignore
+const handleIncrementGeneral =
+  (
+    state: InputNumberState,
+    // eslint-disable-next-line no-unused-vars
+    mergeState: (nextState: Partial<InputNumberState>) => void,
+    // eslint-disable-next-line no-unused-vars
+    onChange: (nextValue: number) => void,
+  ) =>
+  (offset: number) =>
+  () => {
+    const nextValue = (state.value ?? 0) + offset
+    mergeState({ value: nextValue })
+    if (onChange) {
+      onChange(nextValue)
+    }
+  }
+
+// @ts-ignore
+defineComponent<InputNumberState>(INPUT_NUMBER, {
   render: (a) => {
     const { state, mergeState } = a
     const props = a.props

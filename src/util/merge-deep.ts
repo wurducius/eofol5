@@ -1,5 +1,5 @@
-export const mergeDeep = (...objects) => {
-  const isObject = (obj) => obj && typeof obj === "object"
+export const mergeDeep = (...objects: Record<string, any>[]) => {
+  const isObject = (obj: Object) => obj && typeof obj === "object"
 
   return objects.reduce((prev, obj) => {
     Object.keys(obj).forEach((key) => {

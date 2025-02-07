@@ -15,7 +15,7 @@ export function getStateSetter<T>(idInstance: string, instance: Instance) {
   }
 }
 
-export function getStateMerge<T>(idInstance: string, instance: Instance) {
+export function getStateMerge<T extends Record<string, any>>(idInstance: string, instance: Instance) {
   return function (nextState: T) {
     updateState(idInstance, instance, mergeDeep(instance.state, nextState))
   }

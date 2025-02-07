@@ -5,8 +5,8 @@ const url =
 
 const good = (data: number) => centerFlex(col([h2(`Temperature: ${data}°C`)]))
 
+// @ts-ignore
 export default define<{ temperature: StatefulData<number>; temperatureError?: string }>("weather", {
-  // @ts-ignore
   render: (arg) => {
     const { state } = arg
     console.log("(R) Weather")
