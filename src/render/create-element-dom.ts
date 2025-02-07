@@ -2,7 +2,8 @@ import { Attributes, Classname, EofolNode, Properties, Props } from "../types"
 import { DEF_TYPE_COMPONENT } from "../eofol-constants"
 import { ax, domAppendChildren, generateId, hx, wrapArray } from "../util"
 import { getDef } from "../runtime"
-import { addChildrenToProps, renderInstanceFromDef } from "../component"
+import { addChildrenToProps } from "../component"
+import { renderInstanceImpl } from "./create-element-vdom"
 
 export const renderTagDom = (
   tagName: string,
@@ -30,7 +31,7 @@ export const eDom = (
   const def = getDef(tagName)
   if (def) {
     if (def.type === DEF_TYPE_COMPONENT) {
-      return renderInstanceFromDef(def, addChildrenToProps(attributes, children), true)
+      return renderInstanceImpl(def, addChildrenToProps(attributes, children), true)
     }
   } else {
     return renderTagDom(tagName, className, children, attributes, properties)
