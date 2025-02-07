@@ -1,7 +1,9 @@
 import { EofolElement, EofolNode, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOMChildren } from "../types"
 import { arrayCombinator, deepCopyString, wrapArray } from "../util"
 import { getInstance, isVDOMTag } from "../../project/src/internals"
-import { eDom, renderInstance } from "../render"
+import { eDom, renderComponentDom } from "../render"
+import { getDef } from "../runtime"
+import { eofolErrorDefNotFound } from "../log"
 
 export const vdomToDom = (
   tree: VDOM | undefined,
@@ -27,9 +29,14 @@ export const vdomToDom = (
       )
     } else {
       const instance = getInstance(tree.id)
-      return arrayCombinator(vdomToDom)(
-        renderInstance(tree.def, instance ? { ...(tree.props ?? {}), id: tree.id } : {}, instance === undefined),
-      )
+      const def = getDef(instance.def)
+      if (def) {
+        return arrayCombinator(vdomToDom)(
+          renderComponentDom(def, instance ? { ...(tree.props ?? {}), id: tree.id } : {}, false),
+        )
+      } else {
+        eofolErrorDefNotFound(instance.def)
+      }
     }
   }
 }

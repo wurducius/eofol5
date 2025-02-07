@@ -3,7 +3,7 @@ import { generateId } from "../util"
 import { getInstance } from "../../project/src/internals"
 import { getComponentInstance, getProps, getStateTransforms } from "../component"
 
-export const renderInstanceGeneral = (def: DefInternal<any>, props: Props | undefined, isNew?: boolean) => {
+export const getRenderArgs = (def: DefInternal<any>, props: Props | undefined, isNew?: boolean) => {
   const idInstance = isNew ? generateId() : (props?.id ?? generateId())
   const savedInstance = isNew ? undefined : getInstance(idInstance)
   const instance = getComponentInstance(savedInstance, idInstance, def)

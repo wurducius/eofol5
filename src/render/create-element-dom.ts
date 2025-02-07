@@ -1,9 +1,11 @@
-import { Attributes, Classname, EofolNode, Properties, Props } from "../types"
+import { Attributes, Classname, DefInternal, EofolNode, Properties, Props } from "../types"
 import { DEF_TYPE_COMPONENT } from "../eofol-constants"
 import { ax, domAppendChildren, generateId, hx, wrapArray } from "../util"
 import { getDef } from "../runtime"
 import { addChildrenToProps } from "../component"
-import { renderInstanceImpl } from "./create-element-vdom"
+import { getRenderArgs } from "./render-general"
+import { lifecycle } from "../lifecycle"
+import { mergeInstance } from "../../project/src/internals"
 
 export const renderTagDom = (
   tagName: string,
@@ -21,6 +23,42 @@ export const renderTagDom = (
   return element
 }
 
+export const renderComponentDom = (def: DefInternal<any>, props: Props | undefined, isNew?: boolean) => {
+  if (def.type === DEF_TYPE_COMPONENT) {
+    const renderedInstance = getRenderArgs(def, props, isNew)
+    const lifecycleArg = {
+      def,
+      props: renderedInstance.propsImpl,
+      idInstance: renderedInstance.idInstance,
+      instance: renderedInstance.instance,
+      isNew,
+      body: renderedInstance.bodyImpl,
+      stateTransforms: renderedInstance.stateTransforms,
+    }
+
+    const shouldUpdate = lifecycle.shouldUpdate(lifecycleArg)
+
+    if (shouldUpdate) {
+      const derivedState = lifecycle.getDerivedStateFromProps(lifecycleArg)
+      lifecycleArg.stateTransforms.state = derivedState
+      lifecycleArg.instance.state = derivedState
+
+      mergeInstance(lifecycleArg.idInstance, lifecycleArg.instance)
+
+      lifecycle.beforeUpdate(lifecycleArg)
+
+      const rendered = lifecycle.render(lifecycleArg, false)
+
+      lifecycle.afterUpdate(lifecycleArg)
+
+      return rendered
+    } else {
+      // @TODO finish shouldUpdate
+      return undefined
+    }
+  }
+}
+
 export const eDom = (
   tagName: string,
   className?: Classname,
@@ -31,7 +69,7 @@ export const eDom = (
   const def = getDef(tagName)
   if (def) {
     if (def.type === DEF_TYPE_COMPONENT) {
-      return renderInstanceImpl(def, addChildrenToProps(attributes, children), true)
+      return renderComponentDom(def, addChildrenToProps(attributes, children), true)
     }
   } else {
     return renderTagDom(tagName, className, children, attributes, properties)

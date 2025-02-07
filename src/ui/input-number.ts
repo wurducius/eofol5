@@ -1,6 +1,7 @@
 import { defineComponent } from "../runtime"
-import { button, e, input } from "../render"
+import { e } from "../render"
 import { col, row } from "./flex"
+import { button, input } from "../simple"
 
 export const INPUT_NUMBER = "eofol-input-number"
 
