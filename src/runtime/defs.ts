@@ -1,4 +1,4 @@
-import { Classname, Def, DEF_TYPE, DefInternal, Properties, Props, VDOMChildren } from "../types"
+import { Classname, Def, DEF_TYPE, DefInternal, Properties, Props, VDOM, VDOMChildren } from "../types"
 import { e } from "../render"
 
 const defsRegistry: Record<string, DefInternal<any>> = {}
@@ -18,5 +18,5 @@ export function defineComponent<T>(id: string, def: Def<T>) {
 export function define<T>(id: string, def: Def<T>) {
   defineComponent(id, def)
   return (children?: VDOMChildren, className?: Classname, props?: Props, properties?: Properties) =>
-    e(id, children, className, props, properties)
+    e(id, children, className, props, properties) as VDOM
 }

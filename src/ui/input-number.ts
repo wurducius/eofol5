@@ -26,8 +26,7 @@ const handleIncrementGeneral =
 // @ts-ignore
 defineComponent<InputNumberState>(INPUT_NUMBER, {
   render: (a) => {
-    const { state, mergeState } = a
-    const props = a.props
+    const { state, mergeState, props } = a
     /*
     if (!state.initialized && props.initialValue !== undefined && state.value !== props.initialValue) {
       mergeState({ value: props.initialValue, initialized: true })
