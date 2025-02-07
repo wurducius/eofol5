@@ -51,7 +51,6 @@ export type DefRenderArg<T> = {
   setState: SetState<T>
   resetState: () => void
   props: Props
-  params: Props
   body: Body
 }
 
@@ -63,7 +62,7 @@ export type ComponentRender<T> = {
 
 export type ComponentLifecycle<T> = ComponentRender<T> & {
   // eslint-disable-next-line no-unused-vars
-  constructor?: (arg: { props?: Props; defaultProps?: Props; defaultParams?: Props }) => Body
+  constructor?: (arg: { props?: Props; defaultProps?: Props }) => Body
   // eslint-disable-next-line no-unused-vars
   shouldUpdate?: (arg: DefRenderArg<T>) => boolean
   // eslint-disable-next-line no-unused-vars
@@ -92,7 +91,6 @@ export type DefRender<T> = (arg: DefRenderArg<T>) => VDOMChildren
 export type Def<T> = ComponentLifecycle<T> & {
   initialState?: State<T>
   defaultProps?: Props
-  defaultParams?: Params
   className?: Multi<string>
   effect?: Multi<Effect<T>>
   subscribe?: Multi<string>
@@ -134,8 +132,6 @@ export type VDOM = VDOM_TAG | VDOM_COMPONENT | VDOM_TEXT
 
 export type Props = Record<string | typeof PROP_NAME_ID | typeof PROP_NAME_DEF, any>
 
-export type Params = Record<string | typeof PROP_NAME_ID | typeof PROP_NAME_DEF, any>
-
 export type State<T> = T
 // eslint-disable-next-line no-unused-vars
 export type SetState<T> = (nextState: T) => void
@@ -149,4 +145,15 @@ export type StateTransform<T> = {
   setState: SetState<T>
   mergeState: SetState<Partial<T>>
   resetState: () => void
+}
+
+export type LifecycleArg = {
+  def: DefInternal<any>
+  props: Props
+  idInstance: string
+  instance: Instance
+  isNew?: boolean
+  children?: VDOM[]
+  stateTransforms?: StateTransform<any>
+  body?: Body
 }

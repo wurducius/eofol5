@@ -4,8 +4,7 @@ import { eofolUpdate } from "../core"
 import { mergeDeep } from "../util"
 
 const updateState = (idInstance: string, instance: Instance, nextState: any) => {
-  const nextInstance = { ...instance, state: nextState }
-  mergeInstance(idInstance, nextInstance)
+  mergeInstance(idInstance, { ...instance, state: nextState })
   eofolUpdate(idInstance)
 }
 

@@ -1,16 +1,18 @@
 const wds = require("eofol-dev-server").default
 const open = require("open").default
 const { getConfig } = require("../../compile")
+const { getEnvHTTPS, getEnvHost, getEnvPort } = require("../../compile/config/env")
 
 const config = getConfig()
 
-const PROTOCOL = "https"
-const HOST = "0.0.0.0"
-const PORT = "3000"
+const HTTPS = getEnvHTTPS()
+const HOST = getEnvHost()
+const PORT = getEnvPort()
+
 const WAIT = 150
 const OPEN = true
 
-const serveUrl = `${PROTOCOL}://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}`
+const serveUrl = `${HTTPS ? "https" : "http"}://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}`
 
 // @TODO remove ./src
 const serveOptions = {
@@ -20,7 +22,7 @@ const serveOptions = {
   mount: ["./node_modules"],
   port: PORT,
   host: HOST,
-  https: PROTOCOL === "https",
+  https: HTTPS,
 }
 
 const openPromise = () => (OPEN ? open(serveUrl) : new Promise())

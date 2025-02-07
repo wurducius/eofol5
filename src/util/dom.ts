@@ -1,3 +1,5 @@
+import { EofolNode } from "../types"
+
 export const appendChild = (target: Element, child: Element | string) => {
   if (child) {
     if (typeof child === "string") {
@@ -75,4 +77,9 @@ export const selectElementById = (
       onError(id)
     }
   }
+}
+
+export const replaceChildren = (rootElement: Element, rendered: EofolNode) => {
+  domClearChildren(rootElement)
+  domAppendChildren(rendered, rootElement)
 }

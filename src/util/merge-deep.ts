@@ -5,7 +5,6 @@ export const mergeDeep = (...objects: Record<string, any>[]) => {
     Object.keys(obj).forEach((key) => {
       const pVal = prev[key]
       const oVal = obj[key]
-
       if (Array.isArray(pVal) && Array.isArray(oVal)) {
         prev[key] = oVal ?? pVal
       } else if (isObject(pVal) && isObject(oVal)) {
@@ -14,7 +13,6 @@ export const mergeDeep = (...objects: Record<string, any>[]) => {
         prev[key] = oVal
       }
     })
-
     return prev
   }, {})
 }

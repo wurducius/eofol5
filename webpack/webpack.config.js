@@ -2,19 +2,18 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const EofolPlugin = require("./webpack-plugin")
 const { getViewPathTarget } = require("../src/extract/jsx-compiler/jsx")
 const { getConfig } = require("../compile/config")
-
-// @TODO: read params
+const { getEnvMode, getEnvAnalyze, getEnvGenerateSourceMap } = require("../compile/config/env")
 
 const config = getConfig()
 
-const MODE = "development"
-
-const ANALYZE = false
+const MODE = getEnvMode() === "production" ? "production" : "development"
+const ANALYZE = getEnvAnalyze()
+const GENERATE_SOURCEMAP = getEnvGenerateSourceMap()
 
 const getEntry = (views) => views.reduce((acc, next) => ({ ...acc, [next]: getViewPathTarget(next) }), {})
 
 const getWebpackConfig = (views) => ({
-  mode: MODE ?? "development",
+  mode: MODE,
   entry: getEntry(views),
   output: {
     filename: `${config.FILENAME.DIRNAME_ASSETS}/${config.FILENAME.DIRNAME_JS}/[name].js`,
@@ -53,7 +52,7 @@ const getWebpackConfig = (views) => ({
       },
     },
   },
-  devtool: MODE === "development" ? "source-map" : false,
+  devtool: GENERATE_SOURCEMAP ? "source-map" : false,
 })
 
 module.exports = getWebpackConfig

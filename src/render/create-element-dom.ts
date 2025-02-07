@@ -1,8 +1,9 @@
-import { Attributes, Classname, DefInternal, EofolNode, Properties, Props, StateTransform } from "../types"
-import { DEF_TYPE_COMPONENT, PROP_NAME_ID } from "../eofol-constants"
-import { domAppendChildren, generateId } from "../util"
+import { Attributes, Classname, EofolNode, Properties, Props } from "../types"
+import { DEF_TYPE_COMPONENT } from "../eofol-constants"
+import { ax, domAppendChildren, generateId, hx, wrapArray } from "../util"
 import { getDef } from "../runtime"
-import { addChildrenToProps, renderInstanceGeneral } from "../component"
+import { addChildrenToProps } from "../component"
+import { renderInstanceImpl } from "./create-element-vdom"
 
 export const renderTagDom = (
   tagName: string,
@@ -12,50 +13,12 @@ export const renderTagDom = (
   properties?: Properties,
 ) => {
   const element = document.createElement(tagName)
-  if (className) {
-    element.className = className
-  }
-  const attributesImpl = attributes ?? {}
-  const prevId = attributesImpl[PROP_NAME_ID]
-  if (prevId === undefined) {
-    attributesImpl[PROP_NAME_ID] = generateId()
-  }
-  Object.keys(attributesImpl).forEach((attributeName) => {
-    const attributeValue = attributesImpl[attributeName]
-    if (attributeValue) {
-      element.setAttribute(attributeName, attributeValue)
-    }
+  hx({ ...(attributes ?? {}), id: attributes?.id ?? generateId() }, (attributeName, attributeValue) => {
+    element.setAttribute(attributeName, attributeValue)
   })
-  if (properties) {
-    Object.keys(properties).forEach((propertyName) => {
-      const propertyValue = properties[propertyName]
-      if (propertyValue) {
-        // @ts-ignore
-        element[propertyName] = propertyValue
-      }
-    })
-  }
-  const childrenImplRaw = Array.isArray(children) ? children : [children]
-  const childrenImpl = childrenImplRaw.filter(Boolean)
-  if (childrenImpl.length > 0) {
-    domAppendChildren(childrenImpl, element)
-  }
+  ax({ ...(properties ?? {}), className }, element)
+  domAppendChildren(wrapArray(children), element)
   return element
-}
-
-export const createInstanceFromDefDom = (def: DefInternal<any>, props?: Props) => {
-  const { stateTransforms, bodyImpl, propsImpl, paramsImpl } = renderInstanceGeneral(def, props, true)
-  const stateTransformsx = stateTransforms as StateTransform<any>
-
-  return def.render({
-    state: stateTransformsx.state,
-    setState: stateTransformsx.setState,
-    mergeState: stateTransformsx.mergeState,
-    resetState: stateTransformsx.resetState,
-    body: bodyImpl,
-    params: paramsImpl,
-    props: propsImpl,
-  })
 }
 
 export const eDom = (
@@ -68,7 +31,7 @@ export const eDom = (
   const def = getDef(tagName)
   if (def) {
     if (def.type === DEF_TYPE_COMPONENT) {
-      return createInstanceFromDefDom(def, addChildrenToProps(attributes, children))
+      return renderInstanceImpl(def, addChildrenToProps(attributes, children), true)
     }
   } else {
     return renderTagDom(tagName, className, children, attributes, properties)

@@ -1,8 +1,7 @@
 import { EofolElement, EofolNode, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOMChildren } from "../types"
-import { arrayCombinator, deepCopyString } from "../util"
+import { arrayCombinator, deepCopyString, wrapArray } from "../util"
 import { getInstance, isVDOMTag } from "../../project/src/internals"
-import { eDom } from "../render"
-import { renderInstance } from "../component"
+import { eDom, renderInstance } from "../render"
 
 export const vdomToDom = (
   tree: VDOM | undefined,
@@ -14,25 +13,24 @@ export const vdomToDom = (
     return deepCopyString(tree)
   } else {
     const renderedChildren: Array<HTMLElement | undefined | string | null | false | VDOMChildren> = []
-    const childrenArr = tree ? (Array.isArray(tree.children) ? tree.children : [tree.children]) : []
-    const childrenImpl = childrenArr.filter(Boolean) as Array<VDOM_TEXT | VDOM_TAG | VDOM_COMPONENT>
-    if (childrenImpl && childrenImpl.length > 0) {
-      childrenImpl.forEach((child) => {
-        renderedChildren.push(vdomToDom(child))
-      })
-    }
-    let thisNode
-    const renderedChildrenImpl = renderedChildren.filter(Boolean)
+    const childrenImpl: Array<VDOM_TEXT | VDOM_TAG | VDOM_COMPONENT> = tree ? wrapArray(tree.children) : []
+    childrenImpl?.forEach((child) => {
+      renderedChildren.push(vdomToDom(child))
+    })
     if (isVDOMTag(tree)) {
-      const attributes = tree.attributes ?? {}
-      thisNode = eDom(tree.tag, tree.class, renderedChildrenImpl as EofolNode, attributes, tree.properties)
+      return eDom(
+        tree.tag,
+        tree.class,
+        renderedChildren.filter(Boolean) as EofolNode,
+        tree.attributes ?? {},
+        tree.properties ?? {},
+      )
     } else {
       const instance = getInstance(tree.id)
-      thisNode = arrayCombinator(vdomToDom)(
-        renderInstance(tree.def, instance ? { ...tree.props, id: tree.id } : {}, instance === undefined),
+      return arrayCombinator(vdomToDom)(
+        renderInstance(tree.def, instance ? { ...(tree.props ?? {}), id: tree.id } : {}, instance === undefined),
       )
     }
-    return thisNode
   }
 }
 
