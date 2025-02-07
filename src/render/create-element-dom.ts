@@ -1,9 +1,8 @@
-import { Attributes, Classname, DefInternal, EofolNode, Properties, Props, StateTransform } from "../types"
+import { Attributes, Classname, EofolNode, Properties, Props } from "../types"
 import { DEF_TYPE_COMPONENT } from "../eofol-constants"
 import { ax, domAppendChildren, generateId, hx, wrapArray } from "../util"
 import { getDef } from "../runtime"
-import { addChildrenToProps } from "../component"
-import { renderInstanceGeneral } from "./render-general"
+import { addChildrenToProps, renderInstanceFromDef } from "../component"
 
 export const renderTagDom = (
   tagName: string,
@@ -21,16 +20,6 @@ export const renderTagDom = (
   return element
 }
 
-export const createInstanceFromDefDom = (def: DefInternal<any>, props?: Props) => {
-  const renderedInstance = renderInstanceGeneral(def, props, true)
-  return def.render({
-    ...(renderedInstance.stateTransforms as StateTransform<any>),
-    body: renderedInstance.bodyImpl,
-    params: renderedInstance.paramsImpl,
-    props: renderedInstance.propsImpl,
-  })
-}
-
 export const eDom = (
   tagName: string,
   className?: Classname,
@@ -41,7 +30,7 @@ export const eDom = (
   const def = getDef(tagName)
   if (def) {
     if (def.type === DEF_TYPE_COMPONENT) {
-      return createInstanceFromDefDom(def, addChildrenToProps(attributes, children))
+      return renderInstanceFromDef(def, addChildrenToProps(attributes, children), true)
     }
   } else {
     return renderTagDom(tagName, className, children, attributes, properties)
