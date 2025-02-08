@@ -39,11 +39,12 @@ export const vdomToDom = (
   if (typeof tree === "string") {
     return deepCopyString(tree)
   } else {
-    return renderVdom(tree, wrapArray<VDOM>(tree.children).map(vdomToDom))
+    const children = wrapArray<VDOM>(tree.children)
+    const childrenRendered = children.map(vdomToDom)
+    return renderVdom(tree, childrenRendered)
   }
 }
 
-/*
 export const traverseVdom = (
   tree: VDOM,
   matches: (vdomElement: VDOM) => boolean,
@@ -67,4 +68,10 @@ export const traverseVdom = (
     }
   }
 }
-*/
+
+export const findVdomElementById = (tree: VDOM, id: string) =>
+  traverseVdom(
+    tree,
+    (vdomElement) => vdomElement.id === id,
+    (vdomElement) => vdomElement,
+  )
