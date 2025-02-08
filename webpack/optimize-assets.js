@@ -1,6 +1,6 @@
 const { addAsset, getAsset, PLUGIN_INTERNAL } = require("./plugin-utils")
 const { getINTERNALS, minifyHtml, minifyJs } = require("../compile")
-const { getEnvEofolServiceWorkerFilename } = require("../compile/config/env")
+const { getEnvEofolServiceWorkerFilename, getEnvServiceWorker } = require("../compile/config/env")
 const { getConfig } = require("../compile/config")
 const { eReadFull } = require("../compile/util-compile/e-fs")
 const { injectViews, injectInternals } = require("../compile/helper/inject")
@@ -31,16 +31,18 @@ const addInternalAssets = (compilation) => {
     addAssetImpl(PLUGIN_INTERNAL.DEPENDENCIES, "", {})
   }
 
-  const EOFOL_SERVICE_WORKER_FILENAME = getEnvEofolServiceWorkerFilename()
-  addAssetImpl(
-    EOFOL_SERVICE_WORKER_FILENAME,
-    injectViews(
-      Object.values(getINTERNALS().views)
-        .map((view) => `${view}${config.EXT.HTML}`)
-        .join(", "),
-    )(eReadFull(config.PATH.RESOURCES_SERVICEWORKER, EOFOL_SERVICE_WORKER_FILENAME)),
-    {},
-  )
+  if (getEnvServiceWorker()) {
+    const EOFOL_SERVICE_WORKER_FILENAME = getEnvEofolServiceWorkerFilename()
+    addAssetImpl(
+      EOFOL_SERVICE_WORKER_FILENAME,
+      injectViews(
+        Object.values(getINTERNALS().views)
+          .map((view) => `${view}${config.EXT.HTML}`)
+          .join(", "),
+      )(eReadFull(config.PATH.RESOURCES_SERVICEWORKER, EOFOL_SERVICE_WORKER_FILENAME)),
+      {},
+    )
+  }
 }
 
 const optimizeAssets = async (compiler, compilation) => {

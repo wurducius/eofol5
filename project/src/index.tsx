@@ -1,5 +1,5 @@
 import { getEnvEofolName } from "./env"
-import { counter, weather, forceUpdate, renderTest, store } from "./components"
+import { counter, weather, forceUpdate, renderTest, store, lifecycleTest } from "./components"
 import { eofolCreateRoot, eofolMount } from "../../src"
 
 eofolCreateRoot()
@@ -18,6 +18,7 @@ eofolMount(() => (
           </renderTest>
           <store />
           <inputNumber value={5} />
+          <lifecycleTest />
         </eCol>
       </eCol>
     </eCenterFlexFull>
