@@ -9,14 +9,13 @@ import {
   VDOM_TAG,
   VDOMChildren,
 } from "../types"
-import { DEF_TYPE_COMPONENT, VDOM_TYPE } from "../eofol-constants"
+import { VDOM_TYPE } from "../eofol-constants"
 import { mergeInstance } from "../../project/src/internals"
 import { getDef } from "../runtime"
 import { addChildrenToProps } from "../component"
 import { lifecycle } from "../lifecycle"
 import { ax, generateId, wrapArray } from "../util"
-import { renderInstanceGeneral } from "./render-general"
-import { eofolErrorDefNotFound } from "../log"
+import { getRenderArgs } from "./render-general"
 
 export const renderVdomElement = (arg: {
   type: typeof VDOM_TYPE.COMPONENT | typeof VDOM_TYPE.TAG
@@ -59,13 +58,10 @@ export const renderTag = (
     properties,
   })
 
-export const createInstanceFromDefVdom = (
-  def: DefInternal<any>,
-  props?: Props,
-  children?: VDOMChildren | VDOMChildren[],
-) => {
+export const renderComponent = (def: DefInternal<any>, props?: Props, children?: VDOMChildren | VDOMChildren[]) => {
   const isNew = props?.id === undefined
-  const renderedInstance = renderInstanceGeneral(def, props, isNew)
+  const propsInitialized = isNew && def.defaultProps ? { ...def.defaultProps, ...(props ?? {}) } : props
+  const renderedInstance = getRenderArgs(def, propsInitialized, isNew)
   const lifecycleArg = {
     def,
     props: renderedInstance.propsImpl,
@@ -73,14 +69,10 @@ export const createInstanceFromDefVdom = (
     idInstance: renderedInstance.idInstance,
     instance: renderedInstance.instance,
     children: wrapArray<VDOM>(children),
-    body: renderedInstance.bodyImpl,
     stateTransforms: renderedInstance.stateTransforms,
   }
 
-  const constructed = lifecycle.constructor(lifecycleArg)
-  const constructedBody = { ...lifecycleArg.body, ...constructed }
-  lifecycleArg.instance.body = constructedBody
-  lifecycleArg.body = constructedBody
+  lifecycle.constructor(lifecycleArg)
 
   const derivedState = lifecycle.getDerivedStateFromProps(lifecycleArg)
   lifecycleArg.instance.state = derivedState
@@ -108,54 +100,8 @@ export const eImpl = (
   const def = getDef(tagName)
   const childrenImpl = wrapArray<VDOM>(children)
   if (def) {
-    return createInstanceFromDefVdom(def, addChildrenToProps(attributes, childrenImpl), undefined)
+    return renderComponent(def, addChildrenToProps(attributes, childrenImpl), undefined)
   } else {
     return renderTag(tagName, className, childrenImpl, attributes, properties)
-  }
-}
-
-export const renderInstanceImpl = (def: DefInternal<any>, props: Props | undefined, isNew?: boolean) => {
-  if (def.type === DEF_TYPE_COMPONENT) {
-    const renderedInstance = renderInstanceGeneral(def, props, isNew)
-    const lifecycleArg = {
-      def,
-      props: renderedInstance.propsImpl,
-      idInstance: renderedInstance.idInstance,
-      instance: renderedInstance.instance,
-      isNew,
-      body: renderedInstance.bodyImpl,
-      stateTransforms: renderedInstance.stateTransforms,
-    }
-
-    const shouldUpdate = lifecycle.shouldUpdate(lifecycleArg)
-
-    if (shouldUpdate) {
-      const derivedState = lifecycle.getDerivedStateFromProps(lifecycleArg)
-      lifecycleArg.stateTransforms.state = derivedState
-      lifecycleArg.instance.state = derivedState
-
-      mergeInstance(lifecycleArg.idInstance, lifecycleArg.instance)
-
-      lifecycle.beforeUpdate(lifecycleArg)
-
-      const rendered = lifecycle.render(lifecycleArg, false)
-
-      lifecycle.afterUpdate(lifecycleArg)
-
-      return rendered
-    } else {
-      // @TODO finish shouldUpdate
-      return undefined
-    }
-  }
-}
-
-// @TODO removed children arg from propsImpl
-export const renderInstance = (idDef: string, props: Props | undefined, isNew?: boolean) => {
-  const def = getDef(idDef)
-  if (def) {
-    return renderInstanceImpl(def, props, isNew)
-  } else {
-    eofolErrorDefNotFound(idDef)
   }
 }

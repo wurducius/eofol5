@@ -1,10 +1,8 @@
 import { DEF_TYPE_COMPONENT, ERROR, LOADING, PROP_NAME_DEF, PROP_NAME_ID, READY, VDOM_TYPE } from "./eofol-constants"
 
 export type Classname = string | undefined
-export type Attributes = any
-export type Properties = any
-
-export type Body = any
+export type Attributes = Record<string, any> | undefined
+export type Properties = Record<string, any> | undefined
 
 export type EofolElement = HTMLElement | string | undefined | false | null
 export type EofolNode = EofolElement[] | EofolElement
@@ -51,7 +49,6 @@ export type DefRenderArg<T> = {
   setState: SetState<T>
   resetState: () => void
   props: Props
-  body: Body
 }
 
 export type Multi<T> = T | T[] | undefined
@@ -62,7 +59,7 @@ export type ComponentRender<T> = {
 
 export type ComponentLifecycle<T> = ComponentRender<T> & {
   // eslint-disable-next-line no-unused-vars
-  constructor?: (arg: { props?: Props; defaultProps?: Props }) => Body
+  constructor?: (arg: { props?: Props; defaultProps?: Props }) => void
   // eslint-disable-next-line no-unused-vars
   shouldUpdate?: (arg: DefRenderArg<T>) => boolean
   // eslint-disable-next-line no-unused-vars
@@ -103,7 +100,6 @@ export interface Instance {
   // @TODO state typing
   state: State<any>
   def: string
-  body?: Body
 }
 
 export type VDOMChildren = VDOM | VDOM[] | undefined
@@ -155,5 +151,34 @@ export type LifecycleArg = {
   isNew?: boolean
   children?: VDOM[]
   stateTransforms: StateTransform<any>
-  body: Body
+}
+
+export type Actions<T> = Record<string, ActionImpl<T, any>>
+
+export type Selectors = Record<string, SelectorImpl<any>>
+
+export type Store<T> = {
+  id: string
+  initialState: T
+  state: T
+  actions?: Actions<T>
+  selectors?: Selectors
+  resetState: () => void
+}
+
+// eslint-disable-next-line no-unused-vars
+export type Action<T, V> = (state: T, payload?: V) => Partial<T>
+
+// eslint-disable-next-line no-unused-vars
+export type ActionImpl<T, V> = (payload?: V) => Partial<T>
+
+// eslint-disable-next-line no-unused-vars
+export type Selector<T, V> = (state: T) => V
+
+export type SelectorImpl<V> = () => V
+
+export type CreateStoreArg<T> = {
+  initialState: T
+  actions?: Record<string, Action<T, any>>
+  selectors?: Record<string, Selector<T, any>>
 }

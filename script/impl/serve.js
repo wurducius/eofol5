@@ -8,7 +8,6 @@ const config = getConfig()
 const HTTPS = getEnvHTTPS()
 const HOST = getEnvHost()
 const PORT = getEnvPort()
-
 const WAIT = 150
 const OPEN = true
 

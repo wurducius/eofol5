@@ -1,4 +1,4 @@
-import { button, div, h2, input, centerFlex, col, row, define } from "../../../src"
+import { centerFlex, col, row, define, h2, button, input, div } from "../../../src"
 
 // @ts-ignore
 const handleCounterClick = (state, mergeState) => (offset) => () => {

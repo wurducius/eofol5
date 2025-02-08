@@ -1,5 +1,5 @@
 import { getEnvEofolName } from "./env"
-import { counter, weather, forceUpdate } from "./components"
+import { counter, weather, forceUpdate, renderTest, store } from "./components"
 import { eofolCreateRoot, eofolMount } from "../../src"
 
 eofolCreateRoot()
@@ -13,17 +13,12 @@ eofolMount(() => (
           <counter />
           <weather />
           <forceUpdate />
+          <renderTest>
+            <div>CHILDREN PROPS</div>
+          </renderTest>
+          <store />
         </eCol>
       </eCol>
     </eCenterFlexFull>
   </eContainer>
 ))
-
-/*
-          numberInput({
-          initialValue: 42,
-          onChange: (val) => {
-          console.log(`Controlled input value changed: ${val}`)
-        }
-        })
- */

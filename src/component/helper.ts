@@ -1,4 +1,4 @@
-import { DefInternal, EofolNode, Instance, Props, Body, VDOMChildren } from "../types"
+import { DefInternal, EofolNode, Instance, Props, VDOMChildren } from "../types"
 import { initializeState } from "./state"
 import { ax } from "../util"
 
@@ -12,15 +12,10 @@ export const getProps = (props: Props | undefined, idInstance: string, def: DefI
     },
   )
 
-export const getComponentInstance = (
-  savedInstance: Instance | undefined,
-  idInstance: string,
-  def: DefInternal<any>,
-  body?: Body | undefined,
-) =>
+export const getComponentInstance = (savedInstance: Instance | undefined, idInstance: string, def: DefInternal<any>) =>
   savedInstance ??
   (ax(
-    { body },
+    {},
     {
       id: idInstance,
       def: def.id,

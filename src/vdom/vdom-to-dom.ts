@@ -1,7 +1,34 @@
-import { EofolElement, EofolNode, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOM_TEXT, VDOMChildren } from "../types"
+import { EofolElement, EofolNode, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOMChildren } from "../types"
 import { arrayCombinator, deepCopyString, wrapArray } from "../util"
 import { getInstance, isVDOMTag } from "../../project/src/internals"
-import { eDom, renderInstance } from "../render"
+import { eDom, renderComponentDom } from "../render"
+import { getDef } from "../runtime"
+import { eofolErrorDefNotFound } from "../log"
+
+const renderVdom = (
+  tree: VDOM_TAG | VDOM_COMPONENT,
+  renderedChildren: (false | VDOMChildren | HTMLElement | null)[],
+) => {
+  if (isVDOMTag(tree)) {
+    return eDom(
+      tree.tag,
+      tree.class,
+      renderedChildren.filter(Boolean) as EofolNode,
+      tree.attributes ?? {},
+      tree.properties ?? {},
+    )
+  } else {
+    const instance = getInstance(tree.id)
+    const def = getDef(instance.def)
+    if (def) {
+      return arrayCombinator(vdomToDom)(
+        renderComponentDom(def, instance ? { ...(tree.props ?? {}), id: tree.id } : {}, false),
+      )
+    } else {
+      eofolErrorDefNotFound(instance.def)
+    }
+  }
+}
 
 export const vdomToDom = (
   tree: VDOM | undefined,
@@ -12,25 +39,7 @@ export const vdomToDom = (
   if (typeof tree === "string") {
     return deepCopyString(tree)
   } else {
-    const renderedChildren: Array<HTMLElement | undefined | string | null | false | VDOMChildren> = []
-    const childrenImpl: Array<VDOM_TEXT | VDOM_TAG | VDOM_COMPONENT> = tree ? wrapArray(tree.children) : []
-    childrenImpl?.forEach((child) => {
-      renderedChildren.push(vdomToDom(child))
-    })
-    if (isVDOMTag(tree)) {
-      return eDom(
-        tree.tag,
-        tree.class,
-        renderedChildren.filter(Boolean) as EofolNode,
-        tree.attributes ?? {},
-        tree.properties ?? {},
-      )
-    } else {
-      const instance = getInstance(tree.id)
-      return arrayCombinator(vdomToDom)(
-        renderInstance(tree.def, instance ? { ...(tree.props ?? {}), id: tree.id } : {}, instance === undefined),
-      )
-    }
+    return renderVdom(tree, wrapArray<VDOM>(tree.children).map(vdomToDom))
   }
 }
 
