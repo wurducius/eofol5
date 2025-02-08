@@ -10,12 +10,13 @@ import {
   VDOMChildren,
 } from "../types"
 import { VDOM_TYPE } from "../eofol-constants"
-import { mergeInstance } from "../../project/src/internals"
+import { getVDOM, mergeInstance } from "../../project/src/internals"
 import { getDef } from "../runtime"
 import { addChildrenToProps } from "../component"
 import { lifecycle } from "../lifecycle"
 import { ax, generateId, wrapArray } from "../util"
 import { getRenderArgs } from "./render-general"
+import { findVdomElementById } from "../vdom"
 
 export const renderVdomElement = (arg: {
   type: typeof VDOM_TYPE.COMPONENT | typeof VDOM_TYPE.TAG
@@ -100,6 +101,14 @@ export const eImpl = (
   const def = getDef(tagName)
   const childrenImpl = wrapArray<VDOM>(children)
   if (def) {
+    const id = attributes?.id
+    if (id) {
+      const vdom = getVDOM()
+      const vdomElement = findVdomElementById(vdom, id)
+      if (vdomElement) {
+        // @TODO
+      }
+    }
     return renderComponent(def, addChildrenToProps(attributes, childrenImpl), undefined)
   } else {
     return renderTag(tagName, className, childrenImpl, attributes, properties)

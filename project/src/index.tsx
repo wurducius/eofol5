@@ -17,6 +17,7 @@ eofolMount(() => (
             <div>CHILDREN PROPS</div>
           </renderTest>
           <store />
+          <inputNumber value={5} />
         </eCol>
       </eCol>
     </eCenterFlexFull>

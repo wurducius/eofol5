@@ -1,69 +1,52 @@
 import { defineComponent } from "../runtime"
-import { e } from "../render"
+import { button } from "../simple"
 import { col, row } from "./flex"
-import { button, input } from "../simple"
+import { VDOM } from "../types"
+import { inputGeneralDef, InputOptions, InputState } from "./input-general"
 
-export const INPUT_NUMBER = "eofol-input-number"
-
-type InputNumberState = { value: number; initialized?: boolean }
+type InputValueType = number
 
 const handleIncrementGeneral =
   (
-    state: InputNumberState,
+    state: InputState<InputValueType>,
     // eslint-disable-next-line no-unused-vars
-    mergeState: (nextState: Partial<InputNumberState>) => void,
+    mergeState: (nextState: Partial<InputState<InputValueType>>) => void,
     // eslint-disable-next-line no-unused-vars
-    onChange: (nextValue: number) => void,
+    onChange: (nextValue: InputValueType) => void,
   ) =>
-  (offset: number) =>
+  (offset: InputValueType) =>
   () => {
-    const nextValue = (state.value ?? 0) + offset
+    const nextValue = (state.value ?? inputOptions.defaultValue) + offset
     mergeState({ value: nextValue })
     if (onChange) {
       onChange(nextValue)
     }
   }
 
-// @ts-ignore
-defineComponent<InputNumberState>(INPUT_NUMBER, {
-  render: (a) => {
-    const { state, mergeState, props } = a
-    /*
-    if (!state.initialized && props.initialValue !== undefined && state.value !== props.initialValue) {
-      mergeState({ value: props.initialValue, initialized: true })
-    }
-     */
-    const handleIncrement = handleIncrementGeneral(state, mergeState, props.onChange)
+const inputOptions: InputOptions<InputValueType> = {
+  type: "number",
+  defaultValue: 0,
+  parse: Number,
+  unparse: (x: InputValueType) => x.toString(),
+}
 
-    // @TODO aria label
-    return row([
-      input(
-        undefined,
-        undefined,
-        { value: state.value.toString(), type: "number", "aria-label": "input-number" },
-        {
-          onchange: (e: { target: { value: string } }) => {
-            const nextValue = Number(e.target.value ?? "0")
-            mergeState({ value: nextValue })
-            if (props.onChange) {
-              props.onChange(nextValue)
-            }
-          },
-        },
-      ),
-      col([
-        button("+", "input-number-arrow", undefined, {
-          onclick: handleIncrement(1),
-        }),
-        button("-", "input-number-arrow", undefined, {
-          onclick: handleIncrement(-1),
-        }),
-      ]),
-    ])
-  },
-  initialState: { value: 0, initialized: false },
-})
+const renderInputNumber = (children: VDOM, a) => {
+  const { state, mergeState, onChange } = a
+  const handleIncrement = handleIncrementGeneral(state, mergeState, onChange)
+  return row([
+    children,
+    col([
+      button("+", "input-number-arrow", undefined, {
+        onclick: handleIncrement(1),
+      }),
+      button("-", "input-number-arrow", undefined, {
+        onclick: handleIncrement(-1),
+      }),
+    ]),
+  ])
+}
 
-// eslint-disable-next-line no-unused-vars
-export const numberInput = (props: { initialValue: number; onChange: (nextValue: number) => void }) =>
-  e(INPUT_NUMBER, undefined, undefined, { initialValue: props.initialValue, onChange: props.onChange })
+defineComponent<InputState<InputValueType>>(
+  "inputNumber",
+  inputGeneralDef<InputValueType>(inputOptions, renderInputNumber),
+)
