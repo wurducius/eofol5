@@ -10,7 +10,7 @@ import {
   VDOMChildren,
 } from "../types"
 import { VDOM_TYPE } from "../eofol-constants"
-import { getVDOM, mergeInstance } from "../../project/src/internals"
+import { getInstance, getVDOM, mergeInstance } from "../../project/src/internals"
 import { getDef } from "../runtime"
 import { addChildrenToProps } from "../component"
 import { lifecycle } from "../lifecycle"
@@ -59,8 +59,15 @@ export const renderTag = (
     properties,
   })
 
-export const renderComponent = (def: DefInternal<any>, props?: Props, children?: VDOMChildren | VDOMChildren[]) => {
-  const isNew = props?.id === undefined
+export const renderComponent = (def: DefInternal<any>, props: Props, parentElement: VDOM | undefined) => {
+  const prevId = props?.id
+  let isNew
+  if (prevId) {
+    const instance = getInstance(prevId)
+    isNew = instance !== undefined
+  } else {
+    isNew = true
+  }
   const propsInitialized = isNew && def.defaultProps ? { ...def.defaultProps, ...(props ?? {}) } : props
   const renderedInstance = getRenderArgs(def, propsInitialized, isNew)
   const lifecycleArg = {
@@ -69,11 +76,12 @@ export const renderComponent = (def: DefInternal<any>, props?: Props, children?:
     isNew,
     idInstance: renderedInstance.idInstance,
     instance: renderedInstance.instance,
-    children: wrapArray<VDOM>(children),
     stateTransforms: renderedInstance.stateTransforms,
   }
 
-  lifecycle.constructor(lifecycleArg)
+  if (isNew) {
+    lifecycle.constructor(lifecycleArg)
+  }
 
   const derivedState = lifecycle.getDerivedStateFromProps(lifecycleArg)
   lifecycleArg.instance.state = derivedState
@@ -82,11 +90,19 @@ export const renderComponent = (def: DefInternal<any>, props?: Props, children?:
 
   mergeInstance(lifecycleArg.idInstance, lifecycleArg.instance)
 
-  lifecycle.beforeMount(lifecycleArg)
+  if (isNew) {
+    lifecycle.beforeMount(lifecycleArg)
+  } else {
+    lifecycle.beforeUpdate(lifecycleArg)
+  }
 
   const rendered = lifecycle.render(lifecycleArg, true)
 
-  lifecycle.afterMount(lifecycleArg)
+  if (isNew) {
+    lifecycle.afterMount(lifecycleArg)
+  } else {
+    lifecycle.afterUpdate(lifecycleArg)
+  }
 
   return rendered
 }
@@ -101,15 +117,17 @@ export const eImpl = (
   const def = getDef(tagName)
   const childrenImpl = wrapArray<VDOM>(children)
   if (def) {
-    const id = attributes?.id
-    if (id) {
+    let parentElement = undefined
+    const parentId = attributes?.parentId
+    if (parentId) {
       const vdom = getVDOM()
-      const vdomElement = findVdomElementById(vdom, id)
-      if (vdomElement) {
+      parentElement = findVdomElementById(vdom, parentId)
+      if (parentElement) {
         // @TODO
+        console.log(parentElement)
       }
     }
-    return renderComponent(def, addChildrenToProps(attributes, childrenImpl), undefined)
+    return renderComponent(def, addChildrenToProps(attributes, childrenImpl), parentElement)
   } else {
     return renderTag(tagName, className, childrenImpl, attributes, properties)
   }
