@@ -59,7 +59,7 @@ export const renderTag = (
     properties,
   })
 
-export const renderComponent = (def: DefInternal<any>, props: Props, parentElement: VDOM | undefined) => {
+export const renderComponent = (def: DefInternal<any>, props: Props) => {
   const prevId = props?.id
   let isNew
   if (prevId) {
@@ -96,7 +96,7 @@ export const renderComponent = (def: DefInternal<any>, props: Props, parentEleme
     lifecycle.beforeUpdate(lifecycleArg)
   }
 
-  const rendered = lifecycle.render(lifecycleArg, true)
+  const rendered = lifecycle.render(lifecycleArg)
 
   if (isNew) {
     lifecycle.afterMount(lifecycleArg)
@@ -117,17 +117,17 @@ export const eImpl = (
   const def = getDef(tagName)
   const childrenImpl = wrapArray<VDOM>(children)
   if (def) {
-    let parentElement = undefined
+    let parent = undefined
     const parentId = attributes?.parentId
     if (parentId) {
       const vdom = getVDOM()
-      parentElement = findVdomElementById(vdom, parentId)
-      if (parentElement) {
+      parent = findVdomElementById(vdom, parentId)
+      if (parent) {
         // @TODO
-        console.log(parentElement)
+        console.log(parent)
       }
     }
-    return renderComponent(def, addChildrenToProps(attributes, childrenImpl), parentElement)
+    return renderComponent(def, addChildrenToProps(attributes, childrenImpl))
   } else {
     return renderTag(tagName, className, childrenImpl, attributes, properties)
   }

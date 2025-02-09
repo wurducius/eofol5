@@ -34,6 +34,7 @@ function renderInputGeneral<T>(a: {
   )
 }
 
+// eslint-disable-next-line no-unused-vars
 export function inputGeneralDef<T>(inputOptions: InputOptions<T>, render?: (children: VDOM, a) => VDOM) {
   return {
     getDerivedStateFromProps: (a) =>
