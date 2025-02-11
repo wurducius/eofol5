@@ -1,5 +1,5 @@
-export type eButtonProps = {
-  children?: string
+import { EofolProps } from "../../types"
+
+export type eButtonProps = EofolProps<{
   onClick?: () => void
-  className?: string
-}
+}>

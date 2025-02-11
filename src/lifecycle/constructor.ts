@@ -6,6 +6,6 @@ export const playConstructor = (def: DefInternal<any>, props: Props, isNew?: boo
       props,
       defaultProps: def.defaultProps ?? {},
     }
-    return def.constructor(constructorArgs)
+    def.constructor(constructorArgs)
   }
 }

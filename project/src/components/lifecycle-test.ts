@@ -1,6 +1,6 @@
 import { css, define, div } from "../../../src"
 
-const LIFECYCLE_TEST_VERBOSE = true
+const LIFECYCLE_TEST_VERBOSE = false
 
 const logLifecycle = (msg: string) => {
   if (LIFECYCLE_TEST_VERBOSE) {

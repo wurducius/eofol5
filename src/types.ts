@@ -57,9 +57,11 @@ export type ComponentRender<T> = {
   render: DefRender<T>
 }
 
+export type ConstructorArg = { props?: Props; defaultProps?: Props }
+
 export type ComponentLifecycle<T> = ComponentRender<T> & {
   // eslint-disable-next-line no-unused-vars
-  constructor?: (arg: { props?: Props; defaultProps?: Props }) => void
+  constructor?: (arg: ConstructorArg) => void
   // eslint-disable-next-line no-unused-vars
   shouldUpdate?: (arg: DefRenderArg<T>) => boolean
   // eslint-disable-next-line no-unused-vars
@@ -182,3 +184,5 @@ export type CreateStoreArg<T> = {
   actions?: Record<string, Action<T, any>>
   selectors?: Record<string, Selector<T, any>>
 }
+
+export type EofolProps<T> = T & { children?: VDOMChildren; className?: Classname }

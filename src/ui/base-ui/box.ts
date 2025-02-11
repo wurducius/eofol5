@@ -1,4 +1,4 @@
-import { defineSimple } from "../util"
 import { BASE } from "./components"
+import { defineBase } from "./util"
 
-export const box = defineSimple(BASE.box, undefined)
+export const box = defineBase(BASE.box, undefined)

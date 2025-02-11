@@ -1,4 +1,6 @@
-import { define, eButton, FLEX_STYLE, flexCenter, flexCol, flexRow, h2, input, SetState } from "../../../src"
+import { define, eButton, eFlex, flexCenter, flexCol, flexRow, h2, input, SetState } from "../../../src"
+
+export type CounterState = { value: number; increment: number }
 
 const handleCounterClick = (state: any, mergeState: SetState<any>) => (offset: number) => () => {
   mergeState({ value: Math.max(state.value < 0 ? 0 : (state.value ?? 0) + offset, 0) })
@@ -14,17 +16,17 @@ const handleIncrementChange = (state, mergeState) => (offset) => () => {
   mergeState({ increment: (state.increment ?? 0) + offset })
 }
 
-export default define<{ value: number; increment: number }>("counter", {
+export default define<CounterState>("counter", {
+  constructor: () => {},
   // @ts-ignore
   render: (a) => {
     const { state, mergeState } = a
-
     const handleClick = handleCounterClick(state, mergeState)
     const handleIncrement = handleIncrementChange(state, mergeState)
 
     return flexCenter(
-      flexCol(
-        [
+      eFlex({
+        children: [
           h2(`Stateful component counter value = ${state.value}`),
           flexCenter(
             flexRow([
@@ -57,12 +59,10 @@ export default define<{ value: number; increment: number }>("counter", {
             ]),
           ),
         ],
-        FLEX_STYLE.flexCenter,
-      ),
+        center: true,
+        direction: "col",
+      }),
     )
   },
   initialState: { value: 0, increment: 1 },
-  constructor: () => {
-    console.log("CONSTRUCTOR")
-  },
 })
