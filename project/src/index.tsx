@@ -1,15 +1,15 @@
 import { getEnvEofolName } from "./env"
 import { counter, weather, forceUpdate, renderTest, store, lifecycleTest } from "./components"
-import { eofolCreateRoot, eofolMount, EofolUI, FLEX_STYLE, numberInput } from "../../src"
+import { eofolCreateRoot, eofolMount, EofolUI, FLEX_STYLE } from "../../src"
 
 eofolCreateRoot()
 
 eofolMount(() => (
   <container>
-    <centerFlexFull>
-      <col className={FLEX_STYLE.flexCenter}>
+    <flexCenterFull>
+      <flexCol className={FLEX_STYLE.flexCenter}>
         <h1>{getEnvEofolName()}</h1>
-        <col className={FLEX_STYLE.flexCenter}>
+        <flexCol className={FLEX_STYLE.flexCenter}>
           <counter />
           <weather />
           <forceUpdate />
@@ -19,8 +19,8 @@ eofolMount(() => (
           <store />
           <EofolUI.inputNumber value={5} />
           <lifecycleTest />
-        </col>
-      </col>
-    </centerFlexFull>
+        </flexCol>
+      </flexCol>
+    </flexCenterFull>
   </container>
 ))

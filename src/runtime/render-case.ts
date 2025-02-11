@@ -1,12 +1,12 @@
 import { StatefulData, VDOMChildren } from "../types"
-import { centerFlex, div, spinner } from "../ui"
+import { flexCenter, div, spinner } from "../ui"
 import { isError, isLoading, isReady } from "./stateful-data"
 
-const readyDefault = () => centerFlex(div(""))
+const readyDefault = () => flexCenter(div(""))
 
-const loadingDefault = () => centerFlex(spinner())
+const loadingDefault = () => flexCenter(spinner())
 
-const errorDefault = (errorData?: string) => centerFlex(div(errorData ? `Error: ${errorData}` : "Error"))
+const errorDefault = (errorData?: string) => flexCenter(div(errorData ? `Error: ${errorData}` : "Error"))
 
 export function renderCase<T>(
   arg: {

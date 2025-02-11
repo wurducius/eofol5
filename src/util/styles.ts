@@ -1,3 +1,3 @@
 import { Classname } from "../types"
 
-export const cx = (...styles: Classname[]) => styles.filter(Boolean).join(" ")
+export const cx = (...styles: Array<Classname | false | undefined | null>) => styles.filter(Boolean).join(" ")

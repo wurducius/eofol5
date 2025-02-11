@@ -1,9 +1,9 @@
 export const BASE = {
   flex: "flex",
-  row: "row",
-  col: "col",
-  centerFlex: "centerFlex",
-  centerFlexFull: "centerFlexFull",
+  row: "flexRow",
+  col: "flexCol",
+  centerFlex: "flexCenter",
+  centerFlexFull: "flexCenterFull",
   container: "container",
   box: "box",
 }

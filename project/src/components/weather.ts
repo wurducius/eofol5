@@ -1,9 +1,20 @@
-import { centerFlex, col, define, ERROR, fetchx, h2, isReady, renderCase, setLoading, StatefulData } from "../../../src"
+import {
+  flexCol,
+  flexCenter,
+  define,
+  ERROR,
+  fetchx,
+  h2,
+  isReady,
+  renderCase,
+  setLoading,
+  StatefulData,
+} from "../../../src"
 
 const url =
   "https://api.open-meteo.com/v1/forecast?latitude=50.089&longitude=14.400&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m"
 
-const good = (data: number) => centerFlex(col([h2(`Temperature: ${data}°C`)]))
+const good = (data: number) => flexCenter(flexCol([h2(`Temperature: ${data}°C`)]))
 
 // @ts-ignore
 export default define<{ temperature: StatefulData<number>; temperatureError?: string }>("weather", {

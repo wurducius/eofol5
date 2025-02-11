@@ -1,4 +1,4 @@
-import { col, createStore, define, div, eButton, mergeStore, selector } from "../../../src"
+import { flexCol, createStore, define, div, eButton, mergeStore, selector } from "../../../src"
 
 const STORE_TEST = "store-test"
 
@@ -19,7 +19,7 @@ export default define("store", {
   render: () => {
     const value = selector<StoreTest, number>(STORE_TEST, (state) => state.value) ?? 0
     const x = selector<StoreTest, string>(STORE_TEST, (state) => state.x)
-    return col([
+    return flexCol([
       div(`STORE TEST = ${value}, x = ${x}`),
       div([
         eButton({
