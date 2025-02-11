@@ -1,8 +1,9 @@
-import { defineComponent } from "../runtime"
-import { button } from "../simple"
-import { col, row } from "./flex"
-import { VDOM } from "../types"
+import { define } from "../../../runtime"
+import { col, row } from "../../base-ui"
+import { VDOM } from "../../../types"
 import { inputGeneralDef, InputOptions, InputState } from "./input-general"
+import { button } from "../../simple"
+import { EofolUI } from "../components"
 
 type InputValueType = number
 
@@ -46,7 +47,7 @@ const renderInputNumber = (children: VDOM, a) => {
   ])
 }
 
-defineComponent<InputState<InputValueType>>(
-  "inputNumber",
+export const numberInput = define<InputState<InputValueType>>(
+  EofolUI.inputNumber,
   inputGeneralDef<InputValueType>(inputOptions, renderInputNumber),
 )

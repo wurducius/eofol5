@@ -1,7 +1,6 @@
 import { StatefulData, VDOMChildren } from "../types"
-import { centerFlex, spinner } from "../ui"
+import { centerFlex, div, spinner } from "../ui"
 import { isError, isLoading, isReady } from "./stateful-data"
-import { div } from "../simple"
 
 const readyDefault = () => centerFlex(div(""))
 

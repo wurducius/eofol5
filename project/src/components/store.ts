@@ -22,21 +22,35 @@ export default define("store", {
     return col([
       div(`STORE TEST = ${value}, x = ${x}`),
       div([
-        eButton("Add store value", () => {
-          mergeStore<StoreTest>(STORE_TEST, { value: value + 1 })
+        eButton({
+          children: "Add store value",
+          onClick: () => {
+            mergeStore<StoreTest>(STORE_TEST, { value: value + 1 })
+          },
         }),
-        eButton("Modify store x", () => {
-          mergeStore<StoreTest>(STORE_TEST, { x: "Changed" })
+        eButton({
+          children: "Modify store x",
+          onClick: () => {
+            mergeStore<StoreTest>(STORE_TEST, { x: "Changed" })
+          },
         }),
-        eButton("Action", () => {
-          store?.actions?.actionTest(69)
+        eButton({
+          children: "Action",
+          onClick: () => {
+            store?.actions?.actionTest(69)
+          },
         }),
-
-        eButton("Reset store", () => {
-          store?.resetState()
+        eButton({
+          children: "Reset store",
+          onClick: () => {
+            store?.resetState()
+          },
         }),
-        eButton("Selector", () => {
-          console.log(store?.selectors?.selectorTest())
+        eButton({
+          children: "Selector",
+          onClick: () => {
+            console.log(store?.selectors?.selectorTest())
+          },
         }),
       ]),
     ])

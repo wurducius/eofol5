@@ -1,5 +1,5 @@
-import { VDOM } from "../types"
-import { input } from "../simple"
+import { VDOM } from "../../../types"
+import { input } from "../../simple"
 
 export type InputState<T> = { value: T | undefined }
 

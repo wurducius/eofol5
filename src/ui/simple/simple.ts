@@ -1,10 +1,13 @@
-import { Attributes, Classname, Properties, VDOM, VDOMChildren } from "../types"
-import { renderTag } from "../render"
+import { Attributes, Classname, Properties, VDOM, VDOMChildren } from "../../types"
+import { renderTag } from "../../render"
+import SIMPLE_TAGS from "./tags"
 
 export const simple =
   (tagName: string) =>
   (children?: VDOMChildren, className?: Classname, attributes?: Attributes, properties?: Properties) =>
     renderTag(tagName, className, children, attributes, properties) as VDOM
+
+export const Simple = SIMPLE_TAGS.reduce((acc, next) => ({ ...acc, [next]: simple(next) }), {})
 
 export const div = simple("div")
 export const span = simple("span")
