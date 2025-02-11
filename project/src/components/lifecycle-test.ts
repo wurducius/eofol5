@@ -1,6 +1,6 @@
-import { define, div } from "../../../src"
+import { css, define, div } from "../../../src"
 
-const LIFECYCLE_TEST_VERBOSE = true
+const LIFECYCLE_TEST_VERBOSE = false
 
 const logLifecycle = (msg: string) => {
   if (LIFECYCLE_TEST_VERBOSE) {
@@ -12,7 +12,7 @@ const logLifecycle = (msg: string) => {
 export default define("lifecycleTest", {
   render: () => {
     logLifecycle("render")
-    return div("Lifecycle test")
+    return div("Lifecycle test", css({ color: "pink" }))
   },
   constructor: () => {
     logLifecycle("constructor")

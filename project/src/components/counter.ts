@@ -1,7 +1,8 @@
-import { centerFlex, col, row, define, h2, button, input, div } from "../../../src"
+import { define, eButton, eFlex, flexCenter, flexCol, flexRow, h2, input, SetState } from "../../../src"
 
-// @ts-ignore
-const handleCounterClick = (state, mergeState) => (offset) => () => {
+export type CounterState = { value: number; increment: number }
+
+const handleCounterClick = (state: any, mergeState: SetState<any>) => (offset: number) => () => {
   mergeState({ value: Math.max(state.value < 0 ? 0 : (state.value ?? 0) + offset, 0) })
 }
 
@@ -15,36 +16,22 @@ const handleIncrementChange = (state, mergeState) => (offset) => () => {
   mergeState({ increment: (state.increment ?? 0) + offset })
 }
 
-export default define<{ value: number; increment: number }>("counter", {
+export default define<CounterState>("counter", {
+  constructor: () => {},
   // @ts-ignore
   render: (a) => {
     const { state, mergeState } = a
-
     const handleClick = handleCounterClick(state, mergeState)
     const handleIncrement = handleIncrementChange(state, mergeState)
 
-    return centerFlex(
-      col(
-        [
+    return flexCenter(
+      eFlex({
+        children: [
           h2(`Stateful component counter value = ${state.value}`),
-          centerFlex(
-            row([
-              button(
-                "+",
-                undefined,
-                {},
-                {
-                  onclick: handleClick(1),
-                },
-              ),
-              button(
-                "-",
-                undefined,
-                {},
-                {
-                  onclick: handleClick(-1),
-                },
-              ),
+          flexCenter(
+            flexRow([
+              eButton({ children: "+", onClick: handleClick(1) }),
+              eButton({ children: "-", onClick: handleClick(-1) }),
               input(
                 undefined,
                 undefined,
@@ -55,56 +42,27 @@ export default define<{ value: number; increment: number }>("counter", {
                   },
                 },
               ),
-              div(
-                [
-                  button(
-                    "+",
-                    "input-number-arrow",
-                    {},
-                    {
-                      onclick: handleIncrement(1),
-                    },
-                  ),
-                  button(
-                    "-",
-                    "input-number-arrow",
-                    {},
-                    {
-                      onclick: handleIncrement(-1),
-                    },
-                  ),
-                ],
-                "flex-col",
-              ),
-              button(
-                "Add amount",
-                undefined,
-                {},
-                {
-                  onclick: () => {
-                    mergeState({ value: (state.value ?? 0) + state.increment })
-                  },
+              flexCol([
+                eButton({ children: "+", onClick: handleIncrement(1), className: "input-number-arrow" }),
+                eButton({ children: "-", onClick: handleIncrement(-1), className: "input-number-arrow" }),
+              ]),
+              eButton({
+                children: "Add amount",
+                onClick: () => {
+                  mergeState({ value: (state.value ?? 0) + state.increment })
                 },
-              ),
-              button(
-                "Clear",
-                undefined,
-                {},
-                {
-                  onclick: handleCounterClear(mergeState),
-                },
-              ),
+              }),
+              eButton({
+                children: "Clear",
+                onClick: handleCounterClear(mergeState),
+              }),
             ]),
           ),
         ],
-        undefined,
-        { className: "flex-center" },
-      ),
+        center: true,
+        direction: "col",
+      }),
     )
   },
   initialState: { value: 0, increment: 1 },
-  constructor: () => {
-    console.log("CONSTRUCTOR")
-    return { constructed: true }
-  },
 })

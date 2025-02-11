@@ -1,5 +1,5 @@
-import { VDOM } from "../types"
-import { input } from "../simple"
+import { VDOM } from "../../../types"
+import { input } from "../../simple"
 
 export type InputState<T> = { value: T | undefined }
 
@@ -34,6 +34,7 @@ function renderInputGeneral<T>(a: {
   )
 }
 
+// eslint-disable-next-line no-unused-vars
 export function inputGeneralDef<T>(inputOptions: InputOptions<T>, render?: (children: VDOM, a) => VDOM) {
   return {
     getDerivedStateFromProps: (a) =>

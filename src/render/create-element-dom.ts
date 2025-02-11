@@ -5,7 +5,6 @@ import { getDef } from "../runtime"
 import { addChildrenToProps } from "../component"
 import { getRenderArgs } from "./render-general"
 import { lifecycle } from "../lifecycle"
-import { mergeInstance } from "../../project/src/internals"
 
 export const renderTagDom = (
   tagName: string,
@@ -34,29 +33,29 @@ export const renderComponentDom = (def: DefInternal<any>, props: Props | undefin
       isNew,
       stateTransforms: renderedInstance.stateTransforms,
     }
-
-    const shouldUpdate = lifecycle.shouldUpdate(lifecycleArg)
-
-    if (shouldUpdate) {
-      const derivedState = lifecycle.getDerivedStateFromProps(lifecycleArg)
-      lifecycleArg.stateTransforms.state = derivedState
-      lifecycleArg.instance.state = derivedState
-
-      mergeInstance(lifecycleArg.idInstance, lifecycleArg.instance)
-
-      lifecycle.beforeUpdate(lifecycleArg)
-
-      const rendered = lifecycle.render(lifecycleArg, false)
-
-      lifecycle.afterUpdate(lifecycleArg)
-
-      return rendered
-    } else {
-      // @TODO finish shouldUpdate
-      return undefined
-    }
+    return lifecycle.renderDom(lifecycleArg)
   }
 }
+
+/*
+const shouldUpdate = lifecycle.shouldUpdate(lifecycleArg)
+if (shouldUpdate) {
+  const derivedState = lifecycle.getDerivedStateFromProps(lifecycleArg)
+  lifecycleArg.stateTransforms.state = derivedState
+  lifecycleArg.instance.state = derivedState
+
+  mergeInstance(lifecycleArg.idInstance, lifecycleArg.instance)
+
+  lifecycle.beforeUpdate(lifecycleArg)
+
+  const rendered = lifecycle.renderDom(lifecycleArg)
+
+  lifecycle.afterUpdate(lifecycleArg)
+
+  return rendered
+
+}
+ */
 
 export const eDom = (
   tagName: string,

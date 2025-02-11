@@ -26,20 +26,16 @@ const beforeMount = (arg: LifecycleArg) => {
   }
 }
 
-const render = (arg: LifecycleArg, isVDOM: boolean) => {
+const render = (arg: LifecycleArg) => {
   const { def, props, idInstance, children } = arg
-  if (isVDOM) {
-    return renderVdomElement({
-      type: VDOM_TYPE.COMPONENT,
-      tagName: undefined,
-      children: wrapArray<VDOM>(children),
-      id: idInstance,
-      attributes: props,
-      def: def.id,
-    })
-  } else {
-    return def.render(getRenderArg(arg))
-  }
+  return renderVdomElement({
+    type: VDOM_TYPE.COMPONENT,
+    tagName: undefined,
+    children: wrapArray<VDOM>(children),
+    id: idInstance,
+    attributes: props,
+    def: def.id,
+  })
 }
 
 const afterMount = (arg: LifecycleArg) => {
@@ -85,6 +81,8 @@ const afterUnmount = (arg: LifecycleArg) => {
   }
 }
 
+const renderDom = (arg: LifecycleArg) => arg.def.render(getRenderArg(arg))
+
 export const lifecycle = {
   constructor,
   getDerivedStateFromProps,
@@ -97,4 +95,5 @@ export const lifecycle = {
   beforeUnmount,
   unmount,
   afterUnmount,
+  renderDom,
 }

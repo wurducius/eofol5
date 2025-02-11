@@ -1,8 +1,9 @@
-import { defineComponent } from "../runtime"
-import { button } from "../simple"
-import { col, row } from "./flex"
-import { VDOM } from "../types"
+import { define } from "../../../runtime"
+import { VDOM } from "../../../types"
 import { inputGeneralDef, InputOptions, InputState } from "./input-general"
+import { EofolUI } from "../components"
+import { flexCol, flexRow } from "../../base-ui"
+import { eButton } from "../button"
 
 type InputValueType = number
 
@@ -33,20 +34,16 @@ const inputOptions: InputOptions<InputValueType> = {
 const renderInputNumber = (children: VDOM, a) => {
   const { state, mergeState, onChange } = a
   const handleIncrement = handleIncrementGeneral(state, mergeState, onChange)
-  return row([
+  return flexRow([
     children,
-    col([
-      button("+", "input-number-arrow", undefined, {
-        onclick: handleIncrement(1),
-      }),
-      button("-", "input-number-arrow", undefined, {
-        onclick: handleIncrement(-1),
-      }),
+    flexCol([
+      eButton({ children: "+", className: "input-number-arrow", onClick: handleIncrement(1) }),
+      eButton({ children: "-", className: "input-number-arrow", onClick: handleIncrement(-1) }),
     ]),
   ])
 }
 
-defineComponent<InputState<InputValueType>>(
-  "inputNumber",
+export const numberInput = define<InputState<InputValueType>>(
+  EofolUI.inputNumber,
   inputGeneralDef<InputValueType>(inputOptions, renderInputNumber),
 )
