@@ -1,15 +1,14 @@
-import { camelCaseToKebabCase, getHash } from "../util"
+import { getHash } from "../util"
+import { StyleObject } from "../types"
+import { injectStyle, syImpl } from "./sx-impl"
 
-export const css = (stylesObject: Record<string, string>) => {
-  const cssRuleContent = Object.keys(stylesObject).reduce(
-    (acc, next) => `${acc}${camelCaseToKebabCase(next)}:${camelCaseToKebabCase(stylesObject[next])};`,
-    "",
-  )
-  const hash = `e${getHash(cssRuleContent)}`
-  const cssRule = `.${hash}{${cssRuleContent}}`
-  const stylesheet = document.styleSheets.item(document.styleSheets.length - 1)
-  if (stylesheet) {
-    stylesheet.insertRule(cssRule)
-  }
-  return hash
-}
+export const sx = (stylesObject: StyleObject) => injectStyle((content) => `e${getHash(content)}`, ".", "", stylesObject)
+
+export const syHtml = (name: string, stylesObject: StyleObject, postfix?: string) =>
+  syImpl(name, "", postfix ?? "", stylesObject)
+
+export const syId = (name: string, stylesObject: StyleObject, postfix?: string) =>
+  syImpl(name, "#", postfix ?? "", stylesObject)
+
+export const sy = (name: string, stylesObject: StyleObject, prefix?: string, postfix?: string) =>
+  syImpl(name, prefix ?? ".", postfix ?? "", stylesObject)

@@ -1,4 +1,5 @@
 import { DEF_TYPE_COMPONENT, ERROR, LOADING, PROP_NAME_DEF, PROP_NAME_ID, READY, VDOM_TYPE } from "./eofol-constants"
+import CSSType from "csstype"
 
 export type Classname = string | undefined
 export type Attributes = Record<string, any> | undefined
@@ -186,3 +187,10 @@ export type CreateStoreArg<T> = {
 }
 
 export type EofolProps<T> = T & { children?: VDOMChildren; className?: Classname }
+
+export type StyleObject = CSSType.Properties<string>
+
+export type Theme = {
+  color: { colorx: string; colory: string; colorz: string; colorw: string; colorwx: string; colorxy: string }
+  typography: { fontSize: Record<number, number>; formFontSize: number }
+}

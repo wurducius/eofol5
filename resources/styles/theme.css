@@ -1,45 +1,3 @@
-@font-face {
-  font-family: "Roboto";
-  src: url("./assets/media/fonts/Roboto-Regular.ttf") format("truetype");
-  font-display: swap;
-}
-
-body {
-  background-color: #09090b;
-  color: #fafafa;
-  font-family: Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
-}
-
-button {
-  background-color: darkmagenta;
-  color: #fafafa;
-  border: 1px solid darkblue;
-}
-
-button:hover {
-  background-color: #a817a8;
-  color: rgba(250, 250, 250, 0.55);
-  border: 1px solid #1313a4;
-}
-
-input {
-  background-color: darkmagenta;
-  color: #fafafa;
-  border: 1px solid darkblue;
-}
-
-input:focus {
-  background-color: #a817a8;
-  color: rgba(250, 250, 250, 0.55);
-  border: 1px solid #1313a4;
-}
-
 @-webkit-keyframes fadein {
   from {
     bottom: 0;
@@ -82,41 +40,6 @@ input:focus {
     bottom: 0;
     opacity: 0;
   }
-}
-
-.m-md {
-  margin: 16px 16px 16px 16px;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-.input-number-arrow {
-  height: 24px;
-  width: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.spinner {
-  border: 4px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 4px solid #3498db;
-  width: 30px;
-  height: 30px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
 }
 
 /* Safari */
