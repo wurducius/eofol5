@@ -1,7 +1,7 @@
-import { Attributes, Classname, DefInternal, EofolNode, Properties, Props } from "../types"
-import { DEF_TYPE_COMPONENT } from "../eofol-constants"
-import { ax, domAppendChildren, generateId, hx, wrapArray } from "../util"
-import { getDef } from "../runtime"
+import { Attributes, Classname, DefInternal, EofolNode, Properties, Props } from "../../types"
+import { DEF_TYPE_COMPONENT } from "../../eofol-constants"
+import { ax, domAppendChildren, generateId, hx, wrapArray } from "../../util"
+import { getDef } from "../../runtime"
 import { addChildrenToProps } from "../component"
 import { getRenderArgs, renderDom } from "./render-general"
 

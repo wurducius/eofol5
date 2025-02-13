@@ -1,4 +1,4 @@
-import { Classname, Def, DEF_TYPE, DefInternal, Properties, Props, VDOM, VDOMChildren } from "../types"
+import { Classname, Def, DEF_TYPE, DefInternal, Properties, Props, VDOM, VDOMChildren } from "../../types"
 import { e } from "../render"
 
 const defsRegistry: Record<string, DefInternal<any>> = {}

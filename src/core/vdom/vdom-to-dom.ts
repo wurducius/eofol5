@@ -1,9 +1,9 @@
-import { EofolElement, EofolNode, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOMChildren } from "../types"
-import { arrayCombinator, deepCopyString, wrapArray } from "../util"
-import { getInstance, isVDOMTag } from "../../project/src/internals"
+import { EofolElement, EofolNode, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOMChildren } from "../../types"
+import { arrayCombinator, deepCopyString, wrapArray } from "../../util"
+import { getInstance, isVDOMTag } from "../../../project/src/internals"
 import { eDom, renderComponentDom } from "../render"
 import { getDef } from "../runtime"
-import { eofolErrorDefNotFound } from "../log"
+import { eofolErrorDefNotFound } from "../../log"
 
 const renderVdom = (
   tree: VDOM_TAG | VDOM_COMPONENT,

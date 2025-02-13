@@ -1,5 +1,5 @@
-import { Effect, LifecycleArg } from "../types"
-import { arrayCombinator } from "../util"
+import { Effect, LifecycleArg } from "../../types"
+import { arrayCombinator } from "../../util"
 
 const playEffectImpl = (arg: LifecycleArg) => (effect: Effect<any>) =>
   effect({ props: arg.props, ...arg.stateTransforms })

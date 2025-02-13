@@ -1,6 +1,6 @@
-import { DefInternal, LifecycleArg, Props } from "../types"
-import { generateId } from "../util"
-import { getInstance } from "../../project/src/internals"
+import { DefInternal, LifecycleArg, Props } from "../../types"
+import { generateId } from "../../util"
+import { getInstance } from "../../../project/src/internals"
 import { getComponentInstance, getProps, getStateTransforms } from "../component"
 
 export const getRenderArgs = (def: DefInternal<any>, props: Props | undefined, isNew?: boolean) => {

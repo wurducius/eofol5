@@ -1,6 +1,6 @@
-import { getEnvEofolRootElementId } from "../../project/src/env"
-import { eofolFatal } from "../log"
-import { selectElementById } from "../util"
+import { getEnvEofolRootElementId } from "../../../project/src/env"
+import { eofolFatal } from "../../log"
+import { selectElementById } from "../../util"
 
 let ROOT_ELEMENT: HTMLElement | undefined = undefined
 

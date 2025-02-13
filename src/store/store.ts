@@ -1,6 +1,6 @@
 import { getInstances } from "../../project/src/internals"
 import { getDef } from "../runtime"
-import { eofolUpdate } from "../core"
+import { eofolUpdate } from "../core/eofol"
 import { CreateStoreArg, Instance, Store } from "../types"
 import { ax, mergeDeep } from "../util"
 

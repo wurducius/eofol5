@@ -1,4 +1,4 @@
-import { DefInternal, Props } from "../types"
+import { DefInternal, Props } from "../../types"
 
 export const playConstructor = (def: DefInternal<any>, props: Props, isNew?: boolean) => {
   if (isNew && def.constructor) {

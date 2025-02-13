@@ -1,5 +1,5 @@
 import { Attributes, Classname, Properties, VDOM, VDOMChildren } from "../../types"
-import { renderTag } from "../../render"
+import { renderTag } from "../../core/render"
 
 export const simple =
   (tagName: string) =>

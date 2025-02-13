@@ -1,8 +1,8 @@
 import { playConstructor } from "./constructor"
-import { LifecycleArg, Props, VDOM } from "../types"
+import { LifecycleArg, Props, VDOM } from "../../types"
 import { playEffect } from "./effect"
-import { VDOM_TYPE } from "../eofol-constants"
-import { wrapArray } from "../util"
+import { VDOM_TYPE } from "../../eofol-constants"
+import { wrapArray } from "../../util"
 import { getRenderArg, renderVdomElement } from "../render"
 
 const constructor = (arg: LifecycleArg) => {

@@ -1,4 +1,4 @@
-import { Attributes, Classname, Properties, Props, VDOM, VDOMChildren } from "../types"
+import { Attributes, Classname, Properties, Props, VDOM, VDOMChildren } from "../../types"
 import { eImpl } from "./create-element-vdom"
 
 export const e = (
