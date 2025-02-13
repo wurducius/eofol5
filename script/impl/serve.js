@@ -1,15 +1,15 @@
 const wds = require("eofol-dev-server").default
 const open = require("open").default
 const { getConfig } = require("../../compile")
-const { getEnvHTTPS, getEnvHost, getEnvPort } = require("../../compile/config/env")
+const { getEnvHTTPS, getEnvHost, getEnvPort, getEnvHotReloadWait, getEnvOpen } = require("../../compile/config/env")
 
 const config = getConfig()
 
 const HTTPS = getEnvHTTPS()
 const HOST = getEnvHost()
 const PORT = getEnvPort()
-const WAIT = 150
-const OPEN = true
+const WAIT = getEnvHotReloadWait()
+const OPEN = getEnvOpen()
 
 const serveUrl = `${HTTPS ? "https" : "http"}://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}`
 

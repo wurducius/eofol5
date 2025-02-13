@@ -1,4 +1,4 @@
-import { DefInternal, Props } from "../types"
+import { DefInternal, LifecycleArg, Props } from "../types"
 import { generateId } from "../util"
 import { getInstance } from "../../project/src/internals"
 import { getComponentInstance, getProps, getStateTransforms } from "../component"
@@ -11,3 +11,7 @@ export const getRenderArgs = (def: DefInternal<any>, props: Props | undefined, i
   const propsImpl = getProps(props, idInstance, def, undefined)
   return { stateTransforms, instance, idInstance, propsImpl }
 }
+
+export const renderDom = (arg: LifecycleArg) => arg.def.render(getRenderArg(arg))
+
+export const getRenderArg = (arg: LifecycleArg) => ({ ...arg.stateTransforms, props: arg.props })

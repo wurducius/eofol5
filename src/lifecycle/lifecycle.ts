@@ -3,9 +3,7 @@ import { LifecycleArg, Props, VDOM } from "../types"
 import { playEffect } from "./effect"
 import { VDOM_TYPE } from "../eofol-constants"
 import { wrapArray } from "../util"
-import { renderVdomElement } from "../render"
-
-const getRenderArg = (arg: LifecycleArg) => ({ ...arg.stateTransforms, props: arg.props })
+import { getRenderArg, renderVdomElement } from "../render"
 
 const constructor = (arg: LifecycleArg) => {
   const { def, props, isNew } = arg
@@ -81,8 +79,6 @@ const afterUnmount = (arg: LifecycleArg) => {
   }
 }
 
-const renderDom = (arg: LifecycleArg) => arg.def.render(getRenderArg(arg))
-
 export const lifecycle = {
   constructor,
   getDerivedStateFromProps,
@@ -95,5 +91,4 @@ export const lifecycle = {
   beforeUnmount,
   unmount,
   afterUnmount,
-  renderDom,
 }

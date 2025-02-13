@@ -1,7 +1,5 @@
-import { base } from "./base"
-import { themed } from "./themed"
 import { getTheme } from "./theme"
-import { baseUi } from "./base-ui"
+import { base, baseUi, themed } from "./styles"
 
 export const stylesInit = () => {
   const theme = getTheme()

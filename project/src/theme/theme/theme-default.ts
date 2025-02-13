@@ -1,4 +1,4 @@
-import { Theme } from "../../../src"
+import { Theme } from "../../../../src"
 
 const formFontSize = 16
 
@@ -11,7 +11,7 @@ const fontSize = {
   6: 0.67,
 }
 
-const theme: Theme = {
+const themeDefault: Theme = {
   color: {
     colorx: "darkmagenta",
     colory: "#fafafa",
@@ -26,4 +26,4 @@ const theme: Theme = {
   },
 }
 
-export const getTheme = () => theme
+export const getTheme = () => themeDefault

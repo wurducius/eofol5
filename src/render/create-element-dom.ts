@@ -3,8 +3,7 @@ import { DEF_TYPE_COMPONENT } from "../eofol-constants"
 import { ax, domAppendChildren, generateId, hx, wrapArray } from "../util"
 import { getDef } from "../runtime"
 import { addChildrenToProps } from "../component"
-import { getRenderArgs } from "./render-general"
-import { lifecycle } from "../lifecycle"
+import { getRenderArgs, renderDom } from "./render-general"
 
 export const renderTagDom = (
   tagName: string,
@@ -33,7 +32,7 @@ export const renderComponentDom = (def: DefInternal<any>, props: Props | undefin
       isNew,
       stateTransforms: renderedInstance.stateTransforms,
     }
-    return lifecycle.renderDom(lifecycleArg)
+    return renderDom(lifecycleArg)
   }
 }
 
