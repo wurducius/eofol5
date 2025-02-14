@@ -1,11 +1,11 @@
-import { vdomToDom } from "../vdom"
+import { findVdomElementById, vdomToDom } from "../vdom"
 import { getVDOM, setVDOM } from "../../../project/src/internals"
 import { EofolElement, EofolRenderHandler } from "../../types"
 import { getRoot, selectRoot } from "./root"
 import { eofolFatal } from "../../log"
 import { getEnvEofolRootElementId } from "../../../project/src/env"
 import { init } from "../../runtime"
-import { pipe, replaceChildren } from "../../util"
+import { replaceChildren } from "../../util"
 import { withErrorOverlay } from "../../extract/error-overlay/error-overlay"
 
 const eofolRender = (dom: EofolElement) => {
@@ -28,7 +28,18 @@ const eofolInitImpl = (handler: EofolRenderHandler) => () => {
 export const eofolInitImplWithOverlay = (handler: EofolRenderHandler) => () => {
   withErrorOverlay(eofolInitImpl(handler))
 }
-export const eofolUpdateImpl = pipe(getVDOM, vdomToDom, eofolRender)
+export const eofolUpdateImpl = (id: string | undefined) => () => {
+  const vdom = getVDOM()
+  let head
+  if (id) {
+    head = findVdomElementById(vdom, id)
+  } else {
+    head = vdom
+  }
+  console.log(`eofolUpdate @ ${head?.id}`)
+  const dom = vdomToDom(vdom)
+  return eofolRender(dom as EofolElement)
+}
 
 export const eofolUnmountImpl = () => {
   const vdom = ""

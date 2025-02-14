@@ -1,6 +1,6 @@
 import { EofolElement, EofolNode, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOMChildren } from "../../types"
 import { arrayCombinator, deepCopyString, wrapArray } from "../../util"
-import { getInstance, isVDOMComponent, isVDOMTag } from "../../../project/src/internals"
+import { getInstance, isVDOMComponent, isVDOMTag, isVDOMText } from "../../../project/src/internals"
 import { eDom, renderComponentDom } from "../render"
 import { getDef } from "../runtime"
 import { eofolErrorDefNotFound } from "../../log"
@@ -77,6 +77,8 @@ export const traverseVdom = (
     return handler(tree)
   } else {
     if (
+      tree &&
+      !isVDOMText(tree) &&
       "children" in tree &&
       tree.children &&
       ((Array.isArray(tree.children) && tree.children.length > 0) || !Array.isArray(tree.children))
@@ -95,6 +97,6 @@ export const traverseVdom = (
 export const findVdomElementById = (tree: VDOM, id: string) =>
   traverseVdom(
     tree,
-    (vdomElement) => vdomElement.id === id,
+    (vdomElement) => (!vdomElement || isVDOMText(vdomElement) ? false : vdomElement.id === id),
     (vdomElement) => vdomElement,
   )

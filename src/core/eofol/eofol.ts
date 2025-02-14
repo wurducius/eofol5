@@ -7,10 +7,10 @@ import { getEnvEofolRootElementId } from "../../../project/src/env"
 export const eofolMount = (handler: EofolRenderHandler) =>
   withProfiler("Eofol init", "Initial render", eofolInitImplWithOverlay(handler))
 
-// eslint-disable-next-line no-unused-vars
-export const eofolUpdate = (id: string) => withProfiler("Eofol update", "Update render", eofolUpdateImpl)
+export const eofolUpdate = (id: string) => withProfiler("Eofol update", "Update render", eofolUpdateImpl(id))
 
-export const eofolForceUpdate = () => withProfiler("Eofol force update", "Force update render", eofolUpdateImpl)
+export const eofolForceUpdate = () =>
+  withProfiler("Eofol force update", "Force update render", eofolUpdateImpl(undefined))
 
 export const eofolUnmount = () => withProfiler("Eofol unmount", "Unmount", eofolUnmountImpl)
 
