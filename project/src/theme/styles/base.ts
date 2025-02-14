@@ -1,4 +1,4 @@
-import { syHtml, Theme } from "../../../src"
+import { syHtml, Theme } from "../../../../src"
 
 export const base = (theme: Theme) => {
   const {

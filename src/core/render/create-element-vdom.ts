@@ -8,13 +8,13 @@ import {
   VDOM_COMPONENT,
   VDOM_TAG,
   VDOMChildren,
-} from "../types"
-import { VDOM_TYPE } from "../eofol-constants"
-import { getInstance, getVDOM, mergeInstance } from "../../project/src/internals"
-import { getDef } from "../runtime"
+} from "../../types"
+import { VDOM_TYPE } from "../../eofol-constants"
+import { getInstance, getVDOM, mergeInstance } from "../../../project/src/internals"
+import { getDef } from "../../runtime"
 import { addChildrenToProps } from "../component"
 import { lifecycle } from "../lifecycle"
-import { ax, generateId, wrapArray } from "../util"
+import { ax, wrapArray } from "../../util"
 import { getRenderArgs } from "./render-general"
 import { findVdomElementById } from "../vdom"
 
@@ -53,7 +53,7 @@ export const renderTag = (
     type: VDOM_TYPE.TAG,
     tagName,
     children,
-    id: attributes?.id ?? generateId(),
+    id: attributes?.id,
     className,
     attributes,
     properties,
@@ -124,7 +124,6 @@ export const eImpl = (
       parent = findVdomElementById(vdom, parentId)
       if (parent) {
         // @TODO
-        console.log(parent)
       }
     }
     return renderComponent(def, addChildrenToProps(attributes, childrenImpl))

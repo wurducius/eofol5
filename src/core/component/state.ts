@@ -1,7 +1,7 @@
-import { DefInternal, Instance, StateTransform } from "../types"
-import { mergeInstance } from "../../project/src/internals"
-import { eofolUpdate } from "../core"
-import { mergeDeep } from "../util"
+import { DefInternal, Instance, StateTransform } from "../../types"
+import { mergeInstance } from "../../../project/src/internals"
+import { eofolUpdate } from "../eofol"
+import { mergeDeep } from "../../util"
 
 const updateState = (idInstance: string, instance: Instance, nextState: any) => {
   mergeInstance(idInstance, { ...instance, state: nextState })

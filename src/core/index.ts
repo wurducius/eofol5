@@ -1,1 +1,6 @@
+export * from "./component"
 export * from "./eofol"
+export * from "./lifecycle"
+export * from "./render"
+export * from "./runtime"
+export * from "./vdom"

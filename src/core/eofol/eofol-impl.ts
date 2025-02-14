@@ -1,12 +1,12 @@
 import { vdomToDom } from "../vdom"
-import { getVDOM, setVDOM } from "../../project/src/internals"
-import { EofolElement, EofolRenderHandler } from "../types"
+import { getVDOM, setVDOM } from "../../../project/src/internals"
+import { EofolElement, EofolRenderHandler } from "../../types"
 import { getRoot, selectRoot } from "./root"
-import { eofolFatal } from "../log"
-import { getEnvEofolRootElementId } from "../../project/src/env"
-import { init } from "../runtime"
-import { pipe, replaceChildren } from "../util"
-import { withErrorOverlay } from "../extract/error-overlay/error-overlay"
+import { eofolFatal } from "../../log"
+import { getEnvEofolRootElementId } from "../../../project/src/env"
+import { init } from "../../runtime"
+import { pipe, replaceChildren } from "../../util"
+import { withErrorOverlay } from "../../extract/error-overlay/error-overlay"
 
 const eofolRender = (dom: EofolElement) => {
   const root = getRoot()

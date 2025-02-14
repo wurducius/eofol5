@@ -19,6 +19,8 @@ const envDefault = {
   MODE: "development",
   SERVICE_WORKER: true,
   ANALYZE: false,
+  OPEN: true,
+  HOT_RELOAD_WAIT: 150,
 }
 
 module.exports = envDefault

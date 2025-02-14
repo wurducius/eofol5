@@ -1,4 +1,4 @@
-export * from "./defs"
+export * from "../core/runtime/defs"
 export * from "./fetch"
 export * from "./init"
 export * from "./render-case"

@@ -26,6 +26,8 @@ const getEnvEofolStrictMode = () => envBool("EOFOL_STRICT")
 const getEnvMode = () => envString("MODE")
 const getEnvServiceWorker = () => envBool("SERVICE_WORKER")
 const getEnvAnalyze = () => envBool("ANALYZE")
+const getEnvOpen = () => envBool("OPEN")
+const getEnvHotReloadWait = () => envNumber("HOT_RELOAD_WAIT")
 
 module.exports = {
   getEnvEofolServiceWorkerFilename,
@@ -48,4 +50,6 @@ module.exports = {
   getEnvEofolStrictMode,
   getEnvBuildPath,
   getEnvAnalyze,
+  getEnvOpen,
+  getEnvHotReloadWait,
 }

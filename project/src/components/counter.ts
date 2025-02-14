@@ -35,7 +35,7 @@ export default define<CounterState>("counter", {
               input(
                 undefined,
                 undefined,
-                { value: state.increment.toString(), type: "number", "aria-label": "counter" },
+                { value: state?.increment?.toString() ?? 0, type: "number", "aria-label": "counter" },
                 {
                   onchange: (e: { target: { value: any } }) => {
                     mergeState({ increment: Number(e.target.value ?? "0") })
@@ -49,7 +49,7 @@ export default define<CounterState>("counter", {
               eButton({
                 children: "Add amount",
                 onClick: () => {
-                  mergeState({ value: (state.value ?? 0) + state.increment })
+                  mergeState({ value: (state.value ?? 0) + (state?.increment ?? 0) })
                 },
               }),
               eButton({

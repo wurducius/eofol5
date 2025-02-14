@@ -1,6 +1,6 @@
-import { DefInternal, EofolNode, Instance, Props, VDOMChildren } from "../types"
+import { DefInternal, EofolNode, Instance, Props, VDOMChildren } from "../../types"
 import { initializeState } from "./state"
-import { ax } from "../util"
+import { ax } from "../../util"
 
 export const getProps = (props: Props | undefined, idInstance: string, def: DefInternal<any>, children: EofolNode) =>
   ax(
