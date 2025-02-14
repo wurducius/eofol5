@@ -107,6 +107,8 @@ export interface Instance {
 
 export type VDOMChildren = VDOM | VDOM[] | undefined
 
+export type VDOMChildrenSaved = { id: string | undefined }
+
 export type VDOM_TAG = {
   type: typeof VDOM_TYPE.TAG
   id: string
@@ -115,6 +117,7 @@ export type VDOM_TAG = {
   properties: Properties
   tag: string
   children?: VDOMChildren
+  vdomChildren: VDOMChildrenSaved[]
 }
 
 export type VDOM_COMPONENT = {
@@ -123,6 +126,7 @@ export type VDOM_COMPONENT = {
   props?: Props
   children?: VDOMChildren
   def: string
+  vdomChildren: VDOMChildrenSaved[]
 }
 
 export type VDOM_TEXT = string

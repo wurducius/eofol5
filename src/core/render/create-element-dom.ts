@@ -4,6 +4,7 @@ import { ax, domAppendChildren, generateId, hx, wrapArray } from "../../util"
 import { getDef } from "../../runtime"
 import { addChildrenToProps } from "../component"
 import { getRenderArgs, renderDom } from "./render-general"
+import { mergeInstance } from "../../../project/src/internals"
 
 export const renderTagDom = (
   tagName: string,
@@ -21,17 +22,18 @@ export const renderTagDom = (
   return element
 }
 
-export const renderComponentDom = (def: DefInternal<any>, props: Props | undefined, isNew?: boolean) => {
+export const renderComponentDom = (def: DefInternal<any>, props: Props | undefined, isNew?: string | undefined) => {
   if (def.type === DEF_TYPE_COMPONENT) {
-    const renderedInstance = getRenderArgs(def, props, isNew)
+    const renderedInstance = getRenderArgs(def, { ...(props ?? {}), id: isNew }, isNew !== undefined)
     const lifecycleArg = {
       def,
       props: renderedInstance.propsImpl,
       idInstance: renderedInstance.idInstance,
       instance: renderedInstance.instance,
-      isNew,
+      isNew: isNew !== undefined,
       stateTransforms: renderedInstance.stateTransforms,
     }
+    mergeInstance(lifecycleArg.idInstance, lifecycleArg.instance)
     return renderDom(lifecycleArg)
   }
 }
@@ -66,7 +68,7 @@ export const eDom = (
   const def = getDef(tagName)
   if (def) {
     if (def.type === DEF_TYPE_COMPONENT) {
-      return renderComponentDom(def, addChildrenToProps(attributes, children), true)
+      return renderComponentDom(def, addChildrenToProps(attributes, children), attributes?.id)
     }
   } else {
     return renderTagDom(tagName, className, children, attributes, properties)

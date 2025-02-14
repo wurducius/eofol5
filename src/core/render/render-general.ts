@@ -4,7 +4,7 @@ import { getInstance } from "../../../project/src/internals"
 import { getComponentInstance, getProps, getStateTransforms } from "../component"
 
 export const getRenderArgs = (def: DefInternal<any>, props: Props | undefined, isNew?: boolean) => {
-  const idInstance = isNew ? generateId() : (props?.id ?? generateId())
+  const idInstance = isNew ? generateId() : props?.id
   const savedInstance = isNew ? undefined : getInstance(idInstance)
   const instance = getComponentInstance(savedInstance, idInstance, def)
   const stateTransforms = getStateTransforms(idInstance, instance, def.initialState)

@@ -1,9 +1,10 @@
 import { EofolElement, EofolNode, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOMChildren } from "../../types"
 import { arrayCombinator, deepCopyString, wrapArray } from "../../util"
-import { getInstance, isVDOMTag } from "../../../project/src/internals"
+import { getInstance, isVDOMComponent, isVDOMTag } from "../../../project/src/internals"
 import { eDom, renderComponentDom } from "../render"
 import { getDef } from "../runtime"
 import { eofolErrorDefNotFound } from "../../log"
+import { VDOM_TYPE } from "../../eofol-constants"
 
 const renderVdom = (
   tree: VDOM_TAG | VDOM_COMPONENT,
@@ -21,8 +22,9 @@ const renderVdom = (
     const instance = getInstance(tree.id)
     const def = getDef(instance.def)
     if (def) {
+      const isNew = tree.props?.id
       return arrayCombinator(vdomToDom)(
-        renderComponentDom(def, instance ? { ...(tree.props ?? {}), id: tree.id } : {}, false),
+        renderComponentDom(def, instance ? { ...(tree.props ?? {}), id: tree.id } : {}, isNew),
       )
     } else {
       eofolErrorDefNotFound(instance.def)
@@ -39,9 +41,28 @@ export const vdomToDom = (
   if (typeof tree === "string") {
     return deepCopyString(tree)
   } else {
+    const vdomChildren = tree.vdomChildren
     const children = wrapArray<VDOM>(tree.children)
-    const childrenRendered = children.map(vdomToDom)
-    return renderVdom(tree, childrenRendered)
+    const childrenRendered = children.map((child, index) => {
+      if (typeof child === "string") {
+        return vdomToDom(child)
+      } else {
+        if (child.type === VDOM_TYPE.TAG) {
+          return vdomToDom(child)
+        } else if (isVDOMComponent(child)) {
+          const injectedId =
+            vdomChildren && Array.isArray(vdomChildren) && vdomChildren.length < index ? vdomChildren[index] : undefined
+          const injectedChild = { ...child, props: { ...(child.props ?? {}), id: injectedId } }
+          return vdomToDom(injectedChild)
+        }
+      }
+    })
+    const savedVdomChildren = childrenRendered.map((child) => {
+      const savedId = !child || typeof child === "string" || Array.isArray(child) || !child.id ? undefined : child.id
+      return { id: savedId }
+    })
+    const savedTree = { ...tree, vdomChildren: savedVdomChildren }
+    return renderVdom(savedTree, childrenRendered)
   }
 }
 
