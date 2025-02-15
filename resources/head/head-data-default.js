@@ -13,7 +13,7 @@ const defaultHeadData = {
   imageHeightOg: "512",
   imageWidthOg: "512",
   language: "en",
-  manifest: "manifest.json",
+  manifest: "./manifest.json",
   themeColor: "#09090b",
 }
 

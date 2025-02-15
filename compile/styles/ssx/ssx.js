@@ -1,5 +1,5 @@
-const { sinjectStyle, ssyImpl } = require("./sx-impl")
-const { getHash } = require("../util-compile")
+const { sinjectStyle, ssyImpl } = require("./ssx-impl")
+const { getHash } = require("../../util-compile")
 
 const ssx = (stylesObject) => sinjectStyle((content) => `e${getHash(content)}`, ".", "", stylesObject)
 

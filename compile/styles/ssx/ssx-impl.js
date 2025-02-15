@@ -1,4 +1,4 @@
-const { camelCaseToKebabCase } = require("../util-compile")
+const { camelCaseToKebabCase } = require("../../util-compile")
 const { appendSsxCache } = require("./cache")
 
 const sinjectStyle = (getName, prefix, postfix, stylesObject) => {
