@@ -1,28 +1,29 @@
-const { ssyHtml, ssy } = require("./sx")
+const { ssyHtml, ssy } = require("../ssx")
 const {
   mozFontSmoothing,
   webkitFontSmoothing,
   webkitAppereance,
   mozAppereance,
   webkitAnimation,
-} = require("./constants")
+} = require("../constants")
 
 const themed = (theme) => {
   const {
     color: { colorz, colorxy, colorx, colory, colorwx, colorw },
+    typography: { fontFamily },
   } = theme
 
   ssyHtml("@font-face", {
-    fontFamily: "Roboto",
+    fontFamily: fontFamily.fontFamily,
     // @ts-ignore
-    src: 'url("./assets/media/fonts/Roboto-Regular.ttf") format("truetype")',
+    src: `url("./assets/media/fonts/${fontFamily.path}") format("${fontFamily.format}")`,
     fontDisplay: "swap",
   })
 
   ssyHtml("body", {
     backgroundColor: "#09090b",
     color: theme.color.colory,
-    fontFamily: "Roboto, sans-serif",
+    fontFamily: `${fontFamily.fontFamily}, sans-serif`,
     [webkitFontSmoothing]: "antialiased",
     [mozFontSmoothing]: "grayscale",
   })

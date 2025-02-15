@@ -1,4 +1,4 @@
-const { ssyHtml } = require("./sx")
+const { ssyHtml } = require("../ssx/ssx")
 
 const base = (theme) => {
   const {

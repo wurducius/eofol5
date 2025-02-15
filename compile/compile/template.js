@@ -9,17 +9,11 @@ const { staticStylesInit } = require("../styles")
 
 const config = getConfig()
 
-const baseStyles = injectRootId(eReadFull(config.PATH.RESOURCES_STYLES, `base${config.EXT.CSS}`))
-const themeStyles = eReadFull(config.PATH.RESOURCES_STYLES, `theme${config.EXT.CSS}`)
-
 const precompileTemplate = (buildPath, projectPath, stylesStatic) => async (viewName) => {
   const { injectedContent, errorOverlayStyles } = getErrorOverlay(
     injectRootId(eReadFull(projectPath, `${viewName}${config.EXT.HTML}`)),
   )
-  const precompiledStyles = staticStylesInit()
-  const stylesImpl = await minifyHtml(
-    [errorOverlayStyles, baseStyles, themeStyles, stylesStatic, precompiledStyles].filter(Boolean).join(" "),
-  )
+  const stylesImpl = await minifyHtml([errorOverlayStyles, stylesStatic].filter(Boolean).join(" "))
   const compiled = await head(
     defaultHeadData,
     injectedContent,
@@ -34,12 +28,14 @@ const precompileTemplate = (buildPath, projectPath, stylesStatic) => async (view
 }
 
 // @TODO in case index.html is not present, add empty file
-const compileTemplates = (buildPath, projectPath, publicDir) =>
-  Promise.all(
+const compileTemplates = (buildPath, projectPath, publicDir) => {
+  const precompiledStyles = staticStylesInit()
+  return Promise.all(
     publicDir
       .filter((publicFile) => publicFile.endsWith(config.EXT.HTML))
       .map((publicView) => parse(publicView).name)
-      .map(precompileTemplate(buildPath, projectPath)),
+      .map(precompileTemplate(buildPath, projectPath, precompiledStyles)),
   )
+}
 
 module.exports = { compileTemplates }

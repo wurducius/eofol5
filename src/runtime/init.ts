@@ -4,7 +4,6 @@ import { getEnvServiceWorker } from "../../project/src/env"
 
 export const init = () => {
   runtimeLog("Eofol initialized")
-  // stylesInit()
   if (getEnvServiceWorker()) {
     registerServiceworker()
   }
