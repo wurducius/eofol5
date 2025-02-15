@@ -5,6 +5,7 @@ const { getConfig } = require("../config")
 const getErrorOverlay = require("../../src/extract/error-overlay/error-overlay-compile")
 const { injectRootId, injectDoctype } = require("../helper")
 const defaultHeadData = require("../../resources/head/head-data-default")
+const { staticStylesInit } = require("../styles")
 
 const config = getConfig()
 
@@ -15,8 +16,9 @@ const precompileTemplate = (buildPath, projectPath, stylesStatic) => async (view
   const { injectedContent, errorOverlayStyles } = getErrorOverlay(
     injectRootId(eReadFull(projectPath, `${viewName}${config.EXT.HTML}`)),
   )
+  const precompiledStyles = staticStylesInit()
   const stylesImpl = await minifyHtml(
-    [errorOverlayStyles, baseStyles, themeStyles, stylesStatic].filter(Boolean).join(" "),
+    [errorOverlayStyles, baseStyles, themeStyles, stylesStatic, precompiledStyles].filter(Boolean).join(" "),
   )
   const compiled = await head(
     defaultHeadData,
