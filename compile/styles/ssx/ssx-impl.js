@@ -7,11 +7,11 @@ const sinjectStyle = (getName, prefix, postfix, stylesObject) => {
     (acc, next) => `${acc}${camelCaseToKebabCase(next)}:${stylesObject[next]};`,
     "",
   )
-  const name = getName(content)
-  const rule = `${prefix}${name}${postfix}{${content}}`
+  const name = typeof getName === "string" ? getName : getName(content)
+  const rule = `${prefix}${name}${postfix}{ ${content}}`
   appendSsxCache(rule)
 }
 
-const ssyImpl = (name, prefix, postfix, stylesObject) => sinjectStyle(() => name, prefix, postfix, stylesObject)
+const ssyImpl = (name, prefix, postfix, stylesObject) => sinjectStyle(name, prefix, postfix, stylesObject)
 
 module.exports = { sinjectStyle, ssyImpl }

@@ -1,9 +1,8 @@
 import { Attributes, Classname, DefInternal, EofolNode, Properties, Props } from "../../types"
 import { DEF_TYPE_COMPONENT } from "../../eofol-constants"
 import { ax, domAppendChildren, generateId, hx, wrapArray } from "../../util"
-import { getDef } from "../../runtime"
-import { addChildrenToProps } from "../component"
-import { getRenderArgs, renderDom } from "./render-general"
+import { getDef } from "../runtime"
+import { addChildrenToProps, getRenderArgs, renderDom } from "./render-general"
 import { mergeInstance } from "../../../project/src/internals"
 
 export const renderTagDom = (
@@ -38,26 +37,6 @@ export const renderComponentDom = (def: DefInternal<any>, props: Props | undefin
   }
 }
 
-/*
-const shouldUpdate = lifecycle.shouldUpdate(lifecycleArg)
-if (shouldUpdate) {
-  const derivedState = lifecycle.getDerivedStateFromProps(lifecycleArg)
-  lifecycleArg.stateTransforms.state = derivedState
-  lifecycleArg.instance.state = derivedState
-
-  mergeInstance(lifecycleArg.idInstance, lifecycleArg.instance)
-
-  lifecycle.beforeUpdate(lifecycleArg)
-
-  const rendered = lifecycle.renderDom(lifecycleArg)
-
-  lifecycle.afterUpdate(lifecycleArg)
-
-  return rendered
-
-}
- */
-
 export const eDom = (
   tagName: string,
   className?: Classname,
@@ -66,11 +45,7 @@ export const eDom = (
   properties?: Properties,
 ) => {
   const def = getDef(tagName)
-  if (def) {
-    if (def.type === DEF_TYPE_COMPONENT) {
-      return renderComponentDom(def, addChildrenToProps(attributes, children), attributes?.id)
-    }
-  } else {
-    return renderTagDom(tagName, className, children, attributes, properties)
-  }
+  return def
+    ? renderComponentDom(def, addChildrenToProps(attributes, children), attributes?.id)
+    : renderTagDom(tagName, className, children, attributes, properties)
 }

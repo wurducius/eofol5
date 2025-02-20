@@ -5,16 +5,10 @@
 - Include dependencies in build
 - Extract eofol5 to eofol-utils
 - Render properly component children by vdom
-- Fix hot reload
-- Fix typing warnings and errors
 - Move internals to src
 - Optimize eofol update
-- Separate compile and runtime code
-- Fix hot reload bug crash on file does not exist
 
 ## Low priority
-
-- Create element vs stateful duplicated code
 
 ## Bookkeeping
 
@@ -27,4 +21,3 @@
 - Include defs in internals?
 - Shared vs per-view internals
 - Views type should be Map or Array?
-- Typing State & SetState
