@@ -1,6 +1,8 @@
 const optimizeAssets = require("./optimize-assets")
 const { PLUGIN_NAME } = require("./plugin-utils")
-const processViews = require("./process-views")
+
+// eslint-disable-next-line no-unused-vars
+const processViews = async (compiler, compilation) => {}
 
 const onInitCompilation = (compiler) => (compilation) => {
   compilation.hooks.processAssets.tapPromise(

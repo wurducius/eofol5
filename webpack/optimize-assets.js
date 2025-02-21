@@ -55,9 +55,7 @@ const optimizeAssets = async (compiler, compilation) => {
         let nextSource = undefined
         if (assetName.endsWith(config.EXT.JS)) {
           nextSource = minifyJs(injectInternalsImpl(assetName, source))
-        } else if (assetName.endsWith(config.EXT.CSS)) {
-          nextSource = await minifyHtml(source)
-        } else if (assetName.endsWith(config.EXT.HTML)) {
+        } else if (assetName.endsWith(config.EXT.CSS) || assetName.endsWith(config.EXT.HTML)) {
           nextSource = await minifyHtml(source)
         }
 

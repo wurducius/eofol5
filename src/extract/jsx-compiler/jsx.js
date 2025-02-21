@@ -1,7 +1,5 @@
-const { join } = require("../../../compile")
-const fs = require("node:fs")
+const { join, exists, read, write, getConfig } = require("../../../compile")
 const compileJsx = require("./jsx-compiler")
-const { getConfig } = require("../../../compile/config")
 
 const injectImportPragma = (content) => `import { j } from "../../src"\n${content}`
 
@@ -12,14 +10,18 @@ const getViewPathSource = (next) => join(config.PATH.PROJECT_SRC, `${next}.tsx`)
 const getViewPathTarget = (next) => join(config.PATH.PROJECT_SRC, `${next}.js`)
 
 const compileViewJsx = (view) => {
-  fs.writeFileSync(
-    getViewPathTarget(view),
-    injectImportPragma(compileJsx(fs.readFileSync(getViewPathSource(view)).toString())),
-  )
+  const viewPath = getViewPathTarget(view)
+  let content
+  if (exists(viewPath)) {
+    content = read(getViewPathSource(view)).toString()
+  } else {
+    content = ""
+  }
+  const result = injectImportPragma(compileJsx(content))
+  write(viewPath, result)
 }
 
 const compileViewsJsx = (views) => {
-  // touch(join(config.PATH.CWD, "derived"))
   views.forEach(compileViewJsx)
 }
 
