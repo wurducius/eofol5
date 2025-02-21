@@ -1,7 +1,7 @@
 import { EofolElement, EofolNode, VDOM, VDOM_COMPONENT, VDOM_TAG, VDOMChildren } from "../../types"
 import { arrayCombinator, deepCopyString, wrapArray } from "../../util"
 import { getInstance, isVDOMComponent, isVDOMTag, isVDOMText } from "../../../project/src/internals"
-import { eDom, renderComponentDom } from "../render"
+import { renderComponentDom, renderTagDom } from "../render"
 import { getDef } from "../runtime"
 import { eofolErrorDefNotFound } from "../../log"
 import { VDOM_TYPE } from "../../eofol-constants"
@@ -11,7 +11,7 @@ const renderVdom = (
   renderedChildren: (false | VDOMChildren | HTMLElement | null)[],
 ) => {
   if (isVDOMTag(tree)) {
-    return eDom(
+    return renderTagDom(
       tree.tag,
       tree.class,
       renderedChildren.filter(Boolean) as EofolNode,

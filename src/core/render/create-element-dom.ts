@@ -3,7 +3,6 @@ import { DEF_TYPE_COMPONENT } from "../../eofol-constants"
 import { ax, domAppendChildren, generateId, hx, wrapArray } from "../../util"
 import { getDef } from "../runtime"
 import { addChildrenToProps, getRenderArgs, renderDom } from "./render-general"
-import { mergeInstance } from "../../../project/src/internals"
 
 export const renderTagDom = (
   tagName: string,
@@ -32,7 +31,6 @@ export const renderComponentDom = (def: DefInternal<any>, props: Props | undefin
       isNew: isNew !== undefined,
       stateTransforms: renderedInstance.stateTransforms,
     }
-    mergeInstance(lifecycleArg.idInstance, lifecycleArg.instance)
     return renderDom(lifecycleArg)
   }
 }
