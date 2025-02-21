@@ -1,6 +1,6 @@
 const { mergeDeep } = require("./util-compile")
 const envDefault = require("../resources/env/env-default")
-const readEnv = require("../src/extract/env/env")
+const readEnv = require("./extract/env")
 
 let INTERNALS = {
   instances: {},

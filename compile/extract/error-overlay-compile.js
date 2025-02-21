@@ -1,8 +1,8 @@
-const { getConfig } = require("../../../compile/config")
-const parseHtml = require("../html-parser/parser-html")
-const { getEnvEofolRootElementId } = require("../../../compile/config/env")
-const { eReadFull } = require("../../../compile/util-compile")
-const { injectEofolName, injectRootId } = require("../../../compile/inject")
+const { getConfig } = require("../config")
+const parseHtml = require("./parser-html")
+const { getEnvEofolRootElementId } = require("../config/env")
+const { eReadFull } = require("../util-compile")
+const { injectEofolName, injectRootId } = require("../inject")
 
 const config = getConfig()
 

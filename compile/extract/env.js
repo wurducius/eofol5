@@ -1,5 +1,5 @@
-const { eRead } = require("../../../compile/util-compile/e-fs")
-const { mergeDeep } = require("../../../compile/util-compile/obj")
+const { eRead } = require("../util-compile/e-fs")
+const { mergeDeep } = require("../util-compile/obj")
 
 const readEnv = (envDefault) => {
   const envParsed = eRead(".env")

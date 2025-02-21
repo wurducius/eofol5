@@ -5,9 +5,9 @@ const {
   touchBuildDirs,
   copyPublicFiles,
   mergeINTERNALS,
+  compileViewsJsx,
 } = require("../../compile")
 const buildWebpack = require("./build-webpack")
-const { compileViewsJsx } = require("../../src/extract/jsx-compiler/jsx")
 
 const config = getConfig()
 

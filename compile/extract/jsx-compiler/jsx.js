@@ -1,5 +1,6 @@
-const { join, exists, read, write, getConfig } = require("../../../compile")
+const { join, exists, read, write } = require("../../util-compile")
 const compileJsx = require("./jsx-compiler")
+const { getConfig } = require("../../config")
 
 const injectImportPragma = (content) => `import { j } from "../../src"\n${content}`
 
