@@ -1,9 +1,6 @@
 const { addAsset, getAsset, PLUGIN_INTERNAL } = require("./plugin-utils")
-const { getINTERNALS, minifyHtml, minifyJs } = require("../compile")
-const { getEnvEofolServiceWorkerFilename, getEnvServiceWorker } = require("../compile/config/env")
-const { getConfig } = require("../compile/config")
-const { eReadFull } = require("../compile/util-compile/e-fs")
-const { injectViews, injectInternals } = require("../compile/helper/inject")
+const { getConfig, getINTERNALS, injectInternals, injectViews, eReadFull, minifyHtml, minifyJs } = require("../compile")
+const { getEnvServiceWorker, getEnvEofolServiceWorkerFilename } = require("../compile/config/env")
 
 const config = getConfig()
 

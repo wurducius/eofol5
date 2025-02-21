@@ -3,9 +3,9 @@ const { head } = require("eofol-head")
 const minifyHtml = require("./minify-html")
 const { getConfig } = require("../config")
 const getErrorOverlay = require("../../src/extract/error-overlay/error-overlay-compile")
-const { injectRootId, injectDoctype } = require("../helper")
 const defaultHeadData = require("../../resources/head/head-data-default")
-const { staticStylesInit } = require("../styles")
+const staticStylesInit = require("../styles/static-styles-init")
+const { injectDoctype, injectRootId } = require("../inject")
 
 const config = getConfig()
 

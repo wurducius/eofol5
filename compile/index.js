@@ -1,7 +1,8 @@
-const compile = require("./compile")
 const config = require("./config")
 const utilCompile = require("./util-compile")
-const helper = require("./helper")
 const styles = require("./styles")
+const extract = require("./extract")
+const inject = require("./inject")
+const internals = require("./internals")
 
-module.exports = { ...compile, ...config, ...utilCompile, ...helper, ...styles }
+module.exports = { ...config, ...utilCompile, ...styles, ...extract, ...inject, ...internals }

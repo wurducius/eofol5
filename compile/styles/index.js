@@ -1,5 +1,6 @@
 const staticStylesInit = require("./static-styles-init")
 const stylesheets = require("./stylesheets")
-const ssx = require("./ssx")
+const theme = require("./theme")
+const styleConstants = require("./constants")
 
-module.exports = { staticStylesInit, ...stylesheets, ...ssx }
+module.exports = { staticStylesInit, ...stylesheets, ...theme, ...styleConstants }

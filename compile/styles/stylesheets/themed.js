@@ -1,4 +1,4 @@
-const { ssyHtml, ssy } = require("../ssx")
+const { ssyHtml, ssy } = require("../../extract/ssx")
 const {
   mozFontSmoothing,
   webkitFontSmoothing,

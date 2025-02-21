@@ -1,4 +1,4 @@
-const { getINTERNALS } = require("../compile/internals")
+const { getINTERNALS } = require("../internals")
 
 const getENV = () => getINTERNALS().env
 

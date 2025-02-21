@@ -4,7 +4,7 @@ const {
   getEnvEofolViewsPlaceholder,
   getEnvEofolNamePlaceholder,
   getEnvEofolName,
-} = require("../config/env")
+} = require("./config/env")
 
 const replace = (source, target) => (content) => content.replaceAll(source, target)
 

@@ -1,4 +1,4 @@
-const { ssy } = require("../ssx/ssx")
+const { ssy } = require("../../extract/ssx")
 
 // eslint-disable-next-line no-unused-vars
 const baseUi = (theme) => {

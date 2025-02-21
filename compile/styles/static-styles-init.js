@@ -1,26 +1,24 @@
 const { getTheme } = require("./theme")
-const { eReadFull } = require("../util-compile")
+const { eReadFull, join, pipe } = require("../util-compile")
 const { getConfig } = require("../config")
-const { injectRootId } = require("../helper")
+const { injectRootId } = require("../inject")
+const { resetSsxCache, appendSsxCache, getSsxCache } = require("../extract/ssx")
 const { base, baseUi, themed } = require("./stylesheets")
-const { resetSsxCache, appendSsxCache, getSsxCache } = require("./ssx")
 
 const config = getConfig()
 
-const basicStyles = injectRootId(eReadFull(config.PATH.RESOURCES_STYLES, `basic${config.EXT.CSS}`))
-const animationStyles = eReadFull(config.PATH.RESOURCES_STYLES, `animation${config.EXT.CSS}`)
+const getInlineStylesheetPath = (name) => join(config.PATH.RESOURCES_STYLES, `${name}${config.EXT.CSS}`)
+
+const stylesheets = { ssx: [base, baseUi, themed], inline: ["basic", "animation"] }
 
 const staticStylesInit = () => {
   resetSsxCache()
   const theme = getTheme()
-  appendSsxCache(basicStyles)
-  base(theme)
-  baseUi(theme)
-  themed(theme)
-  appendSsxCache(animationStyles)
-  const result = getSsxCache()
-  resetSsxCache()
-  return result
+  stylesheets.inline.forEach(pipe(getInlineStylesheetPath, eReadFull, injectRootId, appendSsxCache))
+  stylesheets.ssx.forEach((stylesheet) => {
+    stylesheet(theme)
+  })
+  return getSsxCache()
 }
 
 module.exports = staticStylesInit
