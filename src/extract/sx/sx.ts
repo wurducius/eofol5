@@ -1,5 +1,5 @@
-import { getHash } from "../util"
-import { StyleObject } from "../types"
+import { getHash } from "../../util"
+import { StyleObject } from "../../types"
 import { injectStyle, syImpl } from "./sx-impl"
 
 export const sx = (stylesObject: StyleObject) =>

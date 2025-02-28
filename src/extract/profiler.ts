@@ -1,4 +1,4 @@
-import { getTimeNanoseconds, runtimeDuration, runtimeLog } from "../../log"
+import { getTimeNanoseconds, runtimeDuration, runtimeLog } from "../log"
 
 export const withProfiler = (startMsg: string, endMsg: string, handler: () => void) => {
   runtimeLog(startMsg)

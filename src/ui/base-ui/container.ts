@@ -1,6 +1,6 @@
 import { BASE } from "./components"
 import { defineBase } from "./util"
-import { sy } from "../../styles"
+import { sy } from "../../extract/sx"
 
 const CONTAINER = {
   w: 800,

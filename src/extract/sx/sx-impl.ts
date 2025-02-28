@@ -1,5 +1,5 @@
-import { StyleObject } from "../types"
-import { camelCaseToKebabCase } from "../util"
+import { StyleObject } from "../../types"
+import { camelCaseToKebabCase } from "../../util"
 import { getSxCache } from "./cache"
 
 export const injectStyle = (

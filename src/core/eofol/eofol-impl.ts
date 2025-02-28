@@ -1,12 +1,12 @@
 import { findVdomElementById, vdomToDom } from "../vdom"
 import { getVDOM, setVDOM } from "../../../project/src/internals"
-import { EofolElement, EofolRenderHandler } from "../../types"
+import { EofolElement, EofolRenderHandler, VDOM } from "../../types"
 import { getRoot, selectRoot } from "./root"
 import { eofolFatal } from "../../log"
 import { getEnvEofolRootElementId } from "../../../project/src/env"
 import { init } from "../../runtime"
 import { replaceChildren } from "../../util"
-import { withErrorOverlay } from "../../extract/error-overlay/error-overlay"
+import { withErrorOverlay } from "../../extract"
 
 const eofolRender = (dom: EofolElement) => {
   const root = getRoot()
@@ -17,11 +17,13 @@ const eofolRender = (dom: EofolElement) => {
   }
 }
 
+const eofolRenderVdom = (vdom: VDOM) => eofolRender(vdomToDom(vdom) as EofolElement)
+
 const eofolInitImpl = (handler: EofolRenderHandler) => () => {
   selectRoot()
   const vdom = handler()
   setVDOM(vdom)
-  eofolRender(vdomToDom(vdom) as EofolElement)
+  eofolRenderVdom(vdom)
   init()
 }
 
@@ -30,31 +32,13 @@ export const eofolInitImplWithOverlay = (handler: EofolRenderHandler) => () => {
 }
 export const eofolUpdateImpl = (id: string | undefined) => () => {
   const vdom = getVDOM()
-  let head
-  if (id) {
-    head = findVdomElementById(vdom, id)
-  } else {
-    head = vdom
-  }
+  const head = id ? findVdomElementById(vdom, id) : vdom
   console.log(`eofolUpdate @ ${head?.id}`)
-  const dom = vdomToDom(vdom)
-  return eofolRender(dom as EofolElement)
+  return eofolRenderVdom(head)
 }
 
 export const eofolUnmountImpl = () => {
   const vdom = ""
   setVDOM(vdom)
-  eofolRender(vdomToDom(vdom) as EofolElement)
+  eofolRenderVdom(vdom)
 }
-
-/*
-const vdom = getVDOM()
-const vdomUpdate = traverseVdom(
-  vdom,
-  (vdomElement) => {
-    if ("id" in vdomElement && vdomElement.id === id) {
-      return true
-    }
-  },
-  (vdomElement) => vdomElement,
-)*/

@@ -6,12 +6,13 @@ const getErrorOverlay = require("./error-overlay-compile")
 const defaultHeadData = require("../../resources/head/head-data-default")
 const staticStylesInit = require("../styles/static-styles-init")
 const { injectDoctype, injectRootId } = require("../inject")
+const { getEnvEofolRootElementId } = require("../config/env")
 
 const config = getConfig()
 
 const VIEW_INDEX_NAME = "index"
 const TEMPLATE_AUTO_INJECTED_VIEWS = [VIEW_INDEX_NAME]
-const TEMPLATE_VIEW_EMPTY = ""
+const TEMPLATE_VIEW_EMPTY = `<div id="${getEnvEofolRootElementId()}"></div>`
 
 const precompileTemplate = (buildPath, projectPath) => async (viewItem) => {
   const viewName = viewItem.name

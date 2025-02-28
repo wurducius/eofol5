@@ -1,8 +1,7 @@
-import { getInstances } from "../../project/src/internals"
-import { getDef } from "../runtime"
-import { eofolUpdate } from "../core/eofol"
-import { CreateStoreArg, Instance, Store } from "../types"
-import { ax, mergeDeep } from "../util"
+import { getInstances } from "../../../project/src/internals"
+import { eofolUpdate, getDef } from "../../core"
+import { CreateStoreArg, Instance, Store } from "../../types"
+import { ax, mergeDeep } from "../../util"
 
 const storeRegistry: Record<string, Store<any>> = {}
 

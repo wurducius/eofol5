@@ -1,9 +1,25 @@
 import { getEnvEofolName } from "./env"
 import { counter, weather, forceUpdate, renderTest, store, lifecycleTest } from "./components"
-import { eofolCreateRoot, eofolMount, EofolUI, FLEX_STYLE } from "../../src"
+import { define, eButton, eofolMount, EofolUI, FLEX_STYLE } from "../../src"
 
-eofolCreateRoot()
+define("stateTest", {
+  render: (a) => {
+    return (
+      <div>
+        <h1>{`Value = ${a.state.value}`}</h1>
+        {eButton({
+          children: "Add",
+          onClick: () => {
+            a.mergeState({ value: a.state.value + 1 })
+          },
+        })}
+      </div>
+    )
+  },
+  initialState: { value: 0 },
+})
 
+/*
 eofolMount(() => (
   <container>
     <flexCenterFull>
@@ -23,4 +39,12 @@ eofolMount(() => (
       </flexCol>
     </flexCenterFull>
   </container>
+))
+ */
+
+eofolMount(() => (
+  <div>
+    <stateTest />
+    <stateTest />
+  </div>
 ))

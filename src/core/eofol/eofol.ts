@@ -1,8 +1,8 @@
 import { EofolRenderHandler } from "../../types"
 import { eofolInitImplWithOverlay, eofolUnmountImpl, eofolUpdateImpl } from "./eofol-impl"
-import { withProfiler } from "../../extract/profiler/profiler"
 import { appendChild } from "../../util"
 import { getEnvEofolRootElementId } from "../../../project/src/env"
+import { withProfiler } from "../../extract"
 
 export const eofolMount = (handler: EofolRenderHandler) =>
   withProfiler("Eofol init", "Initial render", eofolInitImplWithOverlay(handler))

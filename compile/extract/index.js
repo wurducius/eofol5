@@ -3,7 +3,6 @@ const minifyHtml = require("./minify-html")
 const minifyJs = require("./minify-js")
 const template = require("./template")
 const touchBuildDirs = require("./touch-build-dirs")
-const singleton = require("./singleton")
 const ssx = require("./ssx")
 const env = require("./env")
 const htmlParser = require("./parser-html")
@@ -16,7 +15,6 @@ module.exports = {
   minifyJs,
   ...template,
   ...touchBuildDirs,
-  ...singleton,
   ...ssx,
   env,
   htmlParser,
